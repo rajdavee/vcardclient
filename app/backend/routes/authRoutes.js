@@ -14,7 +14,10 @@ const {
   getVCard,
   getPublicVCard,
   uploadChunk,
-  getPublicVCardPreview
+  getPublicVCardPreview,
+  verifyEmail,
+  resendVerification,
+  checkVerificationStatus
 } = require('../controllers/authController');
 const authenticateJWT = require('../middleware/authMiddleware');
 
@@ -33,4 +36,8 @@ router.get('/public-vcard/:vCardId', getPublicVCard);
 router.get('/public-vcard-preview/:vCardId', getPublicVCardPreview); 
 router.post('/upload-chunk', authenticateJWT, uploadChunk);
 
+router.get('/verify-email/:token', verifyEmail);
+router.post('/resend-verification', resendVerification);
+
+router.get('/verification-status', authenticateJWT, checkVerificationStatus);
 module.exports = router;

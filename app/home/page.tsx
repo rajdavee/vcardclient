@@ -7,10 +7,11 @@ import { HeroSection } from "./component/HeroSection"
 import { FeaturesSection } from "./component/FeaturesSection"
 import { ExamplesSection } from "./component/ExamplesSection"
 import { PricingSection } from "./component/PricingSection"
-import { CTASection } from "./component/CTASection"
+// import { CTASection } from "./component/CTASection"
 import { Footer } from "./component/Footer"
+import  {FreeVcardGenerator} from "./component/FreeVcardGenerator"
 
-export default function HomePage() {
+export  default function HomePage() {
   const router = useRouter()
   const [isAuthenticated, setIsAuthenticated] = useState(false)
 
@@ -35,7 +36,8 @@ export default function HomePage() {
         <FeaturesSection />
         <ExamplesSection />
         <PricingSection />
-        <CTASection />
+        {/* <CTASection /> */}
+        <FreeVcardGenerator />
       </main>
       <Footer />
     </div>

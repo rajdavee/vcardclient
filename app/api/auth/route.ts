@@ -132,3 +132,36 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: error instanceof Error ? error.message : 'An error occurred' }, { status: 500 });
   }
 }
+
+export async function GET(request: Request) {
+  const url = new URL(request.url);
+  const path = url.pathname;
+
+  if (path.startsWith('/api/auth/verify-email')) {
+    const token = path.split('/').pop();
+    if (!token) {
+      return NextResponse.json({ error: 'No token provided' }, { status: 400 });
+    }
+
+    try {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/verify-email/${token}`, {
+        method: 'GET',
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        return NextResponse.json(data);
+      } else {
+        return NextResponse.json({ error: data.error || 'Email verification failed' }, { status: response.status });
+      }
+    } catch (error) {
+      console.error('Email verification error:', error);
+      return NextResponse.json({ error: 'An error occurred during verification' }, { status: 500 });
+    }
+  }
+
+  // ... rest of your existing GET handler ...
+}
+
+// ... rest of your existing code ...

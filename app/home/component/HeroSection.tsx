@@ -55,7 +55,7 @@ export function HeroSection() {
 
     try {
       if (!isAuthenticated) {
-        router.push('/')
+        router.push('/login')
         return
       }
 
@@ -76,11 +76,11 @@ export function HeroSection() {
           router.push('/premium')
           break
         default:
-          router.push('/dashboard')
+          router.push('/generate-vcard')
       }
     } catch (error) {
       console.error('Error navigating to dashboard:', error)
-      router.push('/dashboard')
+      // router.push('/generate-vcard')
     } finally {
       setIsLoading(false)
     }

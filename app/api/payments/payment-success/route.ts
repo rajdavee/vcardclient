@@ -5,7 +5,7 @@ export async function GET(request: NextRequest) {
   const session_id = searchParams.get('session_id');
 
   if (!session_id) {
-    return NextResponse.redirect(new URL('/dashboard?payment=error&message=No session ID provided', request.url));
+    return NextResponse.redirect(new URL('/home?payment=error&message=No session ID provided', request.url));
   }
 
   const backendUrl = `${process.env.NEXT_PUBLIC_API_BASE_URL}/payments/payment-success?session_id=${session_id}`;
@@ -25,11 +25,11 @@ export async function GET(request: NextRequest) {
     }
 
     if (responseData.success) {
-      return NextResponse.redirect(new URL(`/dashboard?payment=success&plan=${encodeURIComponent(responseData.planName)}`, request.url));
+      return NextResponse.redirect(new URL(`/home?payment=success&plan=${encodeURIComponent(responseData.planName)}`, request.url));
     } else {
-      return NextResponse.redirect(new URL(`/dashboard?payment=error&message=${encodeURIComponent(JSON.stringify(responseData))}`, request.url));
+      return NextResponse.redirect(new URL(`/home?payment=error&message=${encodeURIComponent(JSON.stringify(responseData))}`, request.url));
     }
   } catch (error: any) {
-    return NextResponse.redirect(new URL(`/dashboard?payment=error&message=${encodeURIComponent(error.message)}`, request.url));
+    return NextResponse.redirect(new URL(`/home?payment=error&message=${encodeURIComponent(error.message)}`, request.url));
   }
 }
