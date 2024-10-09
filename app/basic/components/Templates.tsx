@@ -5,7 +5,6 @@ export type TemplateId = 1 | 2 | 3 | 4 | 5;
 
 interface TemplateProps {
   selectedTemplate: TemplateId;
-  onSelectTemplate: (id: TemplateId) => void;
   fields: Record<string, string | FileList>;
 }
 
@@ -17,7 +16,7 @@ export const templateFields: Record<TemplateId, string[]> = {
   5: ['firstName', 'lastName', 'jobTitle', 'phone', 'alternatePhone', 'email', 'website', 'address']
 };
 
-const Templates: React.FC<TemplateProps> = ({ selectedTemplate, onSelectTemplate, fields }) => {
+const Templates: React.FC<TemplateProps> = ({ selectedTemplate, fields }) => {
   console.log('Selected Template:', selectedTemplate);
 
   const getImageSrc = (profileImage: string | FileList | undefined): string => {

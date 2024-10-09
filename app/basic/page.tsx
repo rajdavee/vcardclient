@@ -6,23 +6,25 @@ import Templates, { templateFields, TemplateId } from './components/Templates';
 import axios from 'axios';
 import { withAuth } from '../utils/withAuth';
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
 
 interface FormData {
   [key: string]: string | FileList;
 }
 
+interface VCardData {
+  vCardString: string;
+  qrCodeDataUrl: string;
+  vCardId: string;
+}
+
 const BasicVCardPage: React.FC = () => {
-  const { register, handleSubmit, watch, reset, formState: { errors } } = useForm<FormData>();
+  const { register, handleSubmit, watch, reset } = useForm<FormData>();
   const [selectedTemplate, setSelectedTemplate] = useState<TemplateId>(1);
-  const [vCardData, setVCardData] = useState<any>(null);
+  const [vCardData, setVCardData] = useState<VCardData | null>(null);
   const [message, setMessage] = useState<string>('');
-  const [previewData, setPreviewData] = useState<any>(null);
   const watchedFields = watch();
-  const router = useRouter();
 
   useEffect(() => {
-    // Reset form when template changes
     reset();
   }, [selectedTemplate, reset]);
 
@@ -54,7 +56,7 @@ const BasicVCardPage: React.FC = () => {
 
       setVCardData(response.data);
       setMessage('vCard created successfully!');
-      reset(); // Reset form after successful submission
+      reset();
     } catch (error) {
       console.error('Error creating vCard:', error);
       setMessage('Failed to create vCard. Please try again.');
@@ -125,7 +127,7 @@ const BasicVCardPage: React.FC = () => {
             onClick={() => setSelectedTemplate(templateId)}
           >
             <h3 className="text-xl font-bold mb-2">Template {templateId}</h3>
-            <Templates selectedTemplate={templateId} onSelectTemplate={() => {}} fields={watchedFields} />
+            <Templates selectedTemplate={templateId} fields={watchedFields} />
           </div>
         ))}
       </div>
