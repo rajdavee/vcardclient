@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState, useCallback, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import axios from 'axios';
 import VCardPreview from '../components/VCardPreview';
@@ -12,7 +12,7 @@ interface VCardData {
   qrCodeDataUrl: string;
 }
 
-const PreviewPage: React.FC = () => {
+function PreviewPageContent() {
   const searchParams = useSearchParams();
   const [vcard, setVcard] = useState<VCardData | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -64,6 +64,14 @@ const PreviewPage: React.FC = () => {
       />
     </div>
   );
+}
+
+const PreviewPage: React.FC = () => {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <PreviewPageContent />
+    </Suspense>
+  )
 };
 
 export default PreviewPage;
