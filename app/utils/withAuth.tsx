@@ -1,8 +1,14 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
-export function withAuth(WrappedComponent: React.ComponentType, requiredPlan: string = '') {
-  return function AuthComponent(props: any) {
+// Define a generic type for the component props
+type ComponentProps<T> = T extends React.ComponentType<infer P> ? P : never;
+
+export function withAuth<T extends React.ComponentType<any>>(
+  WrappedComponent: T, 
+  requiredPlan: string = ''
+) {
+  return function AuthComponent(props: ComponentProps<T>) {
     const router = useRouter();
     const [isLoading, setIsLoading] = useState(true);
     const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -47,7 +53,6 @@ export function withAuth(WrappedComponent: React.ComponentType, requiredPlan: st
           if (requiredPlan && userPlanName !== requiredPlan.toLowerCase()) {
             switch (userPlanName) {
               case 'basic':
-                
                 router.push('/basic');
                 break;
               case 'pro':
@@ -71,6 +76,7 @@ export function withAuth(WrappedComponent: React.ComponentType, requiredPlan: st
 
       checkAuth();
     }, [router]);
+
     if (isLoading) {
       return <div>Loading...</div>;
     }

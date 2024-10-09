@@ -6,16 +6,19 @@ import Templates, { templateFields, TemplateId } from '../basic/components/Templ
 import axios from 'axios';
 import { withAuth } from '../utils/withAuth';
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
-import VCardPreview from '../components/VCardPreview';
 
 interface FormData {
   [key: string]: string | FileList;
 }
 
+interface VCardData {
+  vCardId: string;
+  vCardString: string;
+  qrCodeDataUrl: string;
+}
+
 interface ScanData {
   totalScans: number; 
-  
   recentScans: Array<{
     scanDate: string;
     location: {
@@ -32,15 +35,13 @@ interface ScanData {
 }
 
 const ProVCardPage: React.FC = () => {
-  const { register, handleSubmit, watch, reset, formState: { errors } } = useForm<FormData>();
+  const { register, handleSubmit, watch, reset } = useForm<FormData>();
   const [selectedTemplate, setSelectedTemplate] = useState<TemplateId>(1);
-  const [vCardData, setVCardData] = useState<any>(null);
+  const [vCardData, setVCardData] = useState<VCardData | null>(null);
   const [message, setMessage] = useState<string>('');
-  const [previewData, setPreviewData] = useState<any>(null);
   const [scanData, setScanData] = useState<ScanData | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const watchedFields = watch();
-  const router = useRouter();
 
   useEffect(() => {
     reset();
@@ -71,7 +72,7 @@ const ProVCardPage: React.FC = () => {
         throw new Error('No authentication token found');
       }
 
-      const response = await axios.post('/api/vcard', formData, {
+      const response = await axios.post<VCardData>('/api/vcard', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
           'Authorization': `Bearer ${token}`,
@@ -95,17 +96,13 @@ const ProVCardPage: React.FC = () => {
         throw new Error('No authentication token found');
       }
 
-      const response = await axios.get(`/api/auth/vcard-analytics/${vCardId}`, {
+      const response = await axios.get<ScanData>(`/api/auth/vcard-analytics/${vCardId}`, {
         headers: {
           'Authorization': `Bearer ${token}`,
         },
       });
 
-      if (response.data && response.data.totalScans !== undefined) {
-        setScanData(response.data);
-      } else {
-        throw new Error('Invalid scan data received');
-      }
+      setScanData(response.data);
     } catch (error) {
       console.error('Error fetching scan data:', error);
       if (axios.isAxiosError(error)) {
@@ -220,7 +217,7 @@ const ProVCardPage: React.FC = () => {
             onClick={() => setSelectedTemplate(templateId)}
           >
             <h3 className="text-xl font-bold mb-2">Template {templateId}</h3>
-            <Templates selectedTemplate={templateId} onSelectTemplate={() => {}} fields={watchedFields} />
+            <Templates selectedTemplate={templateId} fields={watchedFields} />
           </div>
         ))}
       </div>
