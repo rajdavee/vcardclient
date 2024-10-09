@@ -7,7 +7,7 @@ type WrappableComponent = React.ComponentType<any>;
 export function withAuth<T extends WrappableComponent>(
   WrappedComponent: T, 
   requiredPlan: string = ''
-) {
+): React.FC<React.ComponentProps<T>> {
   return function AuthComponent(props: React.ComponentProps<T>) {
     const router = useRouter();
     const [isLoading, setIsLoading] = useState(true);
