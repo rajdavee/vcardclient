@@ -4,7 +4,6 @@ import React, { useState, useRef } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { saveAs } from 'file-saver';
 import html2canvas from 'html2canvas';
-import { FaEnvelope, FaPhone, FaBuilding } from 'react-icons/fa';
 
 type VCardInputs = {
   firstName: string;

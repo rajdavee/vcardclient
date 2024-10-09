@@ -1,6 +1,6 @@
 'use client';
 import { useState, useEffect } from 'react';
-import { loadStripe, Stripe } from '@stripe/stripe-js';
+import { loadStripe } from '@stripe/stripe-js';
 import { Star } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 
@@ -122,8 +122,8 @@ export function PricingSection() {
           setError('Please login first to process payment.');
         }
       }
-    } catch (error) {
-      console.error('Error:', error);
+    } catch (err) {
+      console.error('Error:', err);
       setError('An error occurred. Please try again.');
     } finally {
       setLoading(false);
