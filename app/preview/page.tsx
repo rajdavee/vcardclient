@@ -1,14 +1,30 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { useSearchParams } from 'next/navigation';
 import axios from 'axios';
 import VCardPreview from '../components/VCardPreview';
 
+interface VCardData {
+  templateId: number;
+  fields: { name: string; value: string }[];
+  qrCodeDataUrl: string;
+}
+
 const PreviewPage: React.FC = () => {
   const searchParams = useSearchParams();
-  const [vcard, setVcard] = useState<any | null>(null);
+  const [vcard, setVcard] = useState<VCardData | null>(null);
   const [error, setError] = useState<string | null>(null);
+
+  const fetchPreviewData = useCallback(async (vCardId: string) => {
+    try {
+      const response = await axios.get<VCardData>(`/api/vcard?id=${vCardId}&preview=true`);
+      setVcard(response.data);
+    } catch (error) {
+      console.error('Error fetching vCard preview:', error);
+      setError('Failed to load vCard preview');
+    }
+  }, []);
 
   useEffect(() => {
     const vCardId = searchParams.get('vCardId');
@@ -17,17 +33,7 @@ const PreviewPage: React.FC = () => {
     } else {
       setError('No vCard ID provided');
     }
-  }, [searchParams]);
-
-  const fetchPreviewData = async (vCardId: string) => {
-    try {
-      const response = await axios.get(`/api/vcard?id=${vCardId}&preview=true`);
-      fetchPreviewData(response.data);
-    } catch (error) {
-      console.error('Error fetching vCard preview:', error);
-      setError('Failed to load vCard preview');
-    }
-  };
+  }, [searchParams, fetchPreviewData]);
 
   if (error) {
     return (

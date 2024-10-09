@@ -85,12 +85,13 @@ export function PricingSection() {
 
       const { error } = await stripe.redirectToCheckout({ sessionId });
       if (error) {
-        throw new Error(error.message);
+        throw error;
       }
 
       return true;
     } catch (error) {
-      setError('An error occurred while processing your payment. Please try again.');
+      console.error('Payment error:', error);
+      setError(error instanceof Error ? error.message : 'An error occurred while processing your payment. Please try again.');
       return false;
     }
   };

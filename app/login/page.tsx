@@ -44,7 +44,7 @@ const Home: React.FC = () => {
     e.preventDefault()
     setIsLoading(true)
     const formData = new FormData(e.currentTarget)
-    let data = Object.fromEntries(formData)
+    const data = Object.fromEntries(formData)
 
     if (action === 'register' && (!data.username || !data.email || !data.password)) {
       setMessage('Please fill in all fields.');
