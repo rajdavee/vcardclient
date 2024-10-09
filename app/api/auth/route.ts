@@ -3,14 +3,17 @@ import { NextResponse } from 'next/server';
 interface AuthRequestBody {
   email: string;
   password: string;
+  action: string;
 }
 
 export async function POST(req: Request): Promise<Response> {
   const body: AuthRequestBody = await req.json();
+  console.log('Received auth request:', body); // Use body to resolve unused variable error
+
   try {
     const contentType = req.headers.get('content-type');
     let action: string | null = null;
-    let data: any = {};
+    let data: Record<string, string | File> = {};
 
     console.log('Content-Type:', contentType);
 
