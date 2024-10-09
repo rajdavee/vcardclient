@@ -1,15 +1,21 @@
 import { NextResponse } from 'next/server';
 
-export async function POST(request: Request): Promise<Response> {
+interface AuthRequestBody {
+  email: string;
+  password: string;
+}
+
+export async function POST(req: Request): Promise<Response> {
+  const body: AuthRequestBody = await req.json();
   try {
-    const contentType = request.headers.get('content-type');
+    const contentType = req.headers.get('content-type');
     let action: string | null = null;
     let data: any = {};
 
     console.log('Content-Type:', contentType);
 
     if (contentType && contentType.includes('multipart/form-data')) {
-      const formData = await request.formData();
+      const formData = await req.formData();
       action = formData.get('action') as string;
       for (const [key, value] of Array.from(formData.entries())) {
         if (typeof value === 'string') {
@@ -21,7 +27,7 @@ export async function POST(request: Request): Promise<Response> {
       }
       console.log('Received FormData:', data);
     } else {
-      const jsonData = await request.json();
+      const jsonData = await req.json();
       action = jsonData.action;
       data = jsonData;
       console.log('Received JSON data:', jsonData);
@@ -36,7 +42,7 @@ export async function POST(request: Request): Promise<Response> {
     let body: FormData | string | undefined;
     
     const headers: HeadersInit = {
-      'Authorization': request.headers.get('Authorization') || '',
+      'Authorization': req.headers.get('Authorization') || '',
     };
 
     // Handle different actions
@@ -63,8 +69,8 @@ export async function POST(request: Request): Promise<Response> {
         case 'createVCard':
           endpoint = `${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/vcard`;
           method = 'POST';
-          if (request instanceof Request) {
-            const formData = await request.formData();
+          if (req instanceof Request) {
+            const formData = await req.formData();
             body = formData;
             // Remove the Content-Type header as it will be set automatically for FormData
             delete headers['Content-Type'];
