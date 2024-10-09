@@ -33,3 +33,14 @@ export async function GET(request: NextRequest) {
     return NextResponse.redirect(new URL(`/home?payment=error&message=${encodeURIComponent(error.message)}`, request.url));
   }
 }
+
+export async function POST(req: Request): Promise<Response> {
+  const body: { sessionId: string } = await req.json();
+  // ... existing code ...
+  return new Response(JSON.stringify({ message: 'POST request processed successfully' }), {
+    status: 200,
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+}

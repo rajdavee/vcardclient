@@ -3,7 +3,7 @@ import axios from 'axios';
 
 const API_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
-export async function POST(request: NextRequest) {
+export async function POST(request: NextRequest): Promise<NextResponse> {
   try {
     const formData = await request.formData();
     const token = request.headers.get('Authorization');
@@ -32,7 +32,7 @@ export async function POST(request: NextRequest) {
   }
 }
 
-export async function GET(request: NextRequest) {
+export async function GET(request: NextRequest): Promise<NextResponse> {
   const vCardId = request.nextUrl.searchParams.get('id');
   const preview = request.nextUrl.searchParams.get('preview');
   
@@ -56,7 +56,7 @@ export async function GET(request: NextRequest) {
   }
 }
 
-export async function PUT(request: NextRequest) {
+export async function PUT(request: NextRequest): Promise<NextResponse> {
   try {
     const vCardId = request.nextUrl.searchParams.get('id');
     if (!vCardId) {
@@ -76,7 +76,7 @@ export async function PUT(request: NextRequest) {
   }
 }
 
-export async function DELETE(request: NextRequest) {
+export async function DELETE(request: NextRequest): Promise<NextResponse> {
   try {
     const vCardId = request.nextUrl.searchParams.get('id');
     if (!vCardId) {

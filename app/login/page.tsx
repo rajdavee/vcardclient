@@ -40,10 +40,10 @@ const Home: React.FC = () => {
   const [verificationSent, setVerificationSent] = useState(false)
   const router = useRouter()
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
     setIsLoading(true)
-    const formData = new FormData(event.currentTarget)
+    const formData = new FormData(e.currentTarget)
     let data = Object.fromEntries(formData)
 
     if (action === 'register' && (!data.username || !data.email || !data.password)) {

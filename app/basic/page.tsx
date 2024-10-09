@@ -7,7 +7,6 @@ import axios from 'axios';
 import { withAuth } from '../utils/withAuth';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import VCardPreview from '../components/VCardPreview';
 
 interface FormData {
   [key: string]: string | FileList;

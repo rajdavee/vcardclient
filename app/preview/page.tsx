@@ -7,7 +7,7 @@ import VCardPreview from '../components/VCardPreview';
 
 const PreviewPage: React.FC = () => {
   const searchParams = useSearchParams();
-  const [previewData, setPreviewData] = useState<any>(null);
+  const [vcard, setVcard] = useState<any | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
@@ -22,7 +22,7 @@ const PreviewPage: React.FC = () => {
   const fetchPreviewData = async (vCardId: string) => {
     try {
       const response = await axios.get(`/api/vcard?id=${vCardId}&preview=true`);
-      setPreviewData(response.data);
+      fetchPreviewData(response.data);
     } catch (error) {
       console.error('Error fetching vCard preview:', error);
       setError('Failed to load vCard preview');
@@ -38,7 +38,7 @@ const PreviewPage: React.FC = () => {
     );
   }
 
-  if (!previewData) {
+  if (!vcard) {
     return (
       <div className="container mx-auto p-4">
         <h1 className="text-3xl font-bold mb-4">vCard Preview</h1>
@@ -51,9 +51,9 @@ const PreviewPage: React.FC = () => {
     <div className="container mx-auto p-4">
       <h1 className="text-3xl font-bold mb-4">vCard Preview</h1>
       <VCardPreview
-        templateId={previewData.templateId}
-        fields={previewData.fields}
-        qrCodeDataUrl={previewData.qrCodeDataUrl}
+        templateId={vcard.templateId}
+        fields={vcard.fields}
+        qrCodeDataUrl={vcard.qrCodeDataUrl}
       />
     </div>
   );

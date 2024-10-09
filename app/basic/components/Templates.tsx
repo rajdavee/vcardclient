@@ -30,10 +30,6 @@ const Templates: React.FC<TemplateProps> = ({ selectedTemplate, onSelectTemplate
     return '/images/default-profile-image.png'; // Update this path
   };
 
-  const getQRCodeUrl = (vCardId: string) => {
-    return `${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/public-vcard-preview/${vCardId}`;
-  };
-
   const renderTemplate = (id: number) => {
     console.log('Rendering template:', id); // Add this line
     switch (id) {
