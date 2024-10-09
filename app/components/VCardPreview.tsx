@@ -1,9 +1,9 @@
 import React from 'react';
 import Image from 'next/image';
-import Templates from '../basic/components/Templates';
+import Templates, { TemplateId } from '../basic/components/Templates';
 
 interface VCardPreviewProps {
-  templateId: number;
+  templateId: TemplateId;
   fields: Array<{ name: string; value: string }>;
   qrCodeDataUrl?: string;
 }
@@ -17,10 +17,9 @@ const VCardPreview: React.FC<VCardPreviewProps> = ({ templateId, fields, qrCodeD
 
   return (
     <div>
-      <Templates 
+      <Templates
         selectedTemplate={templateId}
-        onSelectTemplate={() => {}}
-        fields={fieldsObject} 
+        fields={fieldsObject}
       />
       {qrCodeDataUrl && (
         <div className="mt-4">

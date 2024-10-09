@@ -4,9 +4,10 @@ import React, { useEffect, useState, useCallback } from 'react';
 import { useSearchParams } from 'next/navigation';
 import axios from 'axios';
 import VCardPreview from '../components/VCardPreview';
+import { TemplateId } from '../basic/components/Templates';
 
 interface VCardData {
-  templateId: number;
+  templateId: TemplateId;  // Changed from number to TemplateId
   fields: { name: string; value: string }[];
   qrCodeDataUrl: string;
 }
