@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
 // Define a generic type for components that can be wrapped
-type WrappableComponent<P = {}> = React.ComponentType<P>;
+type WrappableComponent<P extends object = object> = React.ComponentType<P>;
 
-export function withAuth<P extends object = {}>(
+export function withAuth<P extends object = object>(
   WrappedComponent: WrappableComponent<P>, 
   requiredPlan: string = ''
 ): React.FC<P> {
