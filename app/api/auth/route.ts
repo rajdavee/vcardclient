@@ -1,16 +1,25 @@
 import { NextResponse } from 'next/server';
 
+interface AuthRequestBody {
+  email?: string;
+  password?: string;
+  action: string;
+  [key: string]: any;
+}
+
 export async function POST(request: Request) {
   try {
+    console.log('POST request received');
     const contentType = request.headers.get('content-type');
     let action: string | null = null;
-    let data: any = {};
+    let data: AuthRequestBody;
 
     console.log('Content-Type:', contentType);
 
     if (contentType && contentType.includes('multipart/form-data')) {
       const formData = await request.formData();
       action = formData.get('action') as string;
+      data = { action };
       for (const [key, value] of Array.from(formData.entries())) {
         if (typeof value === 'string') {
           data[key] = value;
@@ -21,10 +30,9 @@ export async function POST(request: Request) {
       }
       console.log('Received FormData:', data);
     } else {
-      const jsonData = await request.json();
-      action = jsonData.action;
-      data = jsonData;
-      console.log('Received JSON data:', jsonData);
+      data = await request.json();
+      action = data.action;
+      console.log('Received JSON data:', data);
     }
 
     if (!action) {
@@ -44,7 +52,6 @@ export async function POST(request: Request) {
       case 'register':
       case 'login':
       case 'forgot-password':
-        // These actions use default POST method
         body = JSON.stringify(data);
         headers['Content-Type'] = 'application/json';
         break;
@@ -60,18 +67,17 @@ export async function POST(request: Request) {
         method = 'GET';
         body = undefined;
         break;
-        case 'createVCard':
-          endpoint = `${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/vcard`;
-          method = 'POST';
-          if (request instanceof Request) {
-            const formData = await request.formData();
-            body = formData;
-            // Remove the Content-Type header as it will be set automatically for FormData
-            delete headers['Content-Type'];
-          } else {
-            return NextResponse.json({ error: 'Invalid request format' }, { status: 400 });
-          }
-          break;
+      case 'createVCard':
+        endpoint = `${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/vcard`;
+        method = 'POST';
+        if (request instanceof Request) {
+          const formData = await request.formData();
+          body = formData;
+          delete headers['Content-Type'];
+        } else {
+          return NextResponse.json({ error: 'Invalid request format' }, { status: 400 });
+        }
+        break;
       case 'updateVCard':
         const { vCardId, ...vCardData } = data;
         endpoint = `${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/vcard/${vCardId}`;
@@ -118,6 +124,8 @@ export async function POST(request: Request) {
       body,
     });
 
+    console.log(`Received response with status: ${response.status}`);
+
     if (!response.ok) {
       const errorText = await response.text();
       console.error(`API responded with status ${response.status}:`, errorText);
@@ -129,7 +137,15 @@ export async function POST(request: Request) {
 
   } catch (error: unknown) {
     console.error('API route error:', error);
-    return NextResponse.json({ error: error instanceof Error ? error.message : 'An error occurred' }, { status: 500 });
+    if (error instanceof Error) {
+      return NextResponse.json({ 
+        error: error.message,
+        stack: process.env.NODE_ENV === 'development' ? error.stack : undefined
+      }, { status: 500 });
+    }
+    return NextResponse.json({ 
+      error: 'An unexpected error occurred'
+    }, { status: 500 });
   }
 }
 
@@ -161,7 +177,6 @@ export async function GET(request: Request) {
     }
   }
 
-  // ... rest of your existing GET handler ...
+  // Handle other GET requests if needed
+  return NextResponse.json({ error: 'Invalid GET request' }, { status: 400 });
 }
-
-// ... rest of your existing code ...
