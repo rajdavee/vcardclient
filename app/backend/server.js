@@ -12,11 +12,13 @@ const ejs = require('ejs');
 
 // Middleware
 app.use(cors({
-  origin: process.env.FRONTEND_URL,
+  origin: [process.env.FRONTEND_URL, 'http://localhost:3000'],
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization'],
 }));
+
+
 
 // Increase payload size limit
 app.use(fileUpload({
@@ -42,6 +44,11 @@ mongoose.connect(process.env.MONGODB_URI, {
 // Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/payments', paymentRoutes);
+
+
+app.get('/', (req, res) => {
+  res.send('Backend server is running. API is available at /api');
+});+
 
 
 // Set up EJS as the template engine

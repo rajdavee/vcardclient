@@ -10,6 +10,9 @@ const ejs = require('ejs');
 const path = require('path');
 const vCardsJS = require('vcards-js');
 const crypto = require('crypto');
+const VCardScan = require('../models/VCardScan');
+const geoip = require('geoip-lite');
+
 
 
 // ----------------------------------------------------------------------------------
@@ -73,10 +76,25 @@ function generateVCardString(vCardData) {
   return vCard.getFormattedString();
 }
 
+// async function generateAndSaveQRCode(vCardId, user, vCardIndex) {
+//   try {
+//     const previewUrl = `${process.env.FRONTEND_URL}/preview?vCardId=${vCardId}`;
+//     const qrCodeDataUrl = await QRCode.toDataURL(previewUrl);
+//     user.vCards[vCardIndex].qrCode = qrCodeDataUrl;
+//     await user.save();
+//     return qrCodeDataUrl;
+//   } catch (error) {
+//     console.error('Error generating QR code:', error);
+//     throw error;
+//   }
+// }
+
+
+
 async function generateAndSaveQRCode(vCardId, user, vCardIndex) {
   try {
-    const previewUrl = `${process.env.FRONTEND_URL}/preview?vCardId=${vCardId}`;
-    const qrCodeDataUrl = await QRCode.toDataURL(previewUrl);
+    const scanUrl = `${process.env.BACKEND_URL}/api/auth/scan/${vCardId}`;
+    const qrCodeDataUrl = await QRCode.toDataURL(scanUrl);
     user.vCards[vCardIndex].qrCode = qrCodeDataUrl;
     await user.save();
     return qrCodeDataUrl;
@@ -85,6 +103,8 @@ async function generateAndSaveQRCode(vCardId, user, vCardIndex) {
     throw error;
   }
 }
+
+
 
 exports.updateVCard = async (req, res) => {
   try {
@@ -301,10 +321,6 @@ exports.uploadChunk = async (req, res) => {
     res.status(500).send(err);
   }
 };
-
-
-
-
 exports.getPublicVCardPreview = async (req, res) => {
   try {
     const { vCardId } = req.params;
@@ -334,6 +350,191 @@ exports.getPublicVCardPreview = async (req, res) => {
   } catch (error) {
     console.error('Error fetching public vCard preview:', error);
     res.status(500).json({ error: 'Error fetching vCard preview', details: error.message });
+  }
+};
+
+
+
+exports.handleQRScan = async (req, res) => {
+  try {
+    const { vCardId } = req.params;
+    let ipAddress = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+    const userAgent = req.headers['user-agent'];
+    
+    // Remove IPv6 prefix if present
+    ipAddress = ipAddress.replace(/^::ffff:/, '');
+
+    // Perform IP geolocation
+    const geo = geoip.lookup(ipAddress);
+    
+    const scanData = {
+      vCardId,
+      ipAddress,
+      userAgent,
+      scanDate: new Date(),
+      location: {
+        latitude: geo ? geo.ll[0] : null,
+        longitude: geo ? geo.ll[1] : null,
+        city: geo ? geo.city : 'Unknown',
+        country: geo ? geo.country : 'Unknown'
+      }
+    };
+
+    console.log('Scan data:', JSON.stringify(scanData, null, 2));
+
+    const newScan = new VCardScan(scanData);
+    await newScan.save();
+
+    console.log('Saved scan data:', JSON.stringify(newScan, null, 2));
+
+    // Find the user associated with the vCard and update their scan count
+    const user = await User.findOne({ 'vCards._id': vCardId });
+    if (user) {
+      const vCardIndex = user.vCards.findIndex(card => card._id.toString() === vCardId);
+      if (vCardIndex !== -1) {
+        user.vCards[vCardIndex].scans.push(newScan._id);
+        await user.save();
+        console.log('Updated user vCard scans:', user.vCards[vCardIndex].scans);
+      }
+    }
+
+    // Redirect to the vCard preview
+    res.redirect(`${process.env.FRONTEND_URL}/preview?vCardId=${vCardId}`);
+  } catch (error) {
+    console.error('Error handling QR scan:', error);
+    res.status(500).json({ error: 'Error handling QR scan', details: error.message });
+  }
+};
+
+exports.getVCardAnalytics = async (req, res) => {
+  try {
+    const { vCardId } = req.params;
+    
+    console.log('Fetching analytics for vCardId:', vCardId);
+
+    // Fetch all scans for this specific vCard
+    const scans = await VCardScan.find({ vCardId }).sort({ scanDate: -1 });
+    
+    console.log('Found scans:', JSON.stringify(scans, null, 2));
+
+    const totalScans = scans.length;
+    const recentScans = scans.slice(0, 5).map(scan => ({
+      scanDate: scan.scanDate,
+      location: {
+        city: scan.location.city || 'Unknown',
+        country: scan.location.country || 'Unknown'
+      }
+    }));
+
+    // Process location breakdown
+    const locationBreakdown = scans.reduce((acc, scan) => {
+      const location = `${scan.location.city || 'Unknown'}, ${scan.location.country || 'Unknown'}`;
+      acc[location] = (acc[location] || 0) + 1;
+      return acc;
+    }, {});
+
+    // Process device breakdown
+    const deviceBreakdown = scans.reduce((acc, scan) => {
+      const device = scan.userAgent.includes('Mobile') ? 'Mobile' : 'Desktop';
+      acc[device] = (acc[device] || 0) + 1;
+      return acc;
+    }, {});
+
+    const analyticsData = {
+      totalScans,
+      recentScans,
+      locationBreakdown,
+      deviceBreakdown
+    };
+
+    console.log('Analytics data:', JSON.stringify(analyticsData, null, 2));
+
+    res.json(analyticsData);
+  } catch (error) {
+    console.error('Error fetching vCard analytics:', error);
+    res.status(500).json({ error: 'Error fetching vCard analytics', details: error.message });
+  }
+};
+
+exports.getVCardScanAnalytics = async (req, res) => {
+  try {
+    const { vCardId } = req.params;
+    const { userId } = req.user;
+
+    // Check if the vCard belongs to the user
+    const user = await User.findOne({ _id: userId, 'vCards._id': vCardId });
+    if (!user) {
+      return res.status(404).json({ error: 'vCard not found or does not belong to the user' });
+    }
+
+    const scans = await VCardScan.find({ vCardId }).sort({ scanDate: -1 });
+
+    const analytics = {
+      totalScans: scans.length,
+      recentScans: scans.slice(0, 10).map(scan => ({
+        scanDate: scan.scanDate,
+        location: {
+          city: scan.location.city || 'Unknown',
+          country: scan.location.country || 'Unknown'
+        }
+      })),
+      locationBreakdown: {},
+      deviceBreakdown: {}
+    };
+
+    scans.forEach(scan => {
+      // Location breakdown
+      const country = scan.location.country || 'Unknown';
+      analytics.locationBreakdown[country] = (analytics.locationBreakdown[country] || 0) + 1;
+
+      // Device breakdown (simplified, you might want to use a proper user-agent parser for better accuracy)
+      const device = scan.userAgent.includes('Mobile') ? 'Mobile' : 'Desktop';
+      analytics.deviceBreakdown[device] = (analytics.deviceBreakdown[device] || 0) + 1;
+    });
+
+    res.json(analytics);
+  } catch (error) {
+    console.error('Error fetching vCard scan analytics:', error);
+    res.status(500).json({ error: 'Error fetching vCard scan analytics' });
+  }
+};
+
+exports.getUserScanAnalytics = async (req, res) => {
+  try {
+    const { userId } = req.user;
+
+    const user = await User.findById(userId).select('vCards._id');
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    const vCardIds = user.vCards.map(vCard => vCard._id);
+    const scans = await VCardScan.find({ vCardId: { $in: vCardIds } }).sort({ scanDate: -1 });
+
+    const analytics = {
+      totalScans: scans.length,
+      scansByVCard: {},
+      overallLocationBreakdown: {},
+      overallDeviceBreakdown: {}
+    };
+
+    scans.forEach(scan => {
+      // Scans by vCard
+      analytics.scansByVCard[scan.vCardId] = (analytics.scansByVCard[scan.vCardId] || 0) + 1;
+
+      // Overall location breakdown
+      const country = scan.location.country || 'Unknown';
+      analytics.overallLocationBreakdown[country] = (analytics.overallLocationBreakdown[country] || 0) + 1;
+
+      // Overall device breakdown
+      const device = scan.userAgent.includes('Mobile') ? 'Mobile' : 'Desktop';
+      analytics.overallDeviceBreakdown[device] = (analytics.overallDeviceBreakdown[device] || 0) + 1;
+    });
+
+    res.json(analytics);
+  } catch (error) {
+    console.error('Error fetching user scan analytics:', error);
+    res.status(500).json({ error: 'Error fetching user scan analytics' });
   }
 };
 
@@ -540,9 +741,6 @@ exports.checkVerificationStatus = async (req, res) => {
     res.status(500).json({ error: 'Error checking verification status' });
   }
 };
-
-
-
 exports.verifyEmail = async (req, res) => {
   try {
     const { token } = req.params;

@@ -17,7 +17,11 @@ const {
   getPublicVCardPreview,
   verifyEmail,
   resendVerification,
-  checkVerificationStatus
+  checkVerificationStatus,
+  handleQRScan,
+  getVCardScanAnalytics,
+  getUserScanAnalytics,
+  getVCardAnalytics
 } = require('../controllers/authController');
 const authenticateJWT = require('../middleware/authMiddleware');
 
@@ -40,4 +44,10 @@ router.get('/verify-email/:token', verifyEmail);
 router.post('/resend-verification', resendVerification);
 
 router.get('/verification-status', authenticateJWT, checkVerificationStatus);
+router.get('/scan/:vCardId', handleQRScan);
+
+router.get('/vcard-analytics/:vCardId', authenticateJWT, getVCardAnalytics);
+
+router.get('/user-analytics', authenticateJWT, getUserScanAnalytics);
+
 module.exports = router;
