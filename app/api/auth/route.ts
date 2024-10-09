@@ -1,24 +1,15 @@
 import { NextResponse } from 'next/server';
 
-interface AuthRequestBody {
-  email: string;
-  password: string;
-  action: string;
-}
-
-export async function POST(req: Request): Promise<Response> {
-  const body: AuthRequestBody = await req.json();
-  console.log('Received auth request:', body); // Use body to resolve unused variable error
-
+export async function POST(request: Request) {
   try {
-    const contentType = req.headers.get('content-type');
+    const contentType = request.headers.get('content-type');
     let action: string | null = null;
-    let data: Record<string, string | File> = {};
+    let data: any = {};
 
     console.log('Content-Type:', contentType);
 
     if (contentType && contentType.includes('multipart/form-data')) {
-      const formData = await req.formData();
+      const formData = await request.formData();
       action = formData.get('action') as string;
       for (const [key, value] of Array.from(formData.entries())) {
         if (typeof value === 'string') {
@@ -30,7 +21,7 @@ export async function POST(req: Request): Promise<Response> {
       }
       console.log('Received FormData:', data);
     } else {
-      const jsonData = await req.json();
+      const jsonData = await request.json();
       action = jsonData.action;
       data = jsonData;
       console.log('Received JSON data:', jsonData);
@@ -45,7 +36,7 @@ export async function POST(req: Request): Promise<Response> {
     let body: FormData | string | undefined;
     
     const headers: HeadersInit = {
-      'Authorization': req.headers.get('Authorization') || '',
+      'Authorization': request.headers.get('Authorization') || '',
     };
 
     // Handle different actions
@@ -72,8 +63,8 @@ export async function POST(req: Request): Promise<Response> {
         case 'createVCard':
           endpoint = `${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/vcard`;
           method = 'POST';
-          if (req instanceof Request) {
-            const formData = await req.formData();
+          if (request instanceof Request) {
+            const formData = await request.formData();
             body = formData;
             // Remove the Content-Type header as it will be set automatically for FormData
             delete headers['Content-Type'];

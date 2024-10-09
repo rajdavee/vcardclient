@@ -1,9 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
-import axios, { AxiosError } from 'axios';
+import axios from 'axios';
 
 const API_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
-export async function POST(request: NextRequest): Promise<NextResponse> {
+export async function POST(request: NextRequest) {
   try {
     const formData = await request.formData();
     const token = request.headers.get('Authorization');
@@ -20,23 +20,19 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     });
 
     return NextResponse.json(response.data, { status: 201 });
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error in POST /api/vcard:', error);
     if (axios.isAxiosError(error)) {
-      const axiosError = error as AxiosError;
-      console.error('Backend error response:', axiosError.response?.data);
-      console.error('Backend error status:', axiosError.response?.status);
-      console.error('Backend error headers:', axiosError.response?.headers);
-      return NextResponse.json(
-        { error: axiosError.response?.data || 'Error creating vCard' },
-        { status: axiosError.response?.status || 500 }
-      );
+      console.error('Backend error response:', error.response?.data);
+      console.error('Backend error status:', error.response?.status);
+      console.error('Backend error headers:', error.response?.headers);
+      return NextResponse.json({ error: error.response?.data || 'Error creating vCard' }, { status: error.response?.status || 500 });
     }
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
 }
 
-export async function GET(request: NextRequest): Promise<NextResponse> {
+export async function GET(request: NextRequest) {
   const vCardId = request.nextUrl.searchParams.get('id');
   const preview = request.nextUrl.searchParams.get('preview');
   
@@ -55,19 +51,12 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
     });
 
     return NextResponse.json(response.data);
-  } catch (error) {
-    if (axios.isAxiosError(error)) {
-      const axiosError = error as AxiosError;
-      return NextResponse.json(
-        { error: axiosError.response?.data || 'Error fetching vCard(s)' },
-        { status: axiosError.response?.status || 500 }
-      );
-    }
-    return NextResponse.json({ error: 'Error fetching vCard(s)' }, { status: 500 });
+  } catch (error: any) {
+    return NextResponse.json({ error: error.response?.data?.error || 'Error fetching vCard(s)' }, { status: error.response?.status || 500 });
   }
 }
 
-export async function PUT(request: NextRequest): Promise<NextResponse> {
+export async function PUT(request: NextRequest) {
   try {
     const vCardId = request.nextUrl.searchParams.get('id');
     if (!vCardId) {
@@ -82,19 +71,12 @@ export async function PUT(request: NextRequest): Promise<NextResponse> {
       },
     });
     return NextResponse.json(response.data);
-  } catch (error) {
-    if (axios.isAxiosError(error)) {
-      const axiosError = error as AxiosError;
-      return NextResponse.json(
-        { error: axiosError.response?.data || 'Error updating vCard' },
-        { status: axiosError.response?.status || 500 }
-      );
-    }
-    return NextResponse.json({ error: 'Error updating vCard' }, { status: 500 });
+  } catch (error: any) {
+    return NextResponse.json({ error: error.response?.data?.error || 'Error updating vCard' }, { status: error.response?.status || 500 });
   }
 }
 
-export async function DELETE(request: NextRequest): Promise<NextResponse> {
+export async function DELETE(request: NextRequest) {
   try {
     const vCardId = request.nextUrl.searchParams.get('id');
     if (!vCardId) {
@@ -107,14 +89,7 @@ export async function DELETE(request: NextRequest): Promise<NextResponse> {
       },
     });
     return NextResponse.json(response.data);
-  } catch (error) {
-    if (axios.isAxiosError(error)) {
-      const axiosError = error as AxiosError;
-      return NextResponse.json(
-        { error: axiosError.response?.data || 'Error deleting vCard' },
-        { status: axiosError.response?.status || 500 }
-      );
-    }
-    return NextResponse.json({ error: 'Error deleting vCard' }, { status: 500 });
+  } catch (error: any) {
+    return NextResponse.json({ error: error.response?.data?.error || 'Error deleting vCard' }, { status: error.response?.status || 500 });
   }
 }
