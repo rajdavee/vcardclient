@@ -18,8 +18,8 @@ export async function GET(request: NextRequest, { params }: { params: { vCardId:
     }
 
     console.log('Scan recorded successfully');
-    // Redirect to the preview page
-    return NextResponse.redirect(`${process.env.NEXT_PUBLIC_FRONTEND_URL}/preview/${vCardId}`);
+    // Update this line
+    return NextResponse.redirect(`${process.env.NEXT_PUBLIC_FRONTEND_URL}/preview?vCardId=${vCardId}`);
   } catch (error) {
     console.error('Error handling scan:', error);
     return NextResponse.json({ error: 'Failed to handle scan' }, { status: 500 });

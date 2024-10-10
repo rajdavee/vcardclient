@@ -22,7 +22,7 @@ export async function POST(request: NextRequest) {
     // Include previewLink and qrCodeDataUrl in the response
     return NextResponse.json({
       ...response.data,
-      previewLink: `${process.env.NEXT_PUBLIC_FRONTEND_URL}/preview/${response.data.vCardId}`,
+      previewLink: `${process.env.NEXT_PUBLIC_FRONTEND_URL}/preview?vCardId=${response.data.vCardId}`,
       qrCodeDataUrl: response.data.qrCodeDataUrl
     }, { status: 201 });
   } catch (error: any) {
