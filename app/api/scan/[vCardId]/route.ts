@@ -4,30 +4,25 @@ import axios from 'axios';
 
 const API_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
-export async function GET(request: NextRequest, { params }: { params: { vCardId: string } }) {
-  const { vCardId } = params;
-  const ip = request.headers.get('x-forwarded-for') || request.ip;
-  const userAgent = request.headers.get('user-agent') || '';
-
+export async function POST(request: NextRequest, { params }: { params: { vCardId: string } }) {
   try {
-    console.log(`Handling scan for vCardId: ${vCardId}`);
-    const response = await axios.post(`${API_URL}/auth/scan/${vCardId}`, {
-      ip,
-      userAgent
-    }, {
+    const { vCardId } = params;
+    const ip = request.headers.get('x-forwarded-for') || request.ip;
+    const userAgent = request.headers.get('user-agent') || '';
+
+    const response = await axios.post(`${API_URL}/auth/scan/${vCardId}`, null, {
       headers: {
-        'Content-Type': 'application/json',
+        'X-Forwarded-For': ip,
+        'User-Agent': userAgent,
       },
     });
 
-    if (!response.data.success) { 
-      throw new Error('Failed to record scan');
-    }
-
-    console.log('Scan recorded successfully');
-    return NextResponse.redirect(`${process.env.NEXT_PUBLIC_FRONTEND_URL}/preview?vCardId=${vCardId}`);
-  } catch (error) {
-    console.error('Error handling scan:', error);
-    return NextResponse.json({ error: 'Failed to handle scan' }, { status: 500 });
+    return NextResponse.json(response.data);
+  } catch (error: any) {
+    console.error('Error recording scan:', error);
+    return NextResponse.json(
+      { error: error.response?.data?.error || 'Error recording scan' },
+      { status: error.response?.status || 500 }
+    );
   }
 }
