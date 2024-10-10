@@ -19,7 +19,7 @@ function PreviewPageContent() {
 
   const fetchPreviewData = useCallback(async (vCardId: string) => {
     try {
-      const response = await axios.get<VCardData>(`/api/vcard?id=${vCardId}&preview=true`);
+      const response = await axios.get<VCardData>(`/api/vcard-preview/${vCardId}`);
       setVcard(response.data);
     } catch (error) {
       console.error('Error fetching vCard preview:', error);
@@ -60,7 +60,7 @@ function PreviewPageContent() {
       <VCardPreview
         templateId={vcard.templateId}
         fields={vcard.fields}
-        qrCodeDataUrl={vcard.qrCodeDataUrl}
+        // qrCodeDataUrl={vcard.qrCodeDataUrl}
       />
     </div>
   );
