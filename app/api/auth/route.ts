@@ -109,6 +109,12 @@ export async function POST(request: Request) {
         method = 'GET';
         body = undefined;
         break;
+      case 'create-checkout-session':
+        endpoint = `${process.env.NEXT_PUBLIC_API_BASE_URL}/payments/create-checkout-session`;
+        method = 'POST';
+        body = JSON.stringify({ planName: data.planName, amount: data.amount });
+        headers['Content-Type'] = 'application/json';
+        break;
       default:
         return NextResponse.json({ error: 'Invalid action' }, { status: 400 });
     }

@@ -1,33 +1,14 @@
 'use client'
 
-import { useEffect, useState } from 'react'
-import { useRouter } from 'next/navigation'
 import { Header } from "./component/Header"
 import { HeroSection } from "./component/HeroSection"
 import { FeaturesSection } from "./component/FeaturesSection"
 import { ExamplesSection } from "./component/ExamplesSection"
 import { PricingSection } from "./component/PricingSection"
-// import { CTASection } from "./component/CTASection"
 import { Footer } from "./component/Footer"
-import  {FreeVcardGenerator} from "./component/FreeVcardGenerator"
+import { FreeVcardGenerator } from "./component/FreeVcardGenerator"
 
-export  default function HomePage() {
-  const router = useRouter()
-  const [isAuthenticated, setIsAuthenticated] = useState(false)
-
-  useEffect(() => {
-    const token = localStorage.getItem('token')
-    if (!token) {
-      router.push('/')
-    } else {
-      setIsAuthenticated(true)
-    }
-  }, [router])
-
-  if (!isAuthenticated) {
-    return null // or a loading component
-  }
-
+export default function HomePage() {
   return (
     <div className="flex flex-col min-h-screen bg-gray-50">
       <Header />
@@ -36,7 +17,6 @@ export  default function HomePage() {
         <FeaturesSection />
         <ExamplesSection />
         <PricingSection />
-        {/* <CTASection /> */}
         <FreeVcardGenerator />
       </main>
       <Footer />

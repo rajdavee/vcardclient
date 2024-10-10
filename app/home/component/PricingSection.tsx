@@ -33,10 +33,13 @@ export function PricingSection() {
 
   const fetchUserPlan = async (token: string) => {
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/user-plan`, {
+      const response = await fetch('/api/auth', {
+        method: 'POST',
         headers: {
+          'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`
-        }
+        },
+        body: JSON.stringify({ action: 'user-plan' })
       });
 
       if (response.ok) {
@@ -62,14 +65,20 @@ export function PricingSection() {
 
   const handlePayment = async (planName: string, price: number): Promise<boolean> => {
     try {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        router.push('/login');
+        return false;
+      }
+
       const amount = Math.round(price * 100);
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/payments/create-checkout-session`, {
+      const response = await fetch('/api/auth', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('token')}`,
+          'Authorization': `Bearer ${token}`,
         },
-        body: JSON.stringify({ planName, amount }),
+        body: JSON.stringify({ action: 'create-checkout-session', planName, amount }),
       });
 
       if (!response.ok) {
@@ -77,7 +86,11 @@ export function PricingSection() {
         throw new Error(errorData.error || 'Failed to create checkout session');
       }
 
-      const { id: sessionId } = await response.json();
+      const { sessionId } = await response.json();
+      if (!sessionId) {
+        throw new Error('No session ID returned from the server');
+      }
+
       const stripe = await stripePromise;
       if (!stripe) {
         throw new Error('Failed to load Stripe');
@@ -106,22 +119,17 @@ export function PricingSection() {
     }
 
     try {
-      if (userPlan === planName) {
-        router.push(`/${planName.toLowerCase()}`);
+      const plan = plans.find(p => p.name === planName);
+      if (!plan) {
+        throw new Error('Invalid plan selected');
+      }
+      
+      const success = await handlePayment(planName, plan.price);
+      
+      if (success) {
+        console.log('Redirected to Stripe checkout');
       } else {
-        const plan = plans.find(p => p.name === planName);
-        if (!plan) {
-          throw new Error('Invalid plan selected');
-        }
-        
-        const success = await handlePayment(planName, plan.price);
-        
-        if (success) {
-          console.log('Payment successful');
-          setUserPlan(planName);
-        } else {
-          setError('Please login first to process payment.');
-        }
+        setError('Failed to initiate payment. Please try again.');
       }
     } catch (err) {
       console.error('Error:', err);
@@ -180,10 +188,18 @@ export function PricingSection() {
               </ul>
               <button
                 onClick={() => handleGetStarted(plan.name)}
-                disabled={loading || (isLoggedIn && userPlan === plan.name)}
-                className="mt-8 block w-full rounded-md bg-indigo-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-50"
+                disabled={loading || (userPlan === plan.name)}
+                className={`mt-8 block w-full rounded-md px-3 py-2 text-center text-sm font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 ${
+                  userPlan === plan.name
+                    ? 'bg-green-600 cursor-default'
+                    : 'bg-indigo-600 hover:bg-indigo-500'
+                } disabled:opacity-50`}
               >
-                {isLoggedIn && userPlan === plan.name ? 'Current Plan' : 'Get Started'}
+                {loading
+                  ? 'Processing...'
+                  : userPlan === plan.name
+                  ? 'Current Plan'
+                  : 'Get Started'}
               </button>
             </div>
           ))}
