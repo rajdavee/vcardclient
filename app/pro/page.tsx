@@ -16,6 +16,7 @@ interface VCardData {
   vCardId: string;
   vCardString: string;
   qrCodeDataUrl: string;
+  previewLink: string;
 }
 
 interface ScanData {
@@ -48,12 +49,6 @@ const ProVCardPage: React.FC = () => {
     reset();
   }, [selectedTemplate, reset]);
 
-  useEffect(() => {
-    if (vCardData && vCardData.vCardId) {
-      fetchScanData(vCardData.vCardId);
-    }
-  }, [vCardData]);
-
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     try {
       const formData = new FormData();
@@ -73,17 +68,17 @@ const ProVCardPage: React.FC = () => {
         throw new Error('No authentication token found');
       }
 
-      const response = await axios.post<VCardData>('/api/vcard', formData, {
+      const response = await axios.post('/api/vcard', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
           'Authorization': `Bearer ${token}`,
         },
       });
 
-      const qrCodeDataUrl = await generateQRCode(response.data.vCardId);
-      setVCardData({ ...response.data, qrCodeDataUrl });
+      setVCardData(response.data);
       setMessage('vCard created successfully!');
       reset();
+      fetchScanData(response.data.vCardId);
     } catch (error) {
       console.error('Error creating vCard:', error);
       setMessage('Failed to create vCard. Please try again.');
@@ -161,6 +156,22 @@ const ProVCardPage: React.FC = () => {
     }
   };
 
+  const copyPreviewLink = () => {
+    if (vCardData && vCardData.previewLink) {
+      navigator.clipboard.writeText(vCardData.previewLink)
+        .then(() => {
+          setMessage('Preview link copied to clipboard!');
+        })
+        .catch((error) => {
+          console.error('Failed to copy preview link:', error);
+          setMessage('Failed to copy preview link. Please try again.');
+        });
+    } else {
+      console.error('Preview link is not available');
+      setMessage('Unable to copy preview link. Please try again.');
+    }
+  };
+
   const renderFormFields = () => {
     return templateFields[selectedTemplate].map((field) => (
       <div key={field}>
@@ -175,7 +186,6 @@ const ProVCardPage: React.FC = () => {
   };
 
   const renderScanData = () => {
-    if (isLoading) return <p>Loading scan data...</p>;
     if (!scanData) return null;
 
     return (
@@ -186,35 +196,28 @@ const ProVCardPage: React.FC = () => {
         <ul>
           {scanData.recentScans.map((scan, index) => (
             <li key={index}>
-              {new Date(scan.scanDate).toLocaleString()} - {scan.location.city}, {scan.location.country}
+              {scan.scanDate} - {scan.location.city}, {scan.location.country}
             </li>
           ))}
         </ul>
         <h3 className="text-xl font-bold mt-4 mb-2">Location Breakdown</h3>
         <ul>
           {Object.entries(scanData.locationBreakdown).map(([location, count]) => (
-            <li key={location}>{location}: {count}</li>
+            <li key={location}>
+              {location}: {count}
+            </li>
           ))}
         </ul>
         <h3 className="text-xl font-bold mt-4 mb-2">Device Breakdown</h3>
         <ul>
           {Object.entries(scanData.deviceBreakdown).map(([device, count]) => (
-            <li key={device}>{device}: {count}</li>
+            <li key={device}>
+              {device}: {count}
+            </li>
           ))}
         </ul>
       </div>
     );
-  };
-
-  const generateQRCode = async (vCardId: string) => {
-    const scanUrl = `${process.env.NEXT_PUBLIC_FRONTEND_URL}/api/scan/${vCardId}`;
-    try {
-      const qrCodeDataUrl = await QRCode.toDataURL(scanUrl);
-      return qrCodeDataUrl;
-    } catch (error) {
-      console.error('Error generating QR code:', error);
-      throw error;
-    }
   };
 
   return (
@@ -251,6 +254,7 @@ const ProVCardPage: React.FC = () => {
           <h2 className="text-2xl font-bold mb-4">Your vCard</h2>
           <button onClick={downloadVCard} className="bg-green-500 text-white px-4 py-2 rounded mb-4 mr-4">Download vCard</button>
           <button onClick={viewVCardPreview} className="bg-blue-500 text-white px-4 py-2 rounded mb-4 mr-4">View vCard Preview</button>
+          <button onClick={copyPreviewLink} className="bg-yellow-500 text-white px-4 py-2 rounded mb-4 mr-4">Copy Preview Link</button>
           {vCardData.qrCodeDataUrl && (
             <>
               <button onClick={downloadQRCode} className="bg-purple-500 text-white px-4 py-2 rounded mb-4">Download QR Code</button>
@@ -259,6 +263,12 @@ const ProVCardPage: React.FC = () => {
                 <Image src={vCardData.qrCodeDataUrl} alt="vCard QR Code" width={200} height={200} />
               </div>
             </>
+          )}
+          {vCardData.previewLink && (
+            <div className="mb-4">
+              <h3 className="text-xl font-bold mb-2">Preview Link</h3>
+              <p className="break-all">{vCardData.previewLink}</p>
+            </div>
           )}
         </div>
       )}

@@ -6,7 +6,7 @@ export async function GET(request: NextRequest, { params }: { params: { vCardId:
 
   try {
     console.log(`Handling scan for vCardId: ${vCardId}`);
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/auth/scan/${vCardId}`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/scan/${vCardId}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -19,7 +19,7 @@ export async function GET(request: NextRequest, { params }: { params: { vCardId:
 
     console.log('Scan recorded successfully');
     // Redirect to the preview page
-    return NextResponse.redirect(`${process.env.NEXT_PUBLIC_FRONTEND_URL}/preview?vCardId=${vCardId}`);
+    return NextResponse.redirect(`${process.env.NEXT_PUBLIC_FRONTEND_URL}/preview/${vCardId}`);
   } catch (error) {
     console.error('Error handling scan:', error);
     return NextResponse.json({ error: 'Failed to handle scan' }, { status: 500 });

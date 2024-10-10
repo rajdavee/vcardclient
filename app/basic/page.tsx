@@ -15,6 +15,7 @@ interface VCardData {
   vCardString: string;
   qrCodeDataUrl: string;
   vCardId: string;
+  previewLink: string;
 }
 
 const BasicVCardPage: React.FC = () => {
@@ -68,7 +69,6 @@ const BasicVCardPage: React.FC = () => {
       const blob = new Blob([vCardData.vCardString], { type: 'text/vcard' });
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement('a');
-      a.style.display = 'none';
       a.href = url;
       a.download = 'contact.vcf';
       document.body.appendChild(a);
@@ -98,6 +98,22 @@ const BasicVCardPage: React.FC = () => {
   const viewVCardPreview = () => {
     if (vCardData && vCardData.vCardId) {
       window.open(`/preview?vCardId=${vCardData.vCardId}`, '_blank');
+    }
+  };
+
+  const copyPreviewLink = () => {
+    if (vCardData && vCardData.previewLink) {
+      navigator.clipboard.writeText(vCardData.previewLink)
+        .then(() => {
+          setMessage('Preview link copied to clipboard!');
+        })
+        .catch((error) => {
+          console.error('Failed to copy preview link:', error);
+          setMessage('Failed to copy preview link. Please try again.');
+        });
+    } else {
+      console.error('Preview link is not available');
+      setMessage('Unable to copy preview link. Please try again.');
     }
   };
 
@@ -148,6 +164,7 @@ const BasicVCardPage: React.FC = () => {
           <h2 className="text-2xl font-bold mb-4">Your vCard</h2>
           <button onClick={downloadVCard} className="bg-green-500 text-white px-4 py-2 rounded mb-4 mr-4">Download vCard</button>
           <button onClick={viewVCardPreview} className="bg-blue-500 text-white px-4 py-2 rounded mb-4 mr-4">View vCard Preview</button>
+          <button onClick={copyPreviewLink} className="bg-yellow-500 text-white px-4 py-2 rounded mb-4 mr-4">Copy Preview Link</button>
           {vCardData.qrCodeDataUrl && (
             <>
               <button onClick={downloadQRCode} className="bg-purple-500 text-white px-4 py-2 rounded mb-4">Download QR Code</button>
@@ -156,6 +173,12 @@ const BasicVCardPage: React.FC = () => {
                 <Image src={vCardData.qrCodeDataUrl} alt="vCard QR Code" width={200} height={200} />
               </div>
             </>
+          )}
+          {vCardData.previewLink && (
+            <div className="mb-4">
+              <h3 className="text-xl font-bold mb-2">Preview Link</h3>
+              <p className="break-all">{vCardData.previewLink}</p>
+            </div>
           )}
         </div>
       )}
