@@ -6,6 +6,7 @@ import Templates, { templateFields, TemplateId } from '../basic/components/Templ
 import axios from 'axios';
 import { withAuth } from '../utils/withAuth';
 import Image from 'next/image';
+import * as QRCode from 'qrcode';
 
 interface FormData {
   [key: string]: string | FileList;
@@ -79,7 +80,8 @@ const ProVCardPage: React.FC = () => {
         },
       });
 
-      setVCardData(response.data);
+      const qrCodeDataUrl = await generateQRCode(response.data.vCardId);
+      setVCardData({ ...response.data, qrCodeDataUrl });
       setMessage('vCard created successfully!');
       reset();
     } catch (error) {
@@ -202,6 +204,17 @@ const ProVCardPage: React.FC = () => {
         </ul>
       </div>
     );
+  };
+
+  const generateQRCode = async (vCardId: string) => {
+    const scanUrl = `${process.env.NEXT_PUBLIC_FRONTEND_URL}/api/scan/${vCardId}`;
+    try {
+      const qrCodeDataUrl = await QRCode.toDataURL(scanUrl);
+      return qrCodeDataUrl;
+    } catch (error) {
+      console.error('Error generating QR code:', error);
+      throw error;
+    }
   };
 
   return (

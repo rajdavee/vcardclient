@@ -13,6 +13,7 @@ const nextConfig = {
       },
     ];
   },
+  transpilePackages: ['qrcode'],
 };
 
-export default nextConfig;  
+export default nextConfig;

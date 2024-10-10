@@ -5,8 +5,8 @@ export async function GET(request: NextRequest, { params }: { params: { vCardId:
   const { vCardId } = params;
 
   try {
-    // Call your backend to record the scan
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/scan/${vCardId}`, {
+    console.log(`Handling scan for vCardId: ${vCardId}`);
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/auth/scan/${vCardId}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -17,6 +17,7 @@ export async function GET(request: NextRequest, { params }: { params: { vCardId:
       throw new Error('Failed to record scan');
     }
 
+    console.log('Scan recorded successfully');
     // Redirect to the preview page
     return NextResponse.redirect(`${process.env.NEXT_PUBLIC_FRONTEND_URL}/preview?vCardId=${vCardId}`);
   } catch (error) {
