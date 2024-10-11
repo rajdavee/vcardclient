@@ -6,6 +6,7 @@ import { useSearchParams } from 'next/navigation';
 interface ExtendedNavigator extends Navigator {
   contacts?: {
     select: (props: string[], opts: { multiple: boolean }) => Promise<any[]>;
+    save?: (contact: any) => Promise<void>;
   };
 }
 
@@ -24,47 +25,67 @@ const AddContactContent: React.FC = () => {
 
   const handleVCardData = (vCardData: string) => {
     const extendedNavigator = navigator as ExtendedNavigator;
-    if (extendedNavigator.contacts && 'select' in extendedNavigator.contacts) {
-      // Use Web Contact Picker API for supported browsers
-      handleWebContactPicker(vCardData);
+    if (extendedNavigator.contacts && 'save' in extendedNavigator.contacts) {
+      // Use Contact API to save the contact directly
+      handleContactSave(vCardData);
     } else {
-      // Fallback to vCard download
+      // Fallback to vCard download with improved UX
       provideVCardDownload(vCardData);
     }
   };
 
-  const handleWebContactPicker = async (vCardData: string) => {
+  const handleContactSave = async (vCardData: string) => {
     try {
       const extendedNavigator = navigator as ExtendedNavigator;
-      if (extendedNavigator.contacts) {
-        const props = ['name', 'email', 'tel'];
-        const opts = { multiple: false };
-        const contacts = await extendedNavigator.contacts.select(props, opts);
-        if (contacts.length > 0) {
-          // Here you would merge the vCard data with the selected contact
-          // For simplicity, we're just showing a success message
-          setMessage('Contact added successfully!');
-        } else {
-          setMessage('No contact selected.');
-        }
+      if (extendedNavigator.contacts && extendedNavigator.contacts.save) {
+        const contact = parseVCardToContactObject(vCardData);
+        await extendedNavigator.contacts.save(contact);
+        setMessage('Contact saved successfully!');
       }
     } catch (error) {
-      console.error('Error using Web Contact Picker:', error);
+      console.error('Error saving contact:', error);
+      setMessage('Failed to save contact automatically. Please try the manual download option.');
       provideVCardDownload(vCardData);
     }
+  };
+
+  const parseVCardToContactObject = (vCardData: string) => {
+    // This is a simple parser and might need to be expanded based on your vCard structure
+    const lines = vCardData.split('\n');
+    const contact: any = {};
+    lines.forEach(line => {
+      const [key, value] = line.split(':');
+      if (key === 'FN') contact.name = [{ givenName: value }];
+      if (key === 'TEL') contact.tel = [{ value: value }];
+      if (key === 'EMAIL') contact.email = [{ value: value }];
+    });
+    return contact;
   };
 
   const provideVCardDownload = (vCardData: string) => {
     const blob = new Blob([vCardData], { type: 'text/vcard' });
     const url = URL.createObjectURL(blob);
+
+    // Create a hidden link and click it programmatically
     const a = document.createElement('a');
+    a.style.display = 'none';
     a.href = url;
     a.download = 'contact.vcf';
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
-    setMessage('Contact file downloaded. Please add it to your contacts app.');
+
+    setMessage('Contact file downloaded. Please open it with your contacts app to save.');
+
+    // Provide instructions based on the device
+    if (/iPhone|iPad|iPod/.test(navigator.userAgent)) {
+      setMessage('Contact file downloaded. Please open it with the Contacts app to save.');
+    } else if (/Android/.test(navigator.userAgent)) {
+      setMessage('Contact file downloaded. Please open it with your Contacts app to save.');
+    } else {
+      setMessage('Contact file downloaded. Please import it into your contacts application.');
+    }
   };
 
   return (
