@@ -12,8 +12,10 @@ interface ExtendedNavigator extends Navigator {
 const AddContact: React.FC = () => {
   const searchParams = useSearchParams();
   const [message, setMessage] = useState('Processing contact information...');
+  const [isBrowser, setIsBrowser] = useState(false);
 
   useEffect(() => {
+    setIsBrowser(true);
     const vCardData = searchParams.get('vCardData');
     if (vCardData) {
       handleVCardData(vCardData);
@@ -23,6 +25,8 @@ const AddContact: React.FC = () => {
   }, [searchParams]);
 
   const handleVCardData = (vCardData: string) => {
+    if (!isBrowser) return;
+
     const extendedNavigator = navigator as ExtendedNavigator;
     if (extendedNavigator.contacts && 'select' in extendedNavigator.contacts) {
       // Use Web Contact Picker API for supported browsers
@@ -66,6 +70,10 @@ const AddContact: React.FC = () => {
     URL.revokeObjectURL(url);
     setMessage('Contact file downloaded. Please add it to your contacts app.');
   };
+
+  if (!isBrowser) {
+    return null; // or a loading indicator
+  }
 
   return (
     <div className="container mx-auto p-4">
