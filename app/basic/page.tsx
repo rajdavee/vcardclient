@@ -85,7 +85,7 @@ const BasicVCardPage: React.FC = () => {
     if (vCardData && vCardData.qrCodeDataUrl) {
       const a = document.createElement('a');
       a.href = vCardData.qrCodeDataUrl;
-      a.download = 'qr-code.png';
+      a.download = 'vcard_qr_code.png';
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
@@ -166,13 +166,11 @@ const BasicVCardPage: React.FC = () => {
           <button onClick={viewVCardPreview} className="bg-blue-500 text-white px-4 py-2 rounded mb-4 mr-4">View vCard Preview</button>
           <button onClick={copyPreviewLink} className="bg-yellow-500 text-white px-4 py-2 rounded mb-4 mr-4">Copy Preview Link</button>
           {vCardData.qrCodeDataUrl && (
-            <>
-              <button onClick={downloadQRCode} className="bg-purple-500 text-white px-4 py-2 rounded mb-4">Download QR Code</button>
-              <div className="mb-4">
-                <h3 className="text-xl font-bold mb-2">QR Code</h3>
-                <Image src={vCardData.qrCodeDataUrl} alt="vCard QR Code" width={200} height={200} />
-              </div>
-            </>
+            <div className="mb-4">
+              <h3 className="text-xl font-bold mb-2">QR Code (Scan to add contact)</h3>
+              <p className="mb-2">Scan this QR code with your phone's camera to add the contact.</p>
+              <img src={vCardData.qrCodeDataUrl} alt="Contact QR Code" width={200} height={200} />
+            </div>
           )}
           {vCardData.previewLink && (
             <div className="mb-4">
