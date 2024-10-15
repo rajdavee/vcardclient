@@ -139,6 +139,18 @@ export async function POST(request: Request) {
     }
 
     const responseData = await response.json();
+    
+    // If it's a login action, include the user role in the response
+    if (action === 'login') {
+      return NextResponse.json({
+        ...responseData,
+        user: {
+          ...responseData.user,
+          role: responseData.user.role
+        }
+      });
+    }
+
     return NextResponse.json(responseData);
 
   } catch (error: unknown) {

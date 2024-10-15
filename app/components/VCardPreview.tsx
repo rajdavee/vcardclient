@@ -16,7 +16,7 @@ const VCardPreview: React.FC<VCardPreviewProps> = ({ templateId, fields, qrCodeD
   }, {} as Record<string, string>);
 
   return (
-    <div>
+    <div className="vcard-preview">
       <Templates
         selectedTemplate={templateId}
         fields={fieldsObject}
@@ -24,7 +24,18 @@ const VCardPreview: React.FC<VCardPreviewProps> = ({ templateId, fields, qrCodeD
       {qrCodeDataUrl && (
         <div className="mt-4">
           <h3 className="text-xl font-bold mb-2">QR Code</h3>
-          <Image src={qrCodeDataUrl} alt="vCard QR Code" width={200} height={200} />
+          <div className="relative w-full max-w-[200px] aspect-square">
+            <Image 
+              src={qrCodeDataUrl} 
+              alt="vCard QR Code" 
+              layout="fill"
+              objectFit="contain"
+              onError={(e) => {
+                e.currentTarget.style.display = 'none';
+                console.error('Failed to load QR code image');
+              }}
+            />
+          </div>
         </div>
       )}
     </div>

@@ -90,7 +90,13 @@ const Home: React.FC = () => {
           const expirationTime = new Date().getTime() + 3600 * 1000; // 1 hour from now
           localStorage.setItem('tokenExpiration', expirationTime.toString());
           localStorage.setItem('user', JSON.stringify(responseData.user));
-          router.push('/home')
+          
+          // Check if the user is an admin
+          if (responseData.user.role === 'admin') {
+            router.push('/admin-dashboard') // Redirect to admin dashboard
+          } else {
+            router.push('/home') // Redirect to regular user home
+          }
         } else if (action === 'register') {
           setMessage('Registration successful. Please check your email to verify your account.')
           setVerificationSent(true)
