@@ -7,7 +7,8 @@ export function FeaturesSection() {
         <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl text-center mb-12 text-gray-900">Why Choose vCard Pro?</h2>
         <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
           {[
-            { icon: Smartphone, title: "Mobile-Friendly", description: "Your vCard looks great on any device, ensuring a seamless experience for your contacts." },
+            // { icon: Smartphone, title: "Mobile-Friendly", description: "Your vCard looks great on any device, ensuring a seamless experience for your contacts." },
+            { icon: Smartphone, title: "Mobile-Friendly", description: "hello from raj dave" },
             { icon: Shield, title: "Secure & Private", description: "Your information is protected with state-of-the-art encryption and privacy controls." },
             { icon: Zap, title: "Instant Updates", description: "Change your details on the fly, and see updates reflect instantly across all shared cards." },
             { icon: Globe, title: "Global Reach", description: "Share your card with anyone, anywhere in the world, breaking down geographical barriers." },
