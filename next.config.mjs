@@ -15,11 +15,11 @@ const nextConfig = {
   },
   transpilePackages: ['qrcode'],
   images: {
-    domains: ['https://vcardserver.vercel.app'],
+    domains: ['vcardserver.vercel.app'],
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'https://vcardserver.vercel.app',
+        hostname: 'vcardserver.vercel.app',
         port: '',
         pathname: '/uploads/**',
       },
