@@ -12,6 +12,7 @@ export const templateFields: Record<TemplateId, string[]> = {
   1: ['name', 'jobTitle', 'phone', 'email', 'website', 'address'],
   2: ['name', 'jobTitle', 'phone', 'email', 'website', 'address', 'city', 'postalCode'],
   3: ['name', 'jobTitle', 'phone', 'email', 'website', 'address', 'workHours'],
+  
   4: ['firstName', 'lastName', 'jobTitle', 'phone', 'email', 'website', 'address'],
   5: ['firstName', 'lastName', 'jobTitle', 'phone', 'alternatePhone', 'email', 'website', 'address']
 };
@@ -21,14 +22,18 @@ const Templates: React.FC<TemplateProps> = ({ selectedTemplate, fields }) => {
 
   const getImageSrc = (profileImage: string | FileList | undefined): string => {
     if (typeof profileImage === 'string' && profileImage.length > 0) {
-      return profileImage.startsWith('http') 
-        ? profileImage 
-        : `${process.env.NEXT_PUBLIC_API_BASE_URL}${profileImage}`;
+      if (profileImage.startsWith('http')) {
+        return profileImage;
+      } else {
+        const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL?.replace(/\/api$/, '');
+        return `${baseUrl}/uploads/${profileImage.split('/').pop()}`;
+      }
     } else if (profileImage instanceof FileList && profileImage.length > 0) {
       return URL.createObjectURL(profileImage[0]);
     }
     return '/images/default-profile-image.png';
   };
+
 
   const renderTemplate = (id: TemplateId) => {
     console.log('Rendering template:', id);
