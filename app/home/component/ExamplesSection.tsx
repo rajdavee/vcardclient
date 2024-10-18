@@ -1,48 +1,9 @@
-// import { Smartphone, Mail } from "lucide-react"
-
-// export function ExamplesSection() {
-//   return (
-//     <section id="examples" className="w-full py-12 md:py-24 lg:py-32 bg-white">
-//       <div className="container px-4 md:px-6">
-//         <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl text-center mb-12 text-gray-900">vCard Examples</h2>
-//         <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-//           {[
-//             { name: "Alex Chen", role: "Software Engineer", color: "from-blue-500 to-cyan-500" },
-//             { name: "Emily Watson", role: "Marketing Specialist", color: "from-pink-500 to-rose-500" },
-//             { name: "Michael Rodriguez", role: "Financial Advisor", color: "from-green-500 to-emerald-500" },
-//             { name: "Sophia Kim", role: "Graphic Designer", color: "from-purple-500 to-indigo-500" },
-//           ].map((card, index) => (
-//             <div key={index} className="relative group">
-//               <div className={`absolute inset-0.5 bg-gradient-to-r ${card.color} rounded-2xl blur opacity-75 group-hover:opacity-100 transition duration-300`} />
-//               <div className="relative bg-white rounded-2xl p-6 flex flex-col justify-between h-full">
-//                 <div>
-//                   <h3 className="text-lg font-bold mb-1 text-gray-900">{card.name}</h3>
-//                   <p className="text-sm text-gray-600 mb-4">{card.role}</p>
-//                   <div className="space-y-2">
-//                     <div className="flex items-center space-x-2">
-//                       <Smartphone className="w-4 h-4 text-gray-400" />
-//                       <span className="text-sm text-gray-600">+1 (555) 123-4567</span>
-//                     </div>
-//                     <div className="flex items-center space-x-2">
-//                       <Mail className="w-4 h-4 text-gray-400" />
-//                       <span className="text-sm text-gray-600">contact@example.com</span>
-//                     </div>
-//                   </div>
-//                 </div>
-//                 <button className="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-9 px-3 mt-4">View Full Card</button>
-//               </div>
-//             </div>
-//           ))}
-//         </div>
-//       </div>
-//     </section>
-//   )
-// }
 "use client";
 import React, { useRef } from "react";
 import { motion, useScroll, useTransform, useSpring } from "framer-motion";
 import { Smartphone, Mail } from "lucide-react";
 import Image from "next/image";
+import { useMediaQuery } from "react-responsive"; // You'll need to install this package
 
 const cards = [
   { name: "Alex Chen", role: "Software Engineer", color: "from-blue-500 to-cyan-500", image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTh8fHByb2Zlc3Npb25hbCUyMGhlYWRzaG90fGVufDB8fDB8fHww" },
@@ -55,17 +16,44 @@ const cards = [
   { name: "Isabella Martinez", role: "Content Strategist", color: "from-indigo-500 to-blue-500", image: "https://images.unsplash.com/photo-1598550874175-4d0ef436c909?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8cHJvZmVzc2lvbmFsJTIwaGVhZHNob3R8ZW58MHx8MHx8fDA%3D" },
 ];
 
-interface ParallaxCardProps {
+interface CardProps {
   card: {
     name: string;
     role: string;
     color: string;
     image: string;
   };
-  translate: any;
 }
 
-const ParallaxCard: React.FC<ParallaxCardProps> = ({ card, translate }) => (
+const StaticCard: React.FC<CardProps> = ({ card }) => (
+  <div className="relative group w-full max-w-[256px] h-auto mb-6">
+    <div className={`absolute inset-0.5 bg-gradient-to-r ${card.color} rounded-2xl blur opacity-75 group-hover:opacity-100 transition duration-300`} />
+    <div className="relative bg-white rounded-2xl p-6 flex flex-col justify-between h-full">
+      <div>
+        <div className="w-32 h-32 mx-auto mb-4 overflow-hidden rounded-full">
+          <Image src={card.image} alt={card.name} width={128} height={128} className="object-cover w-full h-full" />
+        </div>
+        <h3 className="text-lg font-bold mb-1 text-gray-900 text-center">{card.name}</h3>
+        <p className="text-sm text-gray-600 mb-4 text-center">{card.role}</p>
+        <div className="space-y-2">
+          <div className="flex items-center space-x-2">
+            <Smartphone className="w-4 h-4 text-gray-400" />
+            <span className="text-sm text-gray-600">+1 (555) 123-4567</span>
+          </div>
+          <div className="flex items-center space-x-2">
+            <Mail className="w-4 h-4 text-gray-400" />
+            <span className="text-sm text-gray-600">contact@example.com</span>
+          </div>
+        </div>
+      </div>
+      <button className="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-9 px-3 mt-4 w-full">
+        View Full Card
+      </button>
+    </div>
+  </div>
+);
+
+const ParallaxCard: React.FC<CardProps & { translate: any }> = ({ card, translate }) => (
   <motion.div
     style={{ x: translate }}
     whileHover={{ y: -20 }}
@@ -98,6 +86,7 @@ const ParallaxCard: React.FC<ParallaxCardProps> = ({ card, translate }) => (
 );
 
 export function ExamplesSection() {
+  const isDesktop = useMediaQuery({ minWidth: 768 });
   const ref = useRef(null);
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -139,26 +128,34 @@ export function ExamplesSection() {
         <p className="text-xl text-gray-600 text-center max-w-2xl mx-auto mb-12">
           Discover how professionals across various industries showcase their contact information with style. These vCard examples demonstrate the perfect blend of personality and professionalism.
         </p>
-        <motion.div
-          style={{
-            rotateX,
-            rotateZ,
-            translateY,
-            opacity,
-          }}
-          className="space-y-20"
-        >
-          <motion.div className="flex space-x-6 mb-20">
-            {cards.slice(0, 4).map((card, index) => (
-              <ParallaxCard key={index} card={card} translate={translateX} />
-            ))}
+        {isDesktop ? (
+          <motion.div
+            style={{
+              rotateX,
+              rotateZ,
+              translateY,
+              opacity,
+            }}
+            className="space-y-20"
+          >
+            <motion.div className="flex space-x-6 mb-20">
+              {cards.slice(0, 4).map((card, index) => (
+                <ParallaxCard key={index} card={card} translate={translateX} />
+              ))}
+            </motion.div>
+            <motion.div className="flex space-x-6 mb-20">
+              {cards.slice(4).map((card, index) => (
+                <ParallaxCard key={index + 4} card={card} translate={translateXReverse} />
+              ))}
+            </motion.div>
           </motion.div>
-          <motion.div className="flex space-x-6 mb-20">
-            {cards.slice(4).map((card, index) => (
-              <ParallaxCard key={index + 4} card={card} translate={translateXReverse} />
+        ) : (
+          <div className="flex flex-wrap justify-center">
+            {cards.map((card, index) => (
+              <StaticCard key={index} card={card} />
             ))}
-          </motion.div>
-        </motion.div>
+          </div>
+        )}
       </div>
     </section>
   );
