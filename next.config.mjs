@@ -1,3 +1,43 @@
+// /** @type {import('next').NextConfig} */
+// const nextConfig = {
+//   async headers() {
+//     return [
+//       {
+//         source: '/vcard-preview/:id',
+//         headers: [
+//           {
+//             key: 'Content-Security-Policy',
+//             value: "default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: http://localhost:5000; font-src 'self' data:;",
+//           },
+//         ],
+//       },
+//     ];
+//   },
+//   transpilePackages: ['qrcode'],
+//   images: {
+//     domains: ['localhost'],
+//     remotePatterns: [
+//       {
+//         protocol: 'http',
+//         hostname: 'localhost',
+//         port: '5000',
+//         pathname: '/uploads/**',
+//       },
+//     ],
+//   },
+
+
+
+// };
+
+// export default nextConfig;
+
+
+
+
+
+
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   async headers() {
@@ -15,7 +55,7 @@ const nextConfig = {
   },
   transpilePackages: ['qrcode'],
   images: {
-    domains: ['vcardserver.vercel.app'],
+    domains: ['localhost', 'vcardserver.vercel.app'],
     remotePatterns: [
       {
         protocol: 'https',
@@ -25,14 +65,7 @@ const nextConfig = {
       },
     ],
   },
-  async rewrites() {
-    return [
-      {
-        source: '/api/:path*',
-        destination: `${process.env.NEXT_PUBLIC_API_BASE_URL}/:path*`,
-      },
-    ];
-  },
+  output: 'standalone',
 };
 
 export default nextConfig;
