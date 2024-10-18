@@ -16,9 +16,8 @@
     "@stripe/react-stripe-js": "^2.8.0",
     "@stripe/stripe-js": "^4.6.0",
     "axios": "^1.7.7",
-    "clsx": "^2.1.1",
     "file-saver": "^2.0.5",
-    "framer-motion": "^11.11.9",
+    "framer-motion": "^11.9.0",
     "html2canvas": "^1.4.1",
     "jsonwebtoken": "^9.0.2",
     "jspdf": "^2.5.2",
@@ -33,7 +32,6 @@
     "react-responsive": "^10.0.0",
     "recharts": "^2.13.0",
     "stripe": "^17.0.0",
-    "tailwind-merge": "^2.5.4",
     "three": "^0.169.0"
   },
   "devDependencies": {
