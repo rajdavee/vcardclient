@@ -38,9 +38,8 @@
 //     </section>
 //   )
 // }
-
 "use client";
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef } from "react";
 import { motion, useScroll, useTransform, useSpring } from "framer-motion";
 import { Smartphone, Mail } from "lucide-react";
 import Image from "next/image";
@@ -56,40 +55,20 @@ const cards = [
   { name: "Isabella Martinez", role: "Content Strategist", color: "from-indigo-500 to-blue-500", image: "https://images.unsplash.com/photo-1598550874175-4d0ef436c909?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8cHJvZmVzc2lvbmFsJTIwaGVhZHNob3R8ZW58MHx8MHx8fDA%3D" },
 ];
 
-interface CardProps {
+interface ParallaxCardProps {
   card: {
     name: string;
     role: string;
     color: string;
     image: string;
   };
+  translate: any;
 }
 
-const MobileCard: React.FC<CardProps> = ({ card }) => (
-  <div className="bg-white rounded-lg shadow-md p-4 mb-4">
-    <div className="flex items-center mb-3">
-      <Image src={card.image} alt={card.name} width={60} height={60} className="rounded-full mr-3" />
-      <div>
-        <h3 className="font-bold text-gray-900">{card.name}</h3>
-        <p className="text-sm text-gray-600">{card.role}</p>
-      </div>
-    </div>
-    <div className="space-y-1">
-      <div className="flex items-center">
-        <Smartphone className="w-4 h-4 text-gray-400 mr-2" />
-        <span className="text-sm text-gray-600">+1 (555) 123-4567</span>
-      </div>
-      <div className="flex items-center">
-        <Mail className="w-4 h-4 text-gray-400 mr-2" />
-        <span className="text-sm text-gray-600">contact@example.com</span>
-      </div>
-    </div>
-  </div>
-);
-
-const DesktopCard: React.FC<CardProps> = ({ card }) => (
+const ParallaxCard: React.FC<ParallaxCardProps> = ({ card, translate }) => (
   <motion.div
-    whileHover={{ y: -10 }}
+    style={{ x: translate }}
+    whileHover={{ y: -20 }}
     className="relative group w-64 h-[420px] flex-shrink-0"
   >
     <div className={`absolute inset-0.5 bg-gradient-to-r ${card.color} rounded-2xl blur opacity-75 group-hover:opacity-100 transition duration-300`} />
@@ -119,21 +98,11 @@ const DesktopCard: React.FC<CardProps> = ({ card }) => (
 );
 
 export function ExamplesSection() {
-  const [isMobile, setIsMobile] = useState(false);
   const ref = useRef(null);
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start start", "end start"],
   });
-
-  useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 640);
-    };
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
-  }, []);
 
   const springConfig = { stiffness: 300, damping: 30, bounce: 100 };
 
@@ -166,38 +135,30 @@ export function ExamplesSection() {
   return (
     <section ref={ref} id="examples" className="w-full py-12 md:py-24 lg:py-32 bg-white overflow-hidden">
       <div className="container px-4 md:px-6">
-        <h2 className="text-2xl sm:text-3xl font-bold tracking-tighter sm:text-4xl text-center mb-4 sm:mb-6 text-gray-900">vCard Examples</h2>
-        <p className="text-base sm:text-xl text-gray-600 text-center max-w-2xl mx-auto mb-8 sm:mb-12">
+        <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl text-center mb-6 text-gray-900">vCard Examples</h2>
+        <p className="text-xl text-gray-600 text-center max-w-2xl mx-auto mb-12">
           Discover how professionals across various industries showcase their contact information with style. These vCard examples demonstrate the perfect blend of personality and professionalism.
         </p>
-        {isMobile ? (
-          <div className="space-y-4">
-            {cards.map((card, index) => (
-              <MobileCard key={index} card={card} />
+        <motion.div
+          style={{
+            rotateX,
+            rotateZ,
+            translateY,
+            opacity,
+          }}
+          className="space-y-20"
+        >
+          <motion.div className="flex space-x-6 mb-20">
+            {cards.slice(0, 4).map((card, index) => (
+              <ParallaxCard key={index} card={card} translate={translateX} />
             ))}
-          </div>
-        ) : (
-          <motion.div
-            style={{
-              rotateX,
-              rotateZ,
-              translateY,
-              opacity,
-            }}
-            className="space-y-20"
-          >
-            <motion.div className="flex space-x-6 mb-20">
-              {cards.slice(0, 4).map((card, index) => (
-                <DesktopCard key={index} card={card} />
-              ))}
-            </motion.div>
-            <motion.div className="flex space-x-6">
-              {cards.slice(4).map((card, index) => (
-                <DesktopCard key={index + 4} card={card} />
-              ))}
-            </motion.div>
           </motion.div>
-        )}
+          <motion.div className="flex space-x-6 mb-20">
+            {cards.slice(4).map((card, index) => (
+              <ParallaxCard key={index + 4} card={card} translate={translateXReverse} />
+            ))}
+          </motion.div>
+        </motion.div>
       </div>
     </section>
   );
