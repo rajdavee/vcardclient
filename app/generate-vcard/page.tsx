@@ -25,12 +25,23 @@ export default function GenerateVCardPage() {
   const [selectedTemplate, setSelectedTemplate] = useState(1);
   const { register, handleSubmit, formState: { errors }, reset, watch } = useForm<VCardInputs>();
   const previewRef = useRef<HTMLDivElement>(null);
+  const [isGenerating, setIsGenerating] = useState(false);
+  const [generationError, setGenerationError] = useState<string | null>(null);
 
   const watchedFields = watch();
 
   const onSubmit: SubmitHandler<VCardInputs> = async (data) => {
-    await generateVCard(data);
-    reset();
+    setIsGenerating(true);
+    setGenerationError(null);
+    try {
+      await generateVCard(data);
+      reset();
+    } catch (error) {
+      console.error('Error generating vCard:', error);
+      setGenerationError('Failed to generate vCard. Please try again.');
+    } finally {
+      setIsGenerating(false);
+    }
   };
 
   const generateVCard = async (data: VCardInputs) => {
@@ -47,18 +58,24 @@ END:VCARD`;
     saveAs(vcardBlob, `${data.firstName}_${data.lastName}.vcf`);
 
     if (previewRef.current) {
-      // Add a small delay
-      await new Promise(resolve => setTimeout(resolve, 100));
-      const canvas = await html2canvas(previewRef.current, {
-        scale: 2, // Increase resolution
-        useCORS: true,
-        logging: true, // Enable logging for debugging
-      });
-      canvas.toBlob((blob) => {
-        if (blob) {
-          saveAs(blob, `${data.firstName}_${data.lastName}_vcard.png`);
-        }
-      }, 'image/png', 1.0); // Specify full quality
+      try {
+        await new Promise(resolve => setTimeout(resolve, 100));
+        const canvas = await html2canvas(previewRef.current, {
+          scale: 2,
+          useCORS: true,
+          logging: true,
+        });
+        canvas.toBlob((blob) => {
+          if (blob) {
+            saveAs(blob, `${data.firstName}_${data.lastName}_vcard.png`);
+          } else {
+            throw new Error('Failed to generate image');
+          }
+        }, 'image/png', 1.0);
+      } catch (error) {
+        console.error('Error generating preview image:', error);
+        throw new Error('Failed to generate preview image');
+      }
     }
   };
 
@@ -155,10 +172,14 @@ END:VCARD`;
           </div>
           <button
             type="submit"
-            className="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out transform hover:scale-105"
+            className={`w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out transform hover:scale-105 ${isGenerating ? 'opacity-50 cursor-not-allowed' : ''}`}
+            disabled={isGenerating}
           >
-            Generate vCard
+            {isGenerating ? 'Generating...' : 'Generate vCard'}
           </button>
+          {generationError && (
+            <p className="text-red-500 text-sm mt-2">{generationError}</p>
+          )}
         </form>
 
         <div>

@@ -6,12 +6,15 @@ import { Smartphone, Mail, Globe } from "lucide-react"
 
 export function HeroSection() {
   const router = useRouter()
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
   const [isAuthenticated, setIsAuthenticated] = useState(false)
   const [userPlan, setUserPlan] = useState<string | null>(null)
+  const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
     const checkAuth = async () => {
+      setIsLoading(true)
+      setError(null)
       try {
         const token = localStorage.getItem('token')
         if (!token) {
@@ -39,11 +42,16 @@ export function HeroSection() {
           if (planResponse.ok) {
             const { planName } = await planResponse.json()
             setUserPlan(planName)
+          } else {
+            throw new Error('Failed to fetch user plan')
           }
         }
       } catch (error) {
         console.error('Error checking authentication:', error)
+        setError('Failed to load user data. Please try again.')
         setIsAuthenticated(false)
+      } finally {
+        setIsLoading(false)
       }
     }
 
@@ -52,6 +60,7 @@ export function HeroSection() {
 
   const handleGetStarted = async () => {
     setIsLoading(true)
+    setError(null)
 
     try {
       if (!isAuthenticated) {
@@ -62,8 +71,6 @@ export function HeroSection() {
       if (!userPlan) {
         throw new Error('User plan not found')
       }
-
-      console.log('User plan:', userPlan) // Add this line for debugging
 
       switch(userPlan.toLowerCase()) {
         case 'basic':
@@ -80,7 +87,7 @@ export function HeroSection() {
       }
     } catch (error) {
       console.error('Error navigating to dashboard:', error)
-      // router.push('/generate-vcard')
+      setError('Failed to navigate to dashboard. Please try again.')
     } finally {
       setIsLoading(false)
     }
@@ -139,6 +146,7 @@ export function HeroSection() {
           </div>
         </div>
       </div>
+      {error && <p className="text-red-500 mt-2">{error}</p>}
     </section>
   )
 }

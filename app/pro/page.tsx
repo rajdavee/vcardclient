@@ -7,6 +7,7 @@ import axios from 'axios';
 import { withAuth } from '../utils/withAuth';
 import Image from 'next/image';
 import * as QRCode from 'qrcode';
+import LoadingSpinner from '../components/LoadingSpinner'; // You'll need to create this component
 
 interface FormData {
   [key: string]: string | FileList;
@@ -237,6 +238,8 @@ const ProVCardPage: React.FC = () => {
           </div>
         ))}
       </div>
+
+      {isLoading && <LoadingSpinner />}
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 mb-8">
         {renderFormFields()}

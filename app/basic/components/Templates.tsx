@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Image from 'next/image';
 
 export type TemplateId = 1 | 2 | 3 | 4 | 5;
@@ -20,8 +20,7 @@ export const templateFields: Record<TemplateId, string[]> = {
 const Templates: React.FC<TemplateProps> = ({ selectedTemplate, fields }) => {
   console.log('Selected Template:', selectedTemplate);
 
-
-
+  const [imageLoading, setImageLoading] = useState(true);
 
   const getImageSrc = (profileImage: string | FileList | undefined): string => {
     if (typeof profileImage === 'string' && profileImage.length > 0) {
@@ -68,13 +67,17 @@ const Templates: React.FC<TemplateProps> = ({ selectedTemplate, fields }) => {
                 </div>
                 <div className="w-24 h-24 bg-blue-100 rounded-full overflow-hidden">
                   {fields.profileImage && (
-                    <Image 
-                      src={getImageSrc(fields.profileImage)}
-                      alt="Profile" 
-                      width={96} 
-                      height={96} 
-                      className="object-cover w-full h-full" 
-                    />
+                    <>
+                      {imageLoading && <div className="w-full h-full bg-gray-200 animate-pulse"></div>}
+                      <Image 
+                        src={getImageSrc(fields.profileImage)}
+                        alt="Profile" 
+                        width={96} 
+                        height={96} 
+                        className={`object-cover w-full h-full ${imageLoading ? 'hidden' : ''}`}
+                        onLoad={() => setImageLoading(false)}
+                      />
+                    </>
                   )}
                 </div>
               </div>
@@ -103,13 +106,17 @@ const Templates: React.FC<TemplateProps> = ({ selectedTemplate, fields }) => {
                   <p className="text-sm text-gray-600">{fields.email as string || 'ONISMino1/om'}</p>
                   <div className="w-32 h-32 bg-blue-300 rounded-full overflow-hidden mt-4">
                     {fields.profileImage && (
-                      <Image 
-                        src={getImageSrc(fields.profileImage)}
-                        alt="Profile" 
-                        width={128} 
-                        height={128} 
-                        className="object-cover w-full h-full" 
-                      />
+                      <>
+                        {imageLoading && <div className="w-full h-full bg-gray-200 animate-pulse"></div>}
+                        <Image 
+                          src={getImageSrc(fields.profileImage)}
+                          alt="Profile" 
+                          width={128} 
+                          height={128} 
+                          className={`object-cover w-full h-full ${imageLoading ? 'hidden' : ''}`}
+                          onLoad={() => setImageLoading(false)}
+                        />
+                      </>
                     )}
                   </div>
                 </div>
@@ -210,7 +217,3 @@ const Templates: React.FC<TemplateProps> = ({ selectedTemplate, fields }) => {
 };
 
 export default Templates;
-
-
-
-

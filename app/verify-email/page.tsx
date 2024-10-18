@@ -3,6 +3,7 @@
 import { useEffect, useState, Suspense } from 'react'
 import { useRouter } from 'next/navigation'
 import { useSearchParams } from 'next/navigation'
+import LoadingSpinner from '../components/LoadingSpinner';
 
 function VerifyEmailContent() {
   const [message, setMessage] = useState('Verifying your email...')
@@ -57,7 +58,7 @@ function VerifyEmailContent() {
 
 export default function VerifyEmail() {
   return (
-    <Suspense fallback={<div>Loading...</div>}>
+    <Suspense fallback={<LoadingSpinner />}>
       <VerifyEmailContent />
     </Suspense>
   )

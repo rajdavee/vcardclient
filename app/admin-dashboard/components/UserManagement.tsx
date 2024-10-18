@@ -3,6 +3,7 @@ import { Edit3, Trash2, ChevronDown, Search } from 'lucide-react'
 import { searchUsers, promoteToAdmin, updateUserPlan, deleteUser, addUser, editUser } from '../../api/admin'
 import AddUserModal from './AddUserModal'
 import EditUserModal from './EditUserModal'
+import LoadingSpinner from '../../components/LoadingSpinner'
 
 interface UserManagementProps {
   users: any[]
@@ -15,15 +16,19 @@ export default function UserManagement({ users, loadAdminData }: UserManagementP
   const [isAddUserModalOpen, setIsAddUserModalOpen] = useState(false)
   const [isEditUserModalOpen, setIsEditUserModalOpen] = useState(false)
   const [selectedUser, setSelectedUser] = useState<any>(null)
+  const [isSearching, setIsSearching] = useState(false)
 
   const handleSearchUsers = async (query: string) => {
     setSearchQuery(query)
     if (query.length > 2) {
+      setIsSearching(true)
       try {
         const results = await searchUsers(query)
         setFilteredUsers(results)
       } catch (err) {
         console.error('Failed to search users. Please try again.')
+      } finally {
+        setIsSearching(false)
       }
     } else {
       setFilteredUsers(users)
@@ -105,6 +110,7 @@ export default function UserManagement({ users, loadAdminData }: UserManagementP
             className="w-full bg-gray-100 text-gray-700 rounded-full py-2 px-4 pl-10 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition duration-200"
           />
           <Search className="absolute left-3 top-2.5 text-gray-500" size={18} />
+          {isSearching && <LoadingSpinner />}
         </div>
       </div>
       <div className="overflow-x-auto">

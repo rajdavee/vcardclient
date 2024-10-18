@@ -24,12 +24,15 @@ const BasicVCardPage: React.FC = () => {
   const [vCardData, setVCardData] = useState<VCardData | null>(null);
   const [message, setMessage] = useState<string>('');
   const watchedFields = watch();
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     reset();
   }, [selectedTemplate, reset]);
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
+    setIsSubmitting(true);
+    setMessage('');
     try {
       const formData = new FormData();
       formData.append('data', JSON.stringify({
@@ -61,6 +64,8 @@ const BasicVCardPage: React.FC = () => {
     } catch (error) {
       console.error('Error creating vCard:', error);
       setMessage('Failed to create vCard. Please try again.');
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -154,9 +159,16 @@ const BasicVCardPage: React.FC = () => {
           <label htmlFor="profileImage" className="block mb-1">Profile Image</label>
           <input type="file" {...register('profileImage')} className="w-full p-2 border rounded" />
         </div>
-        <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded">Create vCard</button>
+        <button 
+          type="submit" 
+          className="bg-blue-500 text-white px-4 py-2 rounded"
+          disabled={isSubmitting}
+        >
+          {isSubmitting ? 'Creating...' : 'Create vCard'}
+        </button>
       </form>
 
+      {isSubmitting && <p>Creating your vCard...</p>}
       {message && <p className="mt-4 text-green-500">{message}</p>}
 
       {vCardData && (

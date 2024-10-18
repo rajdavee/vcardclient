@@ -9,19 +9,28 @@ interface Field {
 interface AuthFormProps {
   fields: Field[];
   submitText: string;
-  onSubmit: (formData: Record<string, string>) => void;
+  onSubmit: (formData: Record<string, string>) => Promise<void>;
 }
 
 const AuthForm: React.FC<AuthFormProps> = ({ fields, submitText, onSubmit }) => {
   const [formData, setFormData] = useState<Record<string, string>>({});
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    onSubmit(formData);
+    setIsLoading(true);
+    try {
+      await onSubmit(formData);
+    } catch (error) {
+      console.error('Form submission error:', error);
+      // You might want to set an error state here and display it to the user
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -39,6 +48,7 @@ const AuthForm: React.FC<AuthFormProps> = ({ fields, submitText, onSubmit }) => 
             className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
             placeholder={field.placeholder}
             onChange={handleChange}
+            disabled={isLoading}
           />
         </div>
       ))}

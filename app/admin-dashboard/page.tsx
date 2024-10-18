@@ -7,6 +7,7 @@ import TopBar from './components/TopBar'
 import QuickStats from './components/QuickStats'
 import UserManagement from './components/UserManagement'
 import VCardManagement from './components/VCardManagement'
+import LoadingSpinner from '../components/LoadingSpinner'
 
 export default function AdminDashboard() {
   const [sidebarOpen, setSidebarOpen] = useState(false)
@@ -35,7 +36,7 @@ export default function AdminDashboard() {
   const toggleSidebar = () => setSidebarOpen(!sidebarOpen)
 
   if (isLoading) {
-    return <div>Loading...</div>
+    return <LoadingSpinner />
   }
 
   if (error) {
@@ -49,7 +50,7 @@ export default function AdminDashboard() {
         <TopBar toggleSidebar={toggleSidebar} activeTab={activeTab} />
         <main className="flex-1 overflow-x-hidden overflow-y-auto bg-gray-100">
           <div className="container mx-auto px-6 py-8">
-            <QuickStats stats={adminData.stats} userAnalytics={adminData.userAnalytics} />
+            <QuickStats stats={adminData.stats} userAnalytics={adminData.userAnalytics} isLoading={false} />
             <UserManagement users={adminData.users} loadAdminData={loadAdminData} />
             <VCardManagement loadAdminData={loadAdminData} />
           </div>

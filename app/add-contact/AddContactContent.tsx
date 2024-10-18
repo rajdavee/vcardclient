@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
+import LoadingSpinner from '../components/LoadingSpinner';
 
 interface ExtendedNavigator extends Navigator {
   contacts?: {
@@ -13,6 +14,7 @@ interface ExtendedNavigator extends Navigator {
 const AddContactContent: React.FC = () => {
   const searchParams = useSearchParams();
   const [message, setMessage] = useState('Processing contact information...');
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const vCardData = searchParams.get('vCardData');
@@ -24,6 +26,7 @@ const AddContactContent: React.FC = () => {
   }, [searchParams]);
 
   const handleVCardData = (vCardData: string) => {
+    setIsLoading(true);
     const extendedNavigator = navigator as ExtendedNavigator;
     if (extendedNavigator.contacts && 'save' in extendedNavigator.contacts) {
       // Use Contact API to save the contact directly
@@ -33,6 +36,9 @@ const AddContactContent: React.FC = () => {
       provideVCardDownload(vCardData);
     }
   };
+  if (isLoading) {
+    return <LoadingSpinner />;
+  }
 
   const handleContactSave = async (vCardData: string) => {
     try {
