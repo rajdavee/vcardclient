@@ -4,20 +4,12 @@ import { useState, useEffect } from 'react'
 import OverviewCards from './OverviewCards'
 import EngagementOverview from './EngagementOverview'
 import DetailedAnalytics from './DetailedAnalytics'
-import LoadingSpinner from '../../components/LoadingSpinner'
 
 export default function AnalyticsDashboard() {
   const [showDetails, setShowDetails] = useState(false)
-  const [isLoading, setIsLoading] = useState(true)
 
-  useEffect(() => {
-    // Fetch your analytics data here
-    // When done, call setIsLoading(false)
-  }, [])
+ 
 
-  if (isLoading) {
-    return <LoadingSpinner />
-  }
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100">
