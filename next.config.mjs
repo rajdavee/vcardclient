@@ -55,12 +55,18 @@ const nextConfig = {
   },
   transpilePackages: ['qrcode'],
   images: {
-    domains: ['localhost', 'vcardserver.vercel.app','images.unsplash.com'],
+    domains: ['localhost', 'vcardserver.vercel.app', 'images.unsplash.com'],
     remotePatterns: [
       {
         protocol: 'https',
         hostname: 'vcardserver.vercel.app',
         port: '',
+        pathname: '/uploads/**',
+      },
+      {
+        protocol: 'http',
+        hostname: 'localhost',
+        port: '5000',
         pathname: '/uploads/**',
       },
     ],
