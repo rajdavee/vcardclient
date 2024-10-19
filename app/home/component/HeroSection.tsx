@@ -498,7 +498,8 @@ export function HeroSection() {
           >
             <div className="space-y-2">
               <h1 className="text-3xl font-bold tracking-tighter sm:text-5xl xl:text-6xl/none bg-clip-text text-transparent bg-gradient-to-r from-indigo-500 to-purple-600">
-                Your Digital Identity, Reimagined
+                {/* Your Digital Identity, Reimagined */}
+                devndra
               </h1>
               <p className="max-w-[600px] text-gray-600 dark:text-gray-300 md:text-xl">
                 Create stunning digital business cards that leave a lasting impression. Connect globally with vCard Pro.
