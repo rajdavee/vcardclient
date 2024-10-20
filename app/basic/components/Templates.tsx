@@ -20,11 +20,15 @@ export const templateFields: Record<TemplateId, string[]> = {
 
 const Templates: React.FC<TemplateProps> = ({ selectedTemplate, fields }) => {
   console.log('Selected Template:', selectedTemplate);
+  console.log('Fields:', fields);
 
   const [imageLoading, setImageLoading] = useState(true);
 
   const renderTemplate = (id: TemplateId) => {
     console.log('Rendering template:', id);
+    console.log('Profile Image:', fields.profileImage);
+    const imageSrc = getImageSrc(fields.profileImage);
+    console.log('Image Source:', imageSrc);
     switch (id) {
       case 1:
         return (
