@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
+import { getImageSrc } from '../../utils/imageUtils';
 
 export type TemplateId = 1 | 2 | 3 | 4 | 5;
 
@@ -21,26 +22,6 @@ const Templates: React.FC<TemplateProps> = ({ selectedTemplate, fields }) => {
   console.log('Selected Template:', selectedTemplate);
 
   const [imageLoading, setImageLoading] = useState(true);
-
-  const getImageSrc = (profileImage: string | FileList | undefined): string => {
-    if (typeof profileImage === 'string' && profileImage.length > 0) {
-      if (profileImage.startsWith('http')) {
-        return profileImage;
-      } else {
-        const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL?.replace(/\/api$/, '');
-        return `${baseUrl}/uploads/${profileImage.split('/').pop()}`;
-      }
-    } else if (profileImage instanceof FileList && profileImage.length > 0) {
-      return URL.createObjectURL(profileImage[0]);
-    }
-    return '/images/default-profile-image.png';
-  };
-
-
- 
-
-
- 
 
   const renderTemplate = (id: TemplateId) => {
     console.log('Rendering template:', id);
