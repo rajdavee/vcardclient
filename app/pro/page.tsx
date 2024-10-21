@@ -344,3 +344,4 @@ const ProVCardPage: React.FC = () => {
 };
 
 export default withAuth(ProVCardPage, 'Pro');
+  
