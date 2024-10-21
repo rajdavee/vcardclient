@@ -1,11 +1,12 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import Templates, { templateFields, TemplateId } from './components/Templates';
 import axios from 'axios';
 import { withAuth } from '../utils/withAuth';
 import Image from 'next/image';
+import ImageCropper from './components/ImageCropper';
 
 interface FormData {
   [key: string]: string | FileList;
@@ -25,6 +26,8 @@ const BasicVCardPage: React.FC = () => {
   const [message, setMessage] = useState<string>('');
   const watchedFields = watch();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [cropImage, setCropImage] = useState<string | null>(null);
+  const [croppedImageUrl, setCroppedImageUrl] = useState<string | null>(null);
 
   useEffect(() => {
     reset();
@@ -42,8 +45,10 @@ const BasicVCardPage: React.FC = () => {
           .map(([name, value]) => ({ name, value }))
       }));
 
-      if (data.profileImage && data.profileImage instanceof FileList && data.profileImage.length > 0) {
-        formData.append('profileImage', data.profileImage[0]);
+      if (croppedImageUrl) {
+        const response = await fetch(croppedImageUrl);
+        const blob = await response.blob();
+        formData.append('profileImage', blob, 'profile.jpg');
       }
 
       const token = localStorage.getItem('token');
@@ -135,6 +140,27 @@ const BasicVCardPage: React.FC = () => {
     ));
   };
 
+  const handleImageSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files && event.target.files[0]) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        if (e.target?.result) {
+          setCropImage(e.target.result as string);
+        }
+      };
+      reader.readAsDataURL(event.target.files[0]);
+    }
+  };
+
+  const handleCropComplete = (croppedImageUrl: string) => {
+    setCroppedImageUrl(croppedImageUrl);
+    setCropImage(null);
+  };
+
+  const handleCropCancel = () => {
+    setCropImage(null);
+  };
+
   return (
     <div className="container mx-auto p-4">
       <h1 className="text-3xl font-bold mb-4">Create Your vCard</h1>
@@ -148,7 +174,11 @@ const BasicVCardPage: React.FC = () => {
             onClick={() => setSelectedTemplate(templateId)}
           >
             <h3 className="text-xl font-bold mb-2">Template {templateId}</h3>
-            <Templates selectedTemplate={templateId} fields={watchedFields} />
+            <Templates 
+  selectedTemplate={templateId} 
+  fields={watchedFields} 
+  croppedImage={croppedImageUrl}
+/>
           </div>
         ))}
       </div>
@@ -157,7 +187,7 @@ const BasicVCardPage: React.FC = () => {
         {renderFormFields()}
         <div>
           <label htmlFor="profileImage" className="block mb-1">Profile Image</label>
-          <input type="file" {...register('profileImage')} className="w-full p-2 border rounded" />
+          <input type="file" onChange={handleImageSelect} className="w-full p-2 border rounded" />
         </div>
         <button 
           type="submit" 
@@ -190,6 +220,21 @@ const BasicVCardPage: React.FC = () => {
               <p className="break-all">{vCardData.previewLink}</p>
             </div>
           )}
+        </div>
+      )}
+      {cropImage && (
+        <div>
+          <ImageCropper
+            image={cropImage}
+            onCropComplete={handleCropComplete}
+            onCancel={handleCropCancel}
+          />
+          <button 
+            onClick={() => document.querySelector<HTMLElement>('.ReactCrop__crop-btn')?.click()}
+            className="bg-blue-500 text-white px-4 py-2 rounded mt-2"
+          >
+            Crop Image
+          </button>
         </div>
       )}
     </div>
