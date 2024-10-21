@@ -27,7 +27,6 @@
     "qrcode": "^1.5.4",
     "qrcode.react": "^4.0.1",
     "react": "^18",
-    "react-avatar-editor": "^13.0.2",
     "react-dom": "^18",
     "react-hook-form": "^7.53.0",
     "react-icons": "^5.3.0",
