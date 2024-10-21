@@ -6,6 +6,7 @@ import Templates, { templateFields, TemplateId } from './components/Templates';
 import axios from 'axios';
 import { withAuth } from '../utils/withAuth';
 import Image from 'next/image';
+import ImageCropper from './components/ImageCropper';
 
 interface FormData {
   [key: string]: string | FileList;
@@ -19,16 +20,40 @@ interface VCardData {
 }
 
 const BasicVCardPage: React.FC = () => {
-  const { register, handleSubmit, watch, reset } = useForm<FormData>();
+  const { register, handleSubmit, watch, reset, setValue } = useForm<FormData>();
   const [selectedTemplate, setSelectedTemplate] = useState<TemplateId>(1);
   const [vCardData, setVCardData] = useState<VCardData | null>(null);
   const [message, setMessage] = useState<string>('');
   const watchedFields = watch();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showCropper, setShowCropper] = useState(false);
+  const [imageToEdit, setImageToEdit] = useState<string | null>(null);
+  const [hasImage, setHasImage] = useState(false);
+  const [croppedImage, setCroppedImage] = useState<string | null>(null);
 
   useEffect(() => {
     reset();
   }, [selectedTemplate, reset]);
+
+  const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        setImageToEdit(e.target?.result as string);
+        setShowCropper(true);
+        setHasImage(true);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleCropComplete = (croppedImageUrl: string) => {
+    setValue('profileImage', croppedImageUrl);
+    setCroppedImage(croppedImageUrl);
+    setShowCropper(false);
+    setHasImage(true);
+  };
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     setIsSubmitting(true);
@@ -42,8 +67,14 @@ const BasicVCardPage: React.FC = () => {
           .map(([name, value]) => ({ name, value }))
       }));
 
-      if (data.profileImage && data.profileImage instanceof FileList && data.profileImage.length > 0) {
-        formData.append('profileImage', data.profileImage[0]);
+      if (data.profileImage) {
+        if (typeof data.profileImage === 'string') {
+          const response = await fetch(data.profileImage);
+          const blob = await response.blob();
+          formData.append('profileImage', blob, 'profile.jpg');
+        } else if (data.profileImage instanceof FileList && data.profileImage.length > 0) {
+          formData.append('profileImage', data.profileImage[0]);
+        }
       }
 
       const token = localStorage.getItem('token');
@@ -61,6 +92,7 @@ const BasicVCardPage: React.FC = () => {
       setVCardData(response.data);
       setMessage('vCard created successfully!');
       reset();
+      setHasImage(false);
     } catch (error) {
       console.error('Error creating vCard:', error);
       setMessage('Failed to create vCard. Please try again.');
@@ -148,7 +180,7 @@ const BasicVCardPage: React.FC = () => {
             onClick={() => setSelectedTemplate(templateId)}
           >
             <h3 className="text-xl font-bold mb-2">Template {templateId}</h3>
-            <Templates selectedTemplate={templateId} fields={watchedFields} />
+            <Templates selectedTemplate={templateId} fields={watchedFields} croppedImage={croppedImage} />
           </div>
         ))}
       </div>
@@ -157,12 +189,24 @@ const BasicVCardPage: React.FC = () => {
         {renderFormFields()}
         <div>
           <label htmlFor="profileImage" className="block mb-1">Profile Image</label>
-          <input type="file" {...register('profileImage')} className="w-full p-2 border rounded" />
+          <input 
+            type="file" 
+            id="profileImage"
+            onChange={handleImageUpload}
+            className="w-full p-2 border rounded" 
+          />
         </div>
+        {showCropper && imageToEdit && (
+          <ImageCropper
+            image={imageToEdit}
+            onCropComplete={handleCropComplete}
+            onCancel={() => setShowCropper(false)}
+          />
+        )}
         <button 
           type="submit" 
           className="bg-blue-500 text-white px-4 py-2 rounded"
-          disabled={isSubmitting}
+          disabled={isSubmitting || !hasImage}
         >
           {isSubmitting ? 'Creating...' : 'Create vCard'}
         </button>
