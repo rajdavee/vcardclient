@@ -7,8 +7,7 @@ import axios from 'axios';
 import { withAuth } from '../utils/withAuth';
 import Image from 'next/image';
 import * as QRCode from 'qrcode';
-import LoadingSpinner from '../components/LoadingSpinner';
-import ImageCropper from '../basic/components/ImageCropper';
+import LoadingSpinner from '../components/LoadingSpinner'; // You'll need to create this component
 
 interface FormData {
   [key: string]: string | FileList;
@@ -46,8 +45,6 @@ const ProVCardPage: React.FC = () => {
   const [scanData, setScanData] = useState<ScanData | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const watchedFields = watch();
-  const [cropImage, setCropImage] = useState<string | null>(null);
-  const [croppedImageUrl, setCroppedImageUrl] = useState<string | null>(null);
 
   useEffect(() => {
     reset();
@@ -63,10 +60,8 @@ const ProVCardPage: React.FC = () => {
           .map(([name, value]) => ({ name, value }))
       }));
 
-      if (croppedImageUrl) {
-        const response = await fetch(croppedImageUrl);
-        const blob = await response.blob();
-        formData.append('profileImage', blob, 'profile.jpg');
+      if (data.profileImage && data.profileImage instanceof FileList && data.profileImage.length > 0) {
+        formData.append('profileImage', data.profileImage[0]);
       }
 
       const token = localStorage.getItem('token');
@@ -146,7 +141,7 @@ const ProVCardPage: React.FC = () => {
     if (vCardData && vCardData.qrCodeDataUrl) {
       const a = document.createElement('a');
       a.href = vCardData.qrCodeDataUrl;
-      a.download = 'vcard_qr_code.png';
+      a.download = 'qr-code.png';
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
@@ -165,17 +160,23 @@ const ProVCardPage: React.FC = () => {
   const copyPreviewLink = () => {
     if (vCardData && vCardData.previewLink) {
       navigator.clipboard.writeText(vCardData.previewLink)
-        .then(() => setMessage('Preview link copied to clipboard!'))
-        .catch(() => setMessage('Failed to copy preview link. Please try again.'));
+        .then(() => {
+          setMessage('Preview link copied to clipboard!');
+        })
+        .catch((error) => {
+          console.error('Failed to copy preview link:', error);
+          setMessage('Failed to copy preview link. Please try again.');
+        });
+    } else {
+      console.error('Preview link is not available');
+      setMessage('Unable to copy preview link. Please try again.');
     }
   };
 
   const renderFormFields = () => {
     return templateFields[selectedTemplate].map((field) => (
       <div key={field}>
-        <label htmlFor={field} className="block mb-1">
-          {field.charAt(0).toUpperCase() + field.slice(1)}
-        </label>
+        <label htmlFor={field} className="block mb-1">{field.charAt(0).toUpperCase() + field.slice(1)}</label>
         <input
           {...register(field)}
           className="w-full p-2 border rounded"
@@ -220,27 +221,6 @@ const ProVCardPage: React.FC = () => {
     );
   };
 
-  const handleImageSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.files && event.target.files[0]) {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        if (e.target?.result) {
-          setCropImage(e.target.result as string);
-        }
-      };
-      reader.readAsDataURL(event.target.files[0]);
-    }
-  };
-
-  const handleCropComplete = (croppedImageUrl: string) => {
-    setCroppedImageUrl(croppedImageUrl);
-    setCropImage(null);
-  };
-
-  const handleCropCancel = () => {
-    setCropImage(null);
-  };
-
   return (
     <div className="container mx-auto p-4">
       <h1 className="text-3xl font-bold mb-4">Create Your Pro vCard</h1>
@@ -254,11 +234,7 @@ const ProVCardPage: React.FC = () => {
             onClick={() => setSelectedTemplate(templateId)}
           >
             <h3 className="text-xl font-bold mb-2">Template {templateId}</h3>
-            <Templates 
-              selectedTemplate={templateId} 
-              fields={watchedFields} 
-              croppedImage={croppedImageUrl}
-            />
+            <Templates selectedTemplate={templateId} fields={watchedFields} />
           </div>
         ))}
       </div>
@@ -269,26 +245,10 @@ const ProVCardPage: React.FC = () => {
         {renderFormFields()}
         <div>
           <label htmlFor="profileImage" className="block mb-1">Profile Image</label>
-          <input type="file" onChange={handleImageSelect} className="w-full p-2 border rounded" />
+          <input type="file" {...register('profileImage')} className="w-full p-2 border rounded" />
         </div>
         <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded">Create vCard</button>
       </form>
-
-      {cropImage && (
-        <div>
-          <ImageCropper
-            image={cropImage}
-            onCropComplete={handleCropComplete}
-            onCancel={handleCropCancel}
-          />
-          <button 
-            onClick={() => document.querySelector<HTMLElement>('.ReactCrop__crop-btn')?.click()}
-            className="bg-blue-500 text-white px-4 py-2 rounded mt-2"
-          >
-            Crop Image
-          </button>
-        </div>
-      )}
 
       {message && <p className="mt-4 text-green-500">{message}</p>}
 
