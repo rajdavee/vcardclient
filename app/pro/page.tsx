@@ -43,6 +43,7 @@ const ProVCardPage: React.FC = () => {
   const [selectedTemplate, setSelectedTemplate] = useState<TemplateId>(1);
   const [vCardData, setVCardData] = useState<VCardData | null>(null);
   const [message, setMessage] = useState<string>('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [scanData, setScanData] = useState<ScanData | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const watchedFields = watch();
@@ -54,6 +55,8 @@ const ProVCardPage: React.FC = () => {
   }, [selectedTemplate, reset]);
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
+    setIsSubmitting(true);
+    setMessage('');
     try {
       const formData = new FormData();
       formData.append('data', JSON.stringify({
@@ -84,10 +87,29 @@ const ProVCardPage: React.FC = () => {
       setVCardData(response.data);
       setMessage('vCard created successfully!');
       reset();
-      fetchScanData(response.data.vCardId);
+      setCroppedImageUrl(null);
+      setCropImage(null);
+
+      // Add a short delay before redirecting to the preview page
+      setTimeout(() => {
+        viewVCardPreview();
+      }, 1000); // 1 second delay
+
     } catch (error) {
       console.error('Error creating vCard:', error);
-      setMessage('Failed to create vCard. Please try again.');
+      if (axios.isAxiosError(error)) {
+        if (error.response) {
+          setMessage(`Failed to create vCard: ${error.response.data.error || 'Unknown error'}`);
+        } else if (error.request) {
+          setMessage('Failed to create vCard: No response received from server');
+        } else {
+          setMessage(`Failed to create vCard: ${error.message}`);
+        }
+      } else {
+        setMessage('Failed to create vCard. Please try again.');
+      }
+    } finally {
+      setIsSubmitting(false);
     }
   };
 

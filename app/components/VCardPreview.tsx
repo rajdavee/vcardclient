@@ -18,28 +18,30 @@ const VCardPreview: React.FC<VCardPreviewProps> = ({ templateId, fields, qrCodeD
   // Find the profileImage field
   const profileImage = fields.find(field => field.name === 'profileImage')?.value || null;
 
+  // Add a timestamp to the image URL to force a refresh
+  const profileImageWithTimestamp = profileImage ? `${profileImage}?t=${Date.now()}` : null;
+
   return (
     <div className="vcard-preview">
       <Templates
         selectedTemplate={templateId}
         fields={fieldsObject}
-        croppedImage={profileImage}
+        croppedImage={profileImageWithTimestamp}
       />
       {qrCodeDataUrl && (
         <div className="mt-4">
           <h3 className="text-xl font-bold mb-2">QR Code</h3>
-          <div className="relative w-full max-w-[200px] aspect-square">
-            <Image 
-              src={qrCodeDataUrl} 
-              alt="vCard QR Code" 
-              layout="fill"
-              objectFit="contain"
-              onError={(e) => {
-                e.currentTarget.style.display = 'none';
-                console.error('Failed to load QR code image');
-              }}
-            />
-          </div>
+          <Image 
+            src={qrCodeDataUrl} 
+            alt="vCard QR Code" 
+            width={200} 
+            height={200}
+            unoptimized // Add this to bypass Next.js image optimization
+            onError={(e) => {
+              console.error('Failed to load QR code image');
+              e.currentTarget.style.display = 'none';
+            }}
+          />
         </div>
       )}
     </div>

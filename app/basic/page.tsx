@@ -66,6 +66,13 @@ const BasicVCardPage: React.FC = () => {
       setVCardData(response.data);
       setMessage('vCard created successfully!');
       reset();
+      setCroppedImageUrl(null);
+      setCropImage(null);
+
+      // Add a short delay before redirecting to the preview page
+      setTimeout(() => {
+        viewVCardPreview();
+      }, 1000); // 1 second delay
     } catch (error) {
       console.error('Error creating vCard:', error);
       setMessage('Failed to create vCard. Please try again.');
@@ -175,10 +182,10 @@ const BasicVCardPage: React.FC = () => {
           >
             <h3 className="text-xl font-bold mb-2">Template {templateId}</h3>
             <Templates 
-  selectedTemplate={templateId} 
-  fields={watchedFields} 
-  croppedImage={croppedImageUrl}
-/>
+              selectedTemplate={templateId} 
+              fields={watchedFields} 
+              croppedImage={croppedImageUrl}
+            />
           </div>
         ))}
       </div>

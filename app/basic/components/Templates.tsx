@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { getImageSrc } from '../../utils/imageUtils';
 
@@ -7,7 +7,7 @@ export type TemplateId = 1 | 2 | 3 | 4 | 5;
 interface TemplateProps {
   selectedTemplate: TemplateId;
   fields: Record<string, string | FileList>;
-  croppedImage: string | null; // Add this line
+  croppedImage: string | null;
 }
 
 export const templateFields: Record<TemplateId, string[]> = {
@@ -19,48 +19,43 @@ export const templateFields: Record<TemplateId, string[]> = {
   5: ['firstName', 'lastName', 'jobTitle', 'phone', 'alternatePhone', 'email', 'website', 'address']
 };
 
-const Templates: React.FC<TemplateProps> = ({ selectedTemplate, fields, croppedImage }) => { // Add croppedImage here
+const Templates: React.FC<TemplateProps> = ({ selectedTemplate, fields, croppedImage }) => {
   console.log('Selected Template:', selectedTemplate);
 
   const [imageLoading, setImageLoading] = useState(true);
+  const [imageKey, setImageKey] = useState(0);
+
+  useEffect(() => {
+    // Force re-render of image when croppedImage changes
+    setImageKey(prevKey => prevKey + 1);
+  }, [croppedImage]);
+
+  const renderProfileImage = (size: number) => {
+    const imageUrl = croppedImage || (fields.profileImage as string) || null;
+
+    if (imageUrl) {
+      return (
+        <>
+          {imageLoading && <div className={`w-${size} h-${size} bg-gray-200 animate-pulse`}></div>}
+          <Image 
+            key={imageKey}
+            src={imageUrl}
+            alt="Profile" 
+            width={size} 
+            height={size} 
+            className={`object-cover w-full h-full ${imageLoading ? 'hidden' : ''}`}
+            onLoad={() => setImageLoading(false)}
+            priority
+          />
+        </>
+      );
+    }
+    return null;
+  };
 
   const renderTemplate = (id: TemplateId) => {
     console.log('Rendering template:', id);
     
-    // Helper function to render the profile image
-    const renderProfileImage = (size: number) => {
-      if (croppedImage) {
-        return (
-          <>
-            {imageLoading && <div className={`w-${size} h-${size} bg-gray-200 animate-pulse`}></div>}
-            <Image 
-              src={croppedImage}
-              alt="Profile" 
-              width={size} 
-              height={size} 
-              className={`object-cover w-full h-full ${imageLoading ? 'hidden' : ''}`}
-              onLoad={() => setImageLoading(false)}
-            />
-          </>
-        );
-      } else if (fields.profileImage) {
-        return (
-          <>
-            {imageLoading && <div className={`w-${size} h-${size} bg-gray-200 animate-pulse`}></div>}
-            <Image 
-              src={getImageSrc(fields.profileImage)}
-              alt="Profile" 
-              width={size} 
-              height={size} 
-              className={`object-cover w-full h-full ${imageLoading ? 'hidden' : ''}`}
-              onLoad={() => setImageLoading(false)}
-            />
-          </>
-        );
-      }
-      return null;
-    };
-
     switch (id) {
       case 1:
         return (
