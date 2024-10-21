@@ -275,11 +275,19 @@ const ProVCardPage: React.FC = () => {
       </form>
 
       {cropImage && (
-        <ImageCropper
-          image={cropImage}
-          onCropComplete={handleCropComplete}
-          onCancel={handleCropCancel}
-        />
+        <div>
+          <ImageCropper
+            image={cropImage}
+            onCropComplete={handleCropComplete}
+            onCancel={handleCropCancel}
+          />
+          <button 
+            onClick={() => document.querySelector<HTMLElement>('.ReactCrop__crop-btn')?.click()}
+            className="bg-blue-500 text-white px-4 py-2 rounded mt-2"
+          >
+            Crop Image
+          </button>
+        </div>
       )}
 
       {message && <p className="mt-4 text-green-500">{message}</p>}
