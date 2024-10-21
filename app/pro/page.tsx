@@ -9,9 +9,16 @@ import Image from 'next/image';
 import * as QRCode from 'qrcode';
 import LoadingSpinner from '../components/LoadingSpinner';
 import ImageCropper from '../basic/components/ImageCropper';
+import { generateBio } from '../utils/geminiClient';
 
 interface FormData {
-  [key: string]: string | FileList;
+  [key: string]: string | FileList | undefined;
+  name?: string;
+  firstName?: string;
+  lastName?: string;
+  jobTitle?: string;
+  skills?: string;
+  // Add other specific fields as needed
 }
 
 interface VCardData {
@@ -49,6 +56,8 @@ const ProVCardPage: React.FC = () => {
   const watchedFields = watch();
   const [cropImage, setCropImage] = useState<string | null>(null);
   const [croppedImageUrl, setCroppedImageUrl] = useState<string | null>(null);
+  const [generatedBio, setGeneratedBio] = useState<string>('');
+  const [isGeneratingBio, setIsGeneratingBio] = useState(false);
 
   useEffect(() => {
     reset();
@@ -263,6 +272,24 @@ const ProVCardPage: React.FC = () => {
     setCropImage(null);
   };
 
+  const handleGenerateBio = async () => {
+    setIsGeneratingBio(true);
+    try {
+      const name = watchedFields.name as string || `${watchedFields.firstName as string} ${watchedFields.lastName as string}`;
+      const jobTitle = watchedFields.jobTitle as string || '';
+      const skills = typeof watchedFields.skills === 'string' 
+        ? watchedFields.skills 
+        : '';
+      const bio = await generateBio(name, jobTitle, skills);
+      setGeneratedBio(bio);
+    } catch (error) {
+      console.error('Error generating bio:', error);
+      setMessage('Failed to generate bio. Please try again.');
+    } finally {
+      setIsGeneratingBio(false);
+    }
+  };
+
   return (
     <div className="container mx-auto p-4">
       <h1 className="text-3xl font-bold mb-4">Create Your Pro vCard</h1>
@@ -278,7 +305,7 @@ const ProVCardPage: React.FC = () => {
             <h3 className="text-xl font-bold mb-2">Template {templateId}</h3>
             <Templates 
               selectedTemplate={templateId} 
-              fields={watchedFields} 
+              fields={watchedFields}
               croppedImage={croppedImageUrl}
             />
           </div>
@@ -293,8 +320,51 @@ const ProVCardPage: React.FC = () => {
           <label htmlFor="profileImage" className="block mb-1">Profile Image</label>
           <input type="file" onChange={handleImageSelect} className="w-full p-2 border rounded" />
         </div>
-        <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded">Create vCard</button>
+        <div>
+          <label htmlFor="skills" className="block mb-1">Key Skills (comma-separated)</label>
+          <input
+            {...register('skills')}
+            className="w-full p-2 border rounded"
+            id="skills"
+            placeholder="e.g., JavaScript, React, Node.js"
+          />
+        </div>
+        <div>
+          <button 
+            type="button" 
+            onClick={handleGenerateBio}
+            className="bg-green-500 text-white px-4 py-2 rounded mr-2"
+            disabled={isGeneratingBio}
+          >
+            {isGeneratingBio ? 'Generating...' : 'Generate AI Bio'}
+          </button>
+          <button 
+            type="submit" 
+            className="bg-blue-500 text-white px-4 py-2 rounded"
+            disabled={isSubmitting}
+          >
+            {isSubmitting ? 'Creating...' : 'Create vCard'}
+          </button>
+        </div>
       </form>
+
+      {generatedBio && (
+        <div className="mt-4 p-4 bg-gray-100 rounded">
+          <h3 className="text-xl font-bold mb-2">Generated Bio</h3>
+          <p>{generatedBio}</p>
+          <button 
+            onClick={() => {
+              const bioField = document.getElementById('bio') as HTMLTextAreaElement;
+              if (bioField) {
+                bioField.value = generatedBio;
+              }
+            }}
+            className="mt-2 bg-blue-500 text-white px-4 py-2 rounded"
+          >
+            Use This Bio
+          </button>
+        </div>
+      )}
 
       {cropImage && (
         <div>
@@ -344,4 +414,3 @@ const ProVCardPage: React.FC = () => {
 };
 
 export default withAuth(ProVCardPage, 'Pro');
-  
