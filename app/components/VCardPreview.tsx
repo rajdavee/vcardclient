@@ -15,11 +15,15 @@ const VCardPreview: React.FC<VCardPreviewProps> = ({ templateId, fields, qrCodeD
     return acc;
   }, {} as Record<string, string>);
 
+  // Find the profileImage field
+  const profileImage = fields.find(field => field.name === 'profileImage')?.value || null;
+
   return (
     <div className="vcard-preview">
       <Templates
         selectedTemplate={templateId}
         fields={fieldsObject}
+        croppedImage={profileImage}
       />
       {qrCodeDataUrl && (
         <div className="mt-4">
