@@ -210,7 +210,7 @@ const BasicVCardPage: React.FC = () => {
           {vCardData.qrCodeDataUrl && (
             <div className="mb-4">
               <h3 className="text-xl font-bold mb-2">QR Code (Scan to add contact)</h3>
-              <p className="mb-2">Scan this QR code with your phone's camera to add the contact.</p>
+              <p className="mb-2">Scan this QR code with your phone's camera to add the contact to your phone.</p>
               <img src={vCardData.qrCodeDataUrl} alt="Contact QR Code" width={200} height={200} />
             </div>
           )}
