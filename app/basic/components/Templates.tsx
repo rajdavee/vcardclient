@@ -7,6 +7,7 @@ export type TemplateId = 1 | 2 | 3 | 4 | 5;
 interface TemplateProps {
   selectedTemplate: TemplateId;
   fields: Record<string, string | FileList>;
+  croppedImage: string | null; // Add this line
 }
 
 export const templateFields: Record<TemplateId, string[]> = {
@@ -18,13 +19,48 @@ export const templateFields: Record<TemplateId, string[]> = {
   5: ['firstName', 'lastName', 'jobTitle', 'phone', 'alternatePhone', 'email', 'website', 'address']
 };
 
-const Templates: React.FC<TemplateProps> = ({ selectedTemplate, fields }) => {
+const Templates: React.FC<TemplateProps> = ({ selectedTemplate, fields, croppedImage }) => { // Add croppedImage here
   console.log('Selected Template:', selectedTemplate);
 
   const [imageLoading, setImageLoading] = useState(true);
 
   const renderTemplate = (id: TemplateId) => {
     console.log('Rendering template:', id);
+    
+    // Helper function to render the profile image
+    const renderProfileImage = (size: number) => {
+      if (croppedImage) {
+        return (
+          <>
+            {imageLoading && <div className={`w-${size} h-${size} bg-gray-200 animate-pulse`}></div>}
+            <Image 
+              src={croppedImage}
+              alt="Profile" 
+              width={size} 
+              height={size} 
+              className={`object-cover w-full h-full ${imageLoading ? 'hidden' : ''}`}
+              onLoad={() => setImageLoading(false)}
+            />
+          </>
+        );
+      } else if (fields.profileImage) {
+        return (
+          <>
+            {imageLoading && <div className={`w-${size} h-${size} bg-gray-200 animate-pulse`}></div>}
+            <Image 
+              src={getImageSrc(fields.profileImage)}
+              alt="Profile" 
+              width={size} 
+              height={size} 
+              className={`object-cover w-full h-full ${imageLoading ? 'hidden' : ''}`}
+              onLoad={() => setImageLoading(false)}
+            />
+          </>
+        );
+      }
+      return null;
+    };
+
     switch (id) {
       case 1:
         return (
@@ -48,19 +84,7 @@ const Templates: React.FC<TemplateProps> = ({ selectedTemplate, fields }) => {
                   </div>
                 </div>
                 <div className="w-24 h-24 bg-blue-100 rounded-full overflow-hidden">
-                  {fields.profileImage && (
-                    <>
-                      {imageLoading && <div className="w-full h-full bg-gray-200 animate-pulse"></div>}
-                      <Image 
-                        src={getImageSrc(fields.profileImage)}
-                        alt="Profile" 
-                        width={96} 
-                        height={96} 
-                        className={`object-cover w-full h-full ${imageLoading ? 'hidden' : ''}`}
-                        onLoad={() => setImageLoading(false)}
-                      />
-                    </>
-                  )}
+                  {renderProfileImage(96)}
                 </div>
               </div>
             </div>
@@ -87,19 +111,7 @@ const Templates: React.FC<TemplateProps> = ({ selectedTemplate, fields }) => {
                 <div className="text-right">
                   <p className="text-sm text-gray-600">{fields.email as string || 'ONISMino1/om'}</p>
                   <div className="w-32 h-32 bg-blue-300 rounded-full overflow-hidden mt-4">
-                    {fields.profileImage && (
-                      <>
-                        {imageLoading && <div className="w-full h-full bg-gray-200 animate-pulse"></div>}
-                        <Image 
-                          src={getImageSrc(fields.profileImage)}
-                          alt="Profile" 
-                          width={128} 
-                          height={128} 
-                          className={`object-cover w-full h-full ${imageLoading ? 'hidden' : ''}`}
-                          onLoad={() => setImageLoading(false)}
-                        />
-                      </>
-                    )}
+                    {renderProfileImage(128)}
                   </div>
                 </div>
               </div>
