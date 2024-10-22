@@ -1,6 +1,6 @@
 'use client'
 import Link from "next/link"
-import { CreditCard, LogOut } from "lucide-react"
+import { CreditCard, LogOut, CreditCard as VCardIcon } from "lucide-react"
 import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
 
@@ -63,6 +63,13 @@ export function Header() {
         </Link>
         {isLoggedIn && (
           <>
+            <Link
+              href="/uservcards"
+              className="flex items-center text-sm font-medium text-gray-700 hover:text-indigo-600 transition-colors"
+            >
+              <VCardIcon className="h-4 w-4 mr-1" />
+              My VCards
+            </Link>
             {planName && (
               <span className="text-sm font-medium text-indigo-600">
                 {planName} Plan

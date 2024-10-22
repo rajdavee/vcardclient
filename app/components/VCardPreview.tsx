@@ -3,12 +3,16 @@ import Image from 'next/image';
 import Templates, { TemplateId } from '../basic/components/Templates';
 
 interface VCardPreviewProps {
-  templateId: TemplateId;
-  fields: Array<{ name: string; value: string }>;
-  qrCodeDataUrl?: string;
+  previewData: {
+    templateId: TemplateId;
+    fields: Array<{ name: string; value: string }>;
+    qrCodeDataUrl: string;
+  };
 }
 
-const VCardPreview: React.FC<VCardPreviewProps> = ({ templateId, fields, qrCodeDataUrl }) => {
+const VCardPreview: React.FC<VCardPreviewProps> = ({ previewData }) => {
+  const { templateId, fields, qrCodeDataUrl } = previewData;
+
   // Convert fields array to an object
   const fieldsObject = fields.reduce((acc, field) => {
     acc[field.name] = field.value;
