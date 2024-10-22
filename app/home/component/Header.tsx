@@ -61,7 +61,7 @@ export function Header() {
         <Link className="text-sm font-medium text-gray-700 hover:text-indigo-600 transition-colors" href="#pricing">
           Pricing
         </Link>
-        {isLoggedIn && (
+        {isLoggedIn ? (
           <>
             <Link
               href="/uservcards"
@@ -83,8 +83,7 @@ export function Header() {
               Logout
             </button>
           </>
-        )}
-        {!isLoggedIn && (
+        ) : (
           <Link
             href="/login"
             className="text-sm font-medium text-gray-700 hover:text-indigo-600 transition-colors"
