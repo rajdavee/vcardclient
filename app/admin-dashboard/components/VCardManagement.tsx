@@ -150,9 +150,11 @@ export default function VCardManagement({ loadAdminData }: VCardManagementProps)
           <div className="bg-white p-8 rounded-lg shadow-xl max-w-2xl w-full">
             <h3 className="text-2xl font-bold mb-4">VCard Preview</h3>
             <VCardPreview
-              templateId={selectedVCard.templateId as TemplateId}
-              fields={selectedVCard.fields} 
-              qrCodeDataUrl={selectedVCard.qrCode}
+              previewData={{
+                templateId: selectedVCard.templateId as TemplateId,
+                fields: selectedVCard.fields,
+                qrCodeDataUrl: selectedVCard.qrCode
+              }}
             />
             <button
               onClick={() => setIsPreviewOpen(false)}
