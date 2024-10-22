@@ -17,9 +17,11 @@ const UserVCards: React.FC<UserVCardsProps> = ({ vCards }) => {
       {vCards.map((vCard) => (
         <div key={vCard._id} className="border rounded-lg overflow-hidden shadow-lg">
           <VCardPreview
-            templateId={vCard.templateId as TemplateId}
-            fields={vCard.fields}
-            qrCodeDataUrl={vCard.qrCode}
+            previewData={{
+              templateId: vCard.templateId as TemplateId,
+              fields: vCard.fields,
+              qrCodeDataUrl: vCard.qrCode
+            }}
           />
         </div>
       ))}
