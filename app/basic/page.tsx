@@ -7,6 +7,7 @@ import axios from 'axios';
 import { withAuth } from '../utils/withAuth';
 import Image from 'next/image';
 import ImageCropper from './components/ImageCropper';
+import api from '../utils/api';
 
 interface FormData {
   [key: string]: string | FileList;
@@ -28,10 +29,51 @@ const BasicVCardPage: React.FC = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [cropImage, setCropImage] = useState<string | null>(null);
   const [croppedImageUrl, setCroppedImageUrl] = useState<string | null>(null);
+  const [availableTemplates, setAvailableTemplates] = useState<TemplateId[]>([]);
 
   useEffect(() => {
     reset();
   }, [selectedTemplate, reset]);
+
+  useEffect(() => {
+    const fetchUserInfo = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        if (!token) {
+          throw new Error('No authentication token found');
+        }
+
+        const response = await api.get('/auth/user-info', {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+          },
+        });
+
+        console.log('User info response:', response.data);
+
+        const templates = response.data.plan.availableTemplates || [1];
+        setAvailableTemplates(templates);
+        setSelectedTemplate(templates[0]); // Set the first available template as default
+        console.log('Available templates:', templates);
+      } catch (error) {
+        console.error('Error fetching user info:', error instanceof Error ? error : new Error(String(error)));
+        // Add more detailed error logging here
+        if (error instanceof Error && 'response' in error) {
+          console.error('Response data:', (error as any).response.data);
+          console.error('Response status:', (error as any).response.status);
+          console.error('Response headers:', (error as any).response.headers);
+        } else if (error instanceof Error && 'request' in error) {
+          if (error instanceof Error && 'request' in error) {
+            console.error('No response received:', error.request);
+          } else {
+            console.error('Error setting up request:');
+          }
+        }
+      }
+    };
+
+    fetchUserInfo();
+  }, []);
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     setIsSubmitting(true);
@@ -174,7 +216,7 @@ const BasicVCardPage: React.FC = () => {
       
       <h2 className="text-2xl font-bold mb-4">Select a Template</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
-        {([1, 2, 3, 4, 5] as const).map((templateId) => (
+        {availableTemplates.map((templateId) => (
           <div
             key={templateId}
             className={`border p-4 rounded-lg cursor-pointer ${selectedTemplate === templateId ? 'border-blue-500' : ''}`}

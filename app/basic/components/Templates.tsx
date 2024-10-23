@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 
-export type TemplateId = 1 | 2 | 3 | 4 | 5;
+export type TemplateId = number; // Instead of 1 | 2 | 3 | 4 | 5
 
 interface TemplateProps {
   selectedTemplate: TemplateId;
@@ -9,12 +9,13 @@ interface TemplateProps {
   croppedImage: string | null;
 }
 
-export const templateFields: Record<TemplateId, string[]> = {
+export const templateFields: Record<number, string[]> = {
   1: ['name', 'jobTitle', 'phone', 'email', 'website', 'address', 'bio'],
   2: ['name', 'jobTitle', 'phone', 'email', 'website', 'address', 'city', 'postalCode', 'bio'],
   3: ['name', 'jobTitle', 'phone', 'email', 'website', 'address', 'workHours', 'bio'],
   4: ['firstName', 'lastName', 'jobTitle', 'phone', 'email', 'website', 'address', 'bio'],
   5: ['firstName', 'lastName', 'jobTitle', 'phone', 'alternatePhone', 'email', 'website', 'address', 'bio']
+  // Add more templates as needed
 };
 
 const Templates: React.FC<TemplateProps> = ({ selectedTemplate, fields, croppedImage }) => {
@@ -49,6 +50,7 @@ const Templates: React.FC<TemplateProps> = ({ selectedTemplate, fields, croppedI
   };
 
   const renderTemplate = (id: TemplateId) => {
+    console.log('Rendering template:', id); // Add this log
     switch (id) {
       case 1:
         return (
