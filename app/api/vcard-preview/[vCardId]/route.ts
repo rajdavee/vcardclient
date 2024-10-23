@@ -23,7 +23,7 @@ export async function GET(request: NextRequest, { params }: { params: { vCardId:
     console.log('Preview data fetched successfully');
     return NextResponse.json(response.data);
   } catch (error: any) {
-    console.error('Error fetching vCard preview:', error);
+    console.error('Error fetching vcard preview:', error);
     return NextResponse.json(
       { error: error.response?.data?.error || 'Error fetching vCard preview' },
       { status: error.response?.status || 500 }
