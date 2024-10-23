@@ -12,7 +12,7 @@ interface VCardData {
   fields: { name: string; value: string }[];
   qrCodeDataUrl: string;
 }
-
+  
 function PreviewPageContent() {
   const searchParams = useSearchParams();
   const [previewData, setPreviewData] = useState<VCardData | null>(null);
