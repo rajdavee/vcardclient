@@ -34,12 +34,12 @@ function PreviewPageContent() {
       console.log('Received preview data:', data);
       setPreviewData(data);
 
-      // Call handleScan function
+      // Call handleScan function only after successful preview fetch
       await vCardApi.handleScan(vCardId, 'Preview');
     } catch (err) {
-      console.error('Error fetching vCard preview or recording scan:', err);
+      console.error('Error fetching vCard preview:', err);
       if (axios.isAxiosError(err)) {
-        setError(`Failed to load vCard preview or record scan: ${err.response?.data?.error || err.message}`);
+        setError(`Failed to load vCard preview: ${err.response?.data?.error || err.message}`);
       } else {
         setError('An unexpected error occurred');
       }
