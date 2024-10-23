@@ -6,6 +6,7 @@ import { vCardApi } from '../api/vCardApi';
 import VCardPreview from '../components/VCardPreview';
 import LoadingSpinner from '../components/LoadingSpinner';
 import { TemplateId } from '../basic/components/Templates';
+import axios from 'axios';
 
 interface VCardData {
   templateId: TemplateId;
@@ -28,14 +29,20 @@ function PreviewPageContent() {
     }
 
     try {
+      console.log(`Fetching preview data for vCardId: ${vCardId}`);
       const data = await vCardApi.getVCardPreview(vCardId);
+      console.log('Received preview data:', data);
       setPreviewData(data);
 
       // Call handleScan function
       await vCardApi.handleScan(vCardId, 'Preview');
     } catch (err) {
       console.error('Error fetching vCard preview or recording scan:', err);
-      setError('Failed to load vCard preview or record scan');
+      if (axios.isAxiosError(err)) {
+        setError(`Failed to load vCard preview or record scan: ${err.response?.data?.error || err.message}`);
+      } else {
+        setError('An unexpected error occurred');
+      }
     } finally {
       setLoading(false);
     }

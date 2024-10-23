@@ -5,7 +5,9 @@ const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:5
 export const vCardApi = {
   getVCardPreview: async (vCardId: string) => {
     try {
-      const response = await axios.get(`${API_BASE_URL}/vcard-preview/${vCardId}`);
+      console.log(`Fetching vCard preview for ID: ${vCardId}`);
+      const response = await axios.get(`${API_BASE_URL}/public-vcard-preview/${vCardId}`);
+      console.log('Received vCard preview data:', response.data);
       return response.data;
     } catch (error) {
       console.error('Error fetching vCard preview:', error);
