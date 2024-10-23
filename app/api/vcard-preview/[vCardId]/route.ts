@@ -13,7 +13,7 @@ export async function GET(request: NextRequest, { params }: { params: { vCardId:
     console.log('IP Address:', ip);
     console.log('User Agent:', userAgent);
 
-    const response = await axios.get(`${API_URL}/auth/vcard-preview/${vCardId}`, {
+    const response = await axios.get(`${API_URL}/auth/public-vcard-preview/${vCardId}`, {
       headers: {
         'X-Forwarded-For': ip,
         'User-Agent': userAgent,
