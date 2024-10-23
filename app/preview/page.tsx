@@ -2,9 +2,9 @@
 
 import React, { useEffect, useState, useCallback, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
-import axios from 'axios';
+import { vCardApi } from '../api/vCardApi';
 import VCardPreview from '../components/VCardPreview';
-import LoadingSpinner from '../components/LoadingSpinner'; // Assume you have this component
+import LoadingSpinner from '../components/LoadingSpinner';
 import { TemplateId } from '../basic/components/Templates';
 
 interface VCardData {
@@ -28,11 +28,14 @@ function PreviewPageContent() {
     }
 
     try {
-      const response = await axios.get(`/api/vcard-preview/${vCardId}`);
-      setPreviewData(response.data);
+      const data = await vCardApi.getVCardPreview(vCardId);
+      setPreviewData(data);
+
+      // Call handleScan function
+      await vCardApi.handleScan(vCardId, 'Preview');
     } catch (err) {
-      console.error('Error fetching vCard preview:', err);
-      setError('Failed to load vCard preview');
+      console.error('Error fetching vCard preview or recording scan:', err);
+      setError('Failed to load vCard preview or record scan');
     } finally {
       setLoading(false);
     }
