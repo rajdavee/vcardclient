@@ -183,4 +183,29 @@ export const getUserVCards = async (userId: string) => {
   }
 };
 
+export const addTemplate = async (templateData: any) => {
+  try {
+    const response = await adminApi.post('/admin/templates', templateData);
+    return response.data;
+  } catch (error) {
+    console.error('Error adding template:', error);
+    throw error;
+  }
+};
+
+export const updatePlanTemplates = async (planName: string, templates: number[]) => {
+  try {
+    console.log(`Updating templates for plan: ${planName}`, templates);
+    const response = await adminApi.put(`/admin/plans/${planName}/templates`, { templates });
+    console.log('Update response:', response.data);
+    return response.data;
+  } catch (error) {
+    console.error('Error updating plan templates:', error);
+    if (axios.isAxiosError(error)) {
+      console.error('Error details:', error.response?.data);
+    }
+    throw error;
+  }
+};
+
 export default adminApi;
