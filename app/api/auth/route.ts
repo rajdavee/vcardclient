@@ -79,8 +79,8 @@ export async function POST(request: Request) {
         }
         break;
       case 'updateVCard':
-        const { vCardId, ...vCardData } = data;
-        endpoint = `${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/vcard/${vCardId}`;
+        const { vCardId: updateVCardId, ...vCardData } = data;
+        endpoint = `${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/vcard/${updateVCardId}`;
         method = 'PUT';
         body = JSON.stringify(vCardData);
         headers['Content-Type'] = 'application/json';
@@ -114,6 +114,22 @@ export async function POST(request: Request) {
         method = 'POST';
         body = JSON.stringify({ planName: data.planName, amount: data.amount });
         headers['Content-Type'] = 'application/json';
+        break;
+      case 'submitForm':
+        const { vCardId, name, email, message } = data;
+        endpoint = `${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/vcard/${vCardId}/submit-form`;
+        method = 'POST';
+        body = JSON.stringify({ 
+          name, 
+          email, 
+          message 
+        });
+        headers['Content-Type'] = 'application/json';
+        break;
+      case 'getFormSubmissions':
+        endpoint = `${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/vcard/${data.vCardId}/form-submissions`;
+        method = 'GET';
+        body = undefined;
         break;
       default:
         return NextResponse.json({ error: 'Invalid action' }, { status: 400 });
