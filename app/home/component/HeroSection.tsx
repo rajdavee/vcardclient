@@ -514,7 +514,7 @@ export function HeroSection() {
   return (
     <section className="relative w-full min-h-screen flex flex-col md:flex-row items-center justify-center bg-gradient-to-br from-indigo-50 to-white dark:from-gray-900 dark:to-gray-800 overflow-hidden">
       <div className="container mx-auto px-4 relative z-10">
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
+        <div className="grid lg:grid-cols-2 gap-12 items-center  mx-[6.7%]">
           {/* Left Content Section */}
           <motion.div 
             className="space-y-6"
