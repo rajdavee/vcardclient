@@ -328,126 +328,213 @@ const ProVCardPage: React.FC = () => {
   };
 
   return (
-    <div className="container mx-auto p-4">
-      <h1 className="text-3xl font-bold mb-4">Create Your Pro vCard</h1>
-      
-      <h2 className="text-2xl font-bold mb-4">Select a Template</h2>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
-        {availableTemplates.map((templateId) => (
-          <div
-            key={templateId}
-            className={`border p-4 rounded-lg cursor-pointer ${selectedTemplate === templateId ? 'border-blue-500' : ''}`}
-            onClick={() => setSelectedTemplate(templateId)}
-          >
-            <h3 className="text-xl font-bold mb-2">Template {templateId}</h3>
-            <Templates 
-              selectedTemplate={templateId} 
-              fields={watchedFields}
-              croppedImage={croppedImageUrl}
-            />
-          </div>
-        ))}
+    <div className="min-h-screen bg-gray-50">
+      {/* Header Section */}
+      <div className="bg-white shadow-sm border-b">
+        <div className="container mx-auto px-4 py-6">
+          <h1 className="text-3xl font-bold text-gray-800">Create Your Professional vCard</h1>
+          <p className="text-gray-600 mt-2">Design and customize your digital business card</p>
+        </div>
       </div>
 
-      {isLoading && <LoadingSpinner />}
-
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 mb-8">
-        {renderFormFields()}
-        <div>
-          <label htmlFor="profileImage" className="block mb-1">Profile Image</label>
-          <input type="file" onChange={handleImageSelect} className="w-full p-2 border rounded" />
-        </div>
-        <div>
-          <label htmlFor="skills" className="block mb-1">Key Skills (comma-separated)</label>
-          <input
-            {...register('skills')}
-            className="w-full p-2 border rounded"
-            id="skills"
-            placeholder="e.g., JavaScript, React, Node.js"
-          />
-        </div>
-        <div>
-          <button 
-            type="button" 
-            onClick={handleGenerateBio}
-            className="bg-green-500 text-white px-4 py-2 rounded mr-2"
-            disabled={isGeneratingBio}
-          >
-            {isGeneratingBio ? 'Generating...' : 'Generate AI Bio'}
-          </button>
-          <button 
-            type="submit" 
-            className="bg-blue-500 text-white px-4 py-2 rounded"
-            disabled={isSubmitting}
-          >
-            {isSubmitting ? 'Creating...' : 'Create vCard'}
-          </button>
-        </div>
-      </form>
-
-      {generatedBio && (
-        <div className="mt-4 p-4 bg-gray-100 rounded">
-          <h3 className="text-xl font-bold mb-2">Generated Bio</h3>
-          <p>{generatedBio}</p>
-          <button 
-            onClick={() => {
-              const bioField = document.getElementById('bio') as HTMLTextAreaElement;
-              if (bioField) {
-                bioField.value = generatedBio;
-              }
-            }}
-            className="mt-2 bg-blue-500 text-white px-4 py-2 rounded"
-          >
-            Use This Bio
-          </button>
-        </div>
-      )}
-
-      {cropImage && (
-        <div>
-          <ImageCropper
-            image={cropImage}
-            onCropComplete={handleCropComplete}
-            onCancel={handleCropCancel}
-          />
-          <button 
-            onClick={() => document.querySelector<HTMLElement>('.ReactCrop__crop-btn')?.click()}
-            className="bg-blue-500 text-white px-4 py-2 rounded mt-2"
-          >
-            Crop Image
-          </button>
-        </div>
-      )}
-
-      {message && <p className="mt-4 text-green-500">{message}</p>}
-
-      {vCardData && (
-        <div className="mt-8">
-          <h2 className="text-2xl font-bold mb-4">Your vCard</h2>
-          <button onClick={downloadVCard} className="bg-green-500 text-white px-4 py-2 rounded mb-4 mr-4">Download vCard</button>
-          <button onClick={viewVCardPreview} className="bg-blue-500 text-white px-4 py-2 rounded mb-4 mr-4">View vCard Preview</button>
-          <button onClick={copyPreviewLink} className="bg-yellow-500 text-white px-4 py-2 rounded mb-4 mr-4">Copy Preview Link</button>
-          {vCardData.qrCodeDataUrl && (
-            <>
-              <button onClick={downloadQRCode} className="bg-purple-500 text-white px-4 py-2 rounded mb-4">Download QR Code</button>
-              <div className="mb-4">
-                <h3 className="text-xl font-bold mb-2">QR Code</h3>
-                <Image src={vCardData.qrCodeDataUrl} alt="vCard QR Code" width={200} height={200} />
+      <div className="container mx-auto px-4 py-8">
+        {/* Template Selection */}
+        <div className="bg-white rounded-lg shadow-md p-6 mb-8">
+          <h2 className="text-2xl font-semibold text-gray-800 mb-4">Choose Your Template</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {availableTemplates.map((templateId) => (
+              <div
+                key={templateId}
+                onClick={() => setSelectedTemplate(templateId)}
+                className={`
+                  relative rounded-lg overflow-hidden transition-all duration-200 cursor-pointer
+                  ${selectedTemplate === templateId 
+                    ? 'ring-2 ring-blue-500 shadow-lg transform scale-[1.02]' 
+                    : 'hover:shadow-md hover:transform hover:scale-[1.01]'
+                  }
+                `}
+              >
+                <div className="aspect-w-16 aspect-h-9">
+                  <Templates 
+                    selectedTemplate={templateId} 
+                    fields={watchedFields}
+                    croppedImage={croppedImageUrl}
+                  />
+                </div>
+                <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4">
+                  <h3 className="text-white font-medium">Template {templateId}</h3>
+                </div>
               </div>
-            </>
-          )}
-          {vCardData.previewLink && (
-            <div className="mb-4">
-              <h3 className="text-xl font-bold mb-2">Preview Link</h3>
-              <p className="break-all">{vCardData.previewLink}</p>
-            </div>
-          )}
+            ))}
+          </div>
         </div>
-      )}
 
-      {renderScanData()}
+        {/* Form Section */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <div className="lg:col-span-2">
+            <div className="bg-white rounded-lg shadow-md p-6">
+              <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {renderFormFields()}
+                </div>
+
+                {/* Image Upload Section */}
+                <div className="border-t pt-6">
+                  <h3 className="text-lg font-medium text-gray-800 mb-4">Profile Image</h3>
+                  <div className="flex items-center space-x-4">
+                    {croppedImageUrl && (
+                      <div className="w-20 h-20 rounded-full overflow-hidden">
+                        <Image src={croppedImageUrl} alt="Profile" width={80} height={80} className="object-cover" />
+                      </div>
+                    )}
+                    <label className="flex-1">
+                      <div className="flex items-center justify-center w-full h-32 px-4 transition bg-white border-2 border-gray-300 border-dashed rounded-md appearance-none cursor-pointer hover:border-gray-400 focus:outline-none">
+                        <span className="flex items-center space-x-2">
+                          <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                          </svg>
+                          <span className="font-medium text-gray-600">
+                            Drop files to Attach, or browse
+                          </span>
+                        </span>
+                        <input type="file" onChange={handleImageSelect} className="hidden" />
+                      </div>
+                    </label>
+                  </div>
+                </div>
+
+                {/* AI Bio Generation */}
+                <div className="border-t pt-6">
+                  <h3 className="text-lg font-medium text-gray-800 mb-4">AI Bio Generation</h3>
+                  <div className="space-y-4">
+                    <button 
+                      type="button" 
+                      onClick={handleGenerateBio}
+                      className={`
+                        w-full flex items-center justify-center px-4 py-2 rounded-md text-white
+                        ${isGeneratingBio 
+                          ? 'bg-gray-400 cursor-not-allowed' 
+                          : 'bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700'
+                        }
+                      `}
+                      disabled={isGeneratingBio}
+                    >
+                      {isGeneratingBio ? (
+                        <>
+                          <LoadingSpinner />
+                          Generating...
+                        </>
+                      ) : (
+                        'Generate AI Bio'
+                      )}
+                    </button>
+                  </div>
+                </div>
+
+                {/* Submit Button */}
+                <div className="border-t pt-6">
+                  <button 
+                    type="submit" 
+                    className={`
+                      w-full flex items-center justify-center px-4 py-3 rounded-md text-white text-lg font-medium
+                      ${isSubmitting 
+                        ? 'bg-gray-400 cursor-not-allowed' 
+                        : 'bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700'
+                      }
+                    `}
+                    disabled={isSubmitting}
+                  >
+                    {isSubmitting ? (
+                      <>
+                        <LoadingSpinner />
+                        Creating...
+                      </>
+                    ) : (
+                      'Create vCard'
+                    )}
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+
+          {/* Preview & Actions Panel */}
+          <div className="lg:col-span-1">
+            <div className="sticky top-8">
+              <div className="bg-white rounded-lg shadow-md p-6">
+                <h3 className="text-lg font-medium text-gray-800 mb-4">Preview & Actions</h3>
+                {vCardData ? (
+                  <div className="space-y-4">
+                    {vCardData.qrCodeDataUrl && (
+                      <div className="flex justify-center p-4 bg-gray-50 rounded-lg">
+                        <Image src={vCardData.qrCodeDataUrl} alt="QR Code" width={200} height={200} />
+                      </div>
+                    )}
+                    <div className="grid grid-cols-1 gap-3">
+                      <button onClick={downloadVCard} className="btn-primary">Download vCard</button>
+                      <button onClick={viewVCardPreview} className="btn-secondary">Preview vCard</button>
+                      <button onClick={copyPreviewLink} className="btn-outline">Copy Share Link</button>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="text-center text-gray-500 py-8">
+                    Create your vCard to see preview and actions
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Analytics Section */}
+        {scanData && (
+          <div className="mt-8 bg-white rounded-lg shadow-md p-6">
+            <h2 className="text-2xl font-semibold text-gray-800 mb-6">Analytics Dashboard</h2>
+            <p>Total Scans: {scanData.totalScans}</p>
+            <h3 className="text-xl font-bold mt-4 mb-2">Recent Scans</h3>
+            <ul>
+              {scanData.recentScans.map((scan, index) => (
+                <li key={index}>
+                  {scan.scanDate} - {scan.location.city}, {scan.location.country}
+                </li>
+              ))}
+            </ul>
+            <h3 className="text-xl font-bold mt-4 mb-2">Location Breakdown</h3>
+            <ul>
+              {Object.entries(scanData.locationBreakdown).map(([location, count]) => (
+                <li key={location}>
+                  {location}: {count}
+                </li>
+              ))}
+            </ul>
+            <h3 className="text-xl font-bold mt-4 mb-2">Device Breakdown</h3>
+            <ul>
+              {Object.entries(scanData.deviceBreakdown).map(([device, count]) => (
+                <li key={device}>
+                  {device}: {count}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+      </div>
     </div>
   );
 };
+
+// Add these styles to your global CSS file
+const globalStyles = `
+  .btn-primary {
+    @apply w-full px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors;
+  }
+  
+  .btn-secondary {
+    @apply w-full px-4 py-2 bg-gray-800 text-white rounded-md hover:bg-gray-900 transition-colors;
+  }
+  
+  .btn-outline {
+    @apply w-full px-4 py-2 border-2 border-gray-300 text-gray-700 rounded-md hover:border-gray-400 transition-colors;
+  }
+`;
 
 export default withAuth(ProVCardPage, 'Pro');

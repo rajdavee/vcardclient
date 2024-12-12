@@ -14,12 +14,9 @@ export default function HomePage() {
       <Header />
       <main className="flex-1">
         <HeroSection />
-
-        <FeaturesSection />
-
-        <ExamplesSection />
         <FreeVcardGenerator />
-
+        <FeaturesSection />
+        <ExamplesSection />
         <PricingSection />
       </main>
       <Footer />

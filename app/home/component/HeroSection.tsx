@@ -2,7 +2,14 @@
 
 import React, { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import { Smartphone, Mail, Globe, ArrowRight } from "lucide-react"
+import { 
+  IdCard, 
+  ArrowRight, 
+  Globe, 
+  Zap, 
+  Share2, 
+  Sparkles 
+} from "lucide-react"
 import { motion } from "framer-motion"
 import dynamic from "next/dynamic"
 
@@ -485,62 +492,135 @@ export function HeroSection() {
       color: colors[Math.floor(Math.random() * (colors.length - 1))],
     },
   ];
- 
+
+  const featureHighlights = [
+    {
+      icon: Zap,
+      title: "Instant Creation",
+      description: "Design professional digital cards in minutes"
+    },
+    {
+      icon: Share2,
+      title: "Easy Sharing",
+      description: "Share your vCard across multiple platforms"
+    },
+    {
+      icon: Globe,
+      title: "Global Reach",
+      description: "Connect with professionals worldwide"
+    }
+  ]
+
   return (
-    <section className="w-full min-h-screen py-12 md:py-24 lg:py-32 xl:py-48 bg-gradient-to-br from-indigo-100 to-white dark:from-gray-900 dark:to-gray-800 overflow-hidden">
-      <div className="container px-4 md:px-6 relative z-10">  
-        <div className="grid gap-6 lg:grid-cols-[1fr_600px] lg:gap-12 xl:grid-cols-[1fr_800px]">
+    <section className="relative w-full min-h-screen flex flex-col md:flex-row items-center justify-center bg-gradient-to-br from-indigo-50 to-white dark:from-gray-900 dark:to-gray-800 overflow-hidden">
+      <div className="container mx-auto px-4 relative z-10">
+        <div className="grid lg:grid-cols-2 gap-12 items-center">
+          {/* Left Content Section */}
           <motion.div 
-            className="flex flex-col justify-center space-y-4"
+            className="space-y-6"
             initial={{ opacity: 0, x: -50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8 }}
           >
-            <div className="space-y-2">
-              <h1 className="text-3xl font-bold tracking-tighter sm:text-5xl xl:text-6xl/none bg-clip-text text-transparent bg-gradient-to-r from-indigo-500 to-purple-600">
-                Your Digital Identity, Reimagined
-              </h1>
-              <p className="max-w-[600px] text-gray-600 dark:text-gray-300 md:text-xl">
-                Create stunning digital business cards that leave a lasting impression. Connect globally with vCard Pro.
+            {/* Hero Title */}
+            <div className="space-y-4">
+              <motion.div 
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2, duration: 0.6 }}
+              >
+                <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600 leading-tight">
+                  Transform Your Professional Identity
+                </h1>
+              </motion.div>
+
+              <p className="text-lg text-gray-600 dark:text-gray-300 max-w-xl">
+                Create stunning digital business cards that make lasting impressions. Connect, share, and grow your professional network effortlessly.
               </p>
             </div>
-            <div className="flex flex-col gap-2 min-[400px]:flex-row">
-              <button 
+
+            {/* CTA Buttons */}
+            <div className="flex flex-col sm:flex-row gap-4">
+              <motion.button 
                 onClick={handleGetStarted}
                 disabled={isLoading}
-                className="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:opacity-50 h-11 px-8 bg-indigo-600 text-white hover:bg-indigo-700"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="flex items-center justify-center px-6 py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors group"
               >
                 {isLoading ? 'Loading...' : (isAuthenticated ? 'Go to Dashboard' : 'Get Started')}
-                <ArrowRight className="ml-2 h-4 w-4" />
-              </button>
-              <button className="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 h-11 px-8 border border-input bg-background hover:bg-accent hover:text-accent-foreground text-indigo-600 border-indigo-600 hover:bg-indigo-50 dark:text-indigo-400 dark:border-indigo-400 dark:hover:bg-indigo-950">
+                <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+              </motion.button>
+
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="flex items-center justify-center px-6 py-3 border border-indigo-600 text-indigo-600 rounded-lg hover:bg-indigo-50 transition-colors group"
+              >
                 Learn More
-              </button>
+                <Sparkles className="ml-2 h-5 w-5 text-indigo-600 group-hover:rotate-45 transition-transform" />
+              </motion.button>
+            </div>
+
+            {/* Feature Highlights */}
+            <div className="grid grid-cols-3 gap-4 pt-6">
+              {featureHighlights.map((feature, index) => (
+                <motion.div
+                  key={feature.title}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.4 + index * 0.2, duration: 0.6 }}
+                  className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow"
+                >
+                  <feature.icon className="h-8 w-8 text-indigo-600 mb-2" />
+                  <h3 className="font-semibold text-gray-800 dark:text-white">{feature.title}</h3>
+                  <p className="text-xs text-gray-600 dark:text-gray-300">{feature.description}</p>
+                </motion.div>
+              ))}
             </div>
           </motion.div>
+
+          {/* Right Globe Visualization */}
           <motion.div 
-            className="relative w-full h-[400px] lg:h-[600px] rounded-lg overflow-hidden shadow-2xl"
+            className="relative w-full h-[500px] rounded-lg overflow-hidden"
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
           >
             <World data={sampleArcs} globeConfig={globeConfig} />
             <div className="absolute inset-0 bg-gradient-to-t from-indigo-500/20 to-transparent pointer-events-none" />
+            
+            {/* Global Network Overlay */}
             <motion.div 
-              className="absolute bottom-4 left-4 right-4 bg-white/90 dark:bg-gray-800/90 p-4 rounded-lg shadow-lg"
+              className="absolute bottom-6 left-6 right-6 bg-white/90 dark:bg-gray-800/90 p-5 rounded-lg shadow-xl"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 1 }}
             >
-              <h3 className="text-lg font-semibold text-gray-800 dark:text-white mb-2">Global Connections</h3>
-              <p className="text-sm text-gray-600 dark:text-gray-300">
-                vCard Pro connects professionals across the globe. Visualize your network's reach and potential.
-              </p>
+              <div className="flex items-center space-x-3">
+                <IdCard className="h-10 w-10 text-indigo-600" />
+                <div>
+                  <h3 className="text-lg font-bold text-gray-800 dark:text-white">Global Professional Network</h3>
+                  <p className="text-sm text-gray-600 dark:text-gray-300">
+                    Connect with professionals across 150+ countries
+                  </p>
+                </div>
+              </div>
             </motion.div>
           </motion.div>
         </div>
       </div>
-      {error && <p className="text-red-500 mt-2">{error}</p>}
+
+      {/* Error Handling */}
+      {error && (
+        <motion.div 
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          className="fixed bottom-4 right-4 bg-red-500 text-white px-4 py-2 rounded-lg shadow-lg"
+        >
+          {error}
+        </motion.div>
+      )}
     </section>
   )
 }
