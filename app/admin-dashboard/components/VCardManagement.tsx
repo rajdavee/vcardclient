@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Edit3, Trash2, Eye, ChevronLeft, ChevronRight, Search, Filter, Download, AlertCircle } from 'lucide-react';
+import { Edit3, Trash2, Eye, ChevronLeft, ChevronRight, Search, Filter, AlertCircle, MoreHorizontal } from 'lucide-react';
 import { getAllVCards, deleteVCard } from '../../api/admin';
 import VCardModal from './VCardModal';
 import VCardPreview from '../../components/VCardPreview';
 import { TemplateId } from '@/app/basic/components/Templates';
 import LoadingSpinner from '../../components/LoadingSpinner';
-import { theme } from '../theme-constants'; // Ensure you import the theme
+import './VCardManagement.css'; // Import custom CSS for styling
 
 interface VCardManagementProps {
   loadAdminData: () => void;
@@ -40,7 +40,7 @@ export default function VCardManagement({ loadAdminData }: VCardManagementProps)
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedTemplate, setSelectedTemplate] = useState<number | 'all'>('all');
   const cardsPerPage = 6;
-  const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
+  const [openDropdown, setOpenDropdown] = useState<string | null>(null); // State to manage dropdown visibility
 
   useEffect(() => {
     fetchVCards();
@@ -116,60 +116,6 @@ export default function VCardManagement({ loadAdminData }: VCardManagementProps)
   const currentCards = filteredCards.slice(indexOfFirstCard, indexOfLastCard);
   const totalPages = Math.ceil(filteredCards.length / cardsPerPage);
 
-  const getTemplateStyle = (templateId: number) => {
-    const styles = {
-      1: {
-        gradient: 'from-sky-400 to-blue-500',
-        lightBg: 'bg-sky-50',
-        textColor: 'text-sky-600',
-        borderColor: 'border-sky-100',
-        iconColor: 'text-sky-500',
-        hoverBg: 'hover:bg-sky-50'
-      },
-      2: {
-        gradient: 'from-emerald-400 to-teal-500',
-        lightBg: 'bg-emerald-50',
-        textColor: 'text-emerald-600',
-        borderColor: 'border-emerald-100',
-        iconColor: 'text-emerald-500',
-        hoverBg: 'hover:bg-emerald-50'
-      },
-      3: {
-        gradient: 'from-violet-400 to-purple-500',
-        lightBg: 'bg-violet-50',
-        textColor: 'text-violet-600',
-        borderColor: 'border-violet-100',
-        iconColor: 'text-violet-500',
-        hoverBg: 'hover:bg-violet-50'
-      },
-      4: {
-        gradient: 'from-amber-400 to-orange-500',
-        lightBg: 'bg-amber-50',
-        textColor: 'text-amber-600',
-        borderColor: 'border-amber-100',
-        iconColor: 'text-amber-500',
-        hoverBg: 'hover:bg-amber-50'
-      },
-      5: {
-        gradient: 'from-rose-400 to-pink-500',
-        lightBg: 'bg-rose-50',
-        textColor: 'text-rose-600',
-        borderColor: 'border-rose-100',
-        iconColor: 'text-rose-500',
-        hoverBg: 'hover:bg-rose-50'
-      },
-      6: {
-        gradient: 'from-indigo-400 to-purple-500',
-        lightBg: 'bg-indigo-50',
-        textColor: 'text-indigo-600',
-        borderColor: 'border-indigo-100',
-        iconColor: 'text-indigo-500',
-        hoverBg: 'hover:bg-indigo-50'
-      }
-    };
-    return styles[templateId as keyof typeof styles] || styles[1];
-  };
-
   const formatDate = (dateString: string | undefined) => {
     if (!dateString) return 'N/A';
     const date = new Date(dateString);
@@ -223,139 +169,72 @@ export default function VCardManagement({ loadAdminData }: VCardManagementProps)
             <p className="text-lg font-medium">No vCards found</p>
             <p className="text-sm">Try adjusting your filters</p>
           </div>
-        ) : viewMode === 'grid' ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {currentCards.map((vCard) => {
-              const style = getTemplateStyle(vCard.templateId);
-              return (
-                <div 
-                  key={vCard._id} 
-                  className={`group relative bg-white rounded-xl overflow-hidden transition-all duration-300 hover:shadow-xl border ${style.borderColor}`}
-                >
-                  {/* Gradient Header */}
-                  <div className={`bg-gradient-to-r ${style.gradient} p-4 text-white`}>
-                    <div className="flex justify-between items-start">
-                      <div>
-                        <h4 className="text-lg font-semibold">
-                          {vCard.fields.find(field => field.name === 'name')?.value || 'Unnamed vCard'}
-                        </h4>
-                        <p className="text-sm opacity-90">{getUserEmail(vCard)}</p>
-                      </div>
-                      <span className={`px-3 py-1 text-xs font-medium rounded-full ${style.lightBg} ${style.textColor}`}>
-                        Template {vCard.templateId}
-                      </span>
-                    </div>
-                  </div>
-                  
-                  <div className="p-4">
-                    {/* Card Stats */}
-                    <div className="grid grid-cols-2 gap-4 mb-4">
-                      <div className={`${style.lightBg} rounded-lg p-3`}>
-                        <p className="text-xs text-gray-600">Last Updated</p>
-                        <p className={`text-sm font-medium ${style.textColor}`}>
-                          {formatDate(vCard.lastUpdated)}
-                        </p>
-                      </div>
-                      <div className={`${style.lightBg} rounded-lg p-3`}>
-                        <p className="text-xs text-gray-600">Total Scans</p>
-                        <p className={`text-sm font-medium ${style.textColor}`}>
-                          {vCard.scanCount || 0}
-                        </p>
-                      </div>
-                    </div>
-
-                    {/* Action Buttons */}
-                    <div className="flex justify-end gap-2 pt-2">
-                      <button
-                        onClick={() => {
-                          setSelectedVCard(vCard);
-                          setIsPreviewOpen(true);
-                        }}
-                        className={`p-2 rounded-lg ${style.hoverBg} ${style.iconColor} transition-colors`}
-                        title="Preview"
-                      >
-                        <Eye size={18} />
-                      </button>
-                      <button
-                        onClick={() => {
-                          setSelectedVCard(vCard);
-                          setIsModalOpen(true);
-                        }}
-                        className={`p-2 rounded-lg ${style.hoverBg} ${style.iconColor} transition-colors`}
-                        title="Edit"
-                      >
-                        <Edit3 size={18} />
-                      </button>
-                      <button
-                        onClick={() => handleDeleteVCard(vCard._id)}
-                        className="p-2 rounded-lg hover:bg-red-50 text-red-600 transition-colors"
-                        title="Delete"
-                      >
-                        <Trash2 size={18} />
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
         ) : (
-          <div className="bg-white rounded-xl shadow-sm overflow-hidden">
-            <div className="divide-y divide-gray-200">
-              {currentCards.map((vCard) => {
-                const style = getTemplateStyle(vCard.templateId);
-                return (
-                  <div 
-                    key={vCard._id}
-                    className={`group transition-colors ${style.hoverBg}`}
-                  >
-                    <div className="flex items-center p-4">
-                      <div className={`w-1.5 h-16 rounded-r-full bg-gradient-to-b ${style.gradient} mr-4`} />
-                      <div className="flex-1 min-w-0">
-                        <h4 className="text-lg font-medium text-gray-900">
-                          {vCard.fields.find(field => field.name === 'name')?.value || 'Unnamed vCard'}
-                        </h4>
-                        <p className="text-sm text-gray-500">{getUserEmail(vCard)}</p>
-                        <div className="flex items-center gap-4 mt-1">
-                          <span className={`text-sm ${style.textColor}`}>
-                            <span className="font-medium">{vCard.scanCount || 0}</span> scans
-                          </span>
-                          <span className="text-sm text-gray-500">
-                            Updated {formatDate(vCard.lastUpdated)}
-                          </span>
+          <div className="overflow-x-auto">
+            <table className="min-w-full bg-white border border-gray-300">
+              <thead>
+                <tr className="bg-gray-200">
+                  <th className="py-2 px-4 border-b">Name</th>
+                  <th className="py-2 px-4 border-b">Email</th>
+                  <th className="py-2 px-4 border-b">Last Updated</th>
+                  <th className="py-2 px-4 border-b">Total Scans</th>
+                  <th className="py-2 px-4 border-b">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {currentCards.map((vCard) => (
+                  <tr key={vCard._id} className="hover:bg-gray-100 transition duration-200">
+                    <td className="py-2 px-4 border-b">{vCard.fields.find(field => field.name === 'name')?.value || 'Unnamed vCard'}</td>
+                    <td className="py-2 px-4 border-b">{getUserEmail(vCard)}</td>
+                    <td className="py-2 px-4 border-b">{formatDate(vCard.lastUpdated)}</td>
+                    <td className="py-2 px-4 border-b">{vCard.scanCount || 0}</td>
+                    <td className="py-2 px-4 border-b relative">
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation(); // Prevent row click
+                          setOpenDropdown(openDropdown === vCard._id ? null : vCard._id); // Toggle dropdown
+                        }}
+                        className="text-gray-500 hover:text-gray-700"
+                        title="More options"
+                      >
+                        <MoreHorizontal size={20} />
+                      </button>
+                      {/* Dropdown Menu */}
+                      {openDropdown === vCard._id && (
+                        <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-300 rounded-lg shadow-lg">
+                          <ul className="py-1">
+                            <li>
+                              <button 
+                                onClick={() => { setSelectedVCard(vCard); setIsPreviewOpen(true); setOpenDropdown(null); }}
+                                className="flex items-center block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
+                              >
+                                <Eye className="mr-2" /> Preview
+                              </button>
+                            </li>
+                            <li>
+                              <button
+                                onClick={() => { setSelectedVCard(vCard); setIsModalOpen(true); setOpenDropdown(null); }}
+                                className="flex items-center block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
+                              >
+                                <Edit3 className="mr-2" /> Edit
+                              </button>
+                            </li>
+                            <li>
+                              <button
+                                onClick={() => { handleDeleteVCard(vCard._id); setOpenDropdown(null); }}
+                                className="flex items-center block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
+                              >
+                                <Trash2 className="mr-2" /> Delete
+                              </button>
+                            </li>
+                          </ul>
                         </div>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <button
-                          onClick={() => {
-                            setSelectedVCard(vCard);
-                            setIsPreviewOpen(true);
-                          }}
-                          className={`p-2 rounded-lg ${style.hoverBg} ${style.iconColor} transition-colors`}
-                        >
-                          <Eye size={18} />
-                        </button>
-                        <button
-                          onClick={() => {
-                            setSelectedVCard(vCard);
-                            setIsModalOpen(true);
-                          }}
-                          className={`p-2 rounded-lg ${style.hoverBg} ${style.iconColor} transition-colors`}
-                        >
-                          <Edit3 size={18} />
-                        </button>
-                        <button
-                          onClick={() => handleDeleteVCard(vCard._id)}
-                          className="p-2 rounded-lg hover:bg-red-50 text-red-600 transition-colors"
-                        >
-                          <Trash2 size={18} />
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
+                      )}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         )}
 
