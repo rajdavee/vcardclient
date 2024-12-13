@@ -24,5 +24,10 @@ export const theme = {
   background: {
     main: '#F9FAFB', // Gray-50
     paper: '#FFFFFF',
+  },
+  // New colors for a more professional look
+  neutral: {
+    light: '#F3F4F6', // Light gray
+    dark: '#1F2937', // Dark gray
   }
-} 
+}; 

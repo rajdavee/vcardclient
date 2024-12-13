@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { X, Save, AlertCircle } from 'lucide-react';
 import { updateVCard } from '../../api/admin';
 import LoadingSpinner from '../../components/LoadingSpinner';
+import { theme } from '../theme-constants'; // Ensure you import the theme
 
 interface VCardModalProps {
   vCard: {
@@ -72,13 +73,10 @@ export default function VCardModal({ vCard, onClose, onSave }: VCardModalProps) 
     <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
       <div className="bg-white rounded-xl shadow-xl max-w-2xl w-full max-h-[90vh] overflow-hidden">
         {/* Header */}
-        <div className={`bg-gradient-to-r ${getTemplateStyle(vCard.templateId)} p-6 text-white`}>
+        <div className={`bg-gray-800 p-6 text-white`}>
           <div className="flex justify-between items-center">
             <h2 className="text-2xl font-bold">Edit vCard</h2>
-            <button
-              onClick={onClose}
-              className="p-2 hover:bg-white/10 rounded-lg transition-colors"
-            >
+            <button onClick={onClose} className="p-2 hover:bg-gray-700 rounded-lg transition-colors">
               <X size={20} />
             </button>
           </div>
@@ -92,31 +90,15 @@ export default function VCardModal({ vCard, onClose, onSave }: VCardModalProps) 
               <div key={index} className="group">
                 <div className="flex items-center gap-2 mb-2">
                   <span className="text-xl">{getFieldIcon(field.name)}</span>
-                  <label className="text-sm font-medium text-gray-700 capitalize">
-                    {field.name}
-                  </label>
+                  <label className="text-sm font-medium text-gray-700 capitalize">{field.name}</label>
                 </div>
-                {field.name === 'bio' ? (
-                  <textarea
-                    value={field.value}
-                    onChange={(e) => handleFieldChange(index, e.target.value)}
-                    className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-sky-400 focus:border-transparent transition-all min-h-[100px] resize-y"
-                    placeholder={`Enter your ${field.name}`}
-                  />
-                ) : (
-                  <div className="relative group">
-                    <input
-                      type={field.name === 'email' ? 'email' : 'text'}
-                      value={field.value}
-                      onChange={(e) => handleFieldChange(index, e.target.value)}
-                      className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-sky-400 focus:border-transparent transition-all pr-10"
-                      placeholder={`Enter your ${field.name}`}
-                    />
-                    <div className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 opacity-0 group-hover:opacity-100 transition-opacity">
-                      {getFieldIcon(field.name)}
-                    </div>
-                  </div>
-                )}
+                <input
+                  type={field.name === 'email' ? 'email' : 'text'}
+                  value={field.value}
+                  onChange={(e) => handleFieldChange(index, e.target.value)}
+                  className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-gray-500 focus:border-transparent transition-all"
+                  placeholder={`Enter your ${field.name}`}
+                />
               </div>
             ))}
           </div>
@@ -130,29 +112,12 @@ export default function VCardModal({ vCard, onClose, onSave }: VCardModalProps) 
 
           {/* Actions */}
           <div className="mt-8 flex justify-end gap-4">
-            <button
-              type="button"
-              onClick={onClose}
-              className="px-6 py-2.5 rounded-lg border border-gray-200 text-gray-600 hover:bg-gray-50 transition-colors"
-            >
+            <button type="button" onClick={onClose} className="px-6 py-2.5 rounded-lg border border-gray-200 text-gray-600 hover:bg-gray-50 transition-colors">
               Cancel
             </button>
-            <button
-              type="submit"
-              disabled={isLoading}
-              className="px-6 py-2.5 rounded-lg bg-gradient-to-r from-sky-400 to-blue-500 text-white hover:shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
-            >
-              {isLoading ? (
-                <>
-                  <LoadingSpinner />
-                  Saving...
-                </>
-              ) : (
-                <>
-                  <Save size={18} />
-                  Save Changes
-                </>
-              )}
+            <button type="submit" disabled={isLoading} className="px-6 py-2.5 rounded-lg bg-gray-800 text-white hover:shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2">
+              {isLoading ? <LoadingSpinner /> : <Save size={18} />}
+              Save Changes
             </button>
           </div>
         </form>

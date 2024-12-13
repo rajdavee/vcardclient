@@ -5,6 +5,7 @@ import VCardModal from './VCardModal';
 import VCardPreview from '../../components/VCardPreview';
 import { TemplateId } from '@/app/basic/components/Templates';
 import LoadingSpinner from '../../components/LoadingSpinner';
+import { theme } from '../theme-constants'; // Ensure you import the theme
 
 interface VCardManagementProps {
   loadAdminData: () => void;
@@ -176,22 +177,9 @@ export default function VCardManagement({ loadAdminData }: VCardManagementProps)
   };
 
   return (
-    <div className="bg-white shadow-lg rounded-xl overflow-hidden">
+    <div className="p-4 bg-white rounded-lg shadow-md">
       {/* Header */}
-      <div className="px-6 py-4 border-b flex justify-between items-center">
-        <div>
-          <h3 className="text-xl font-bold text-gray-900">VCard Management</h3>
-          <p className="text-sm text-gray-500 mt-1">
-            Manage and monitor all vCards
-          </p>
-        </div>
-        <div className="flex items-center space-x-3">
-          <button className="px-4 py-2 text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors flex items-center">
-            <Download size={18} className="mr-2" />
-            Export
-          </button>
-        </div>
-      </div>
+      <h2 className="text-2xl font-bold text-gray-800 mb-4">VCard Management</h2>
 
       {/* Filters */}
       <div className="p-6 border-b grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">

@@ -45,8 +45,8 @@ export default function Sidebar({ sidebarOpen, toggleSidebar, activeTab, setActi
       title: 'Management',
       items: [
         { name: 'Users', icon: <Users size={20} />, badge: 12 },
-        { name: 'vCards', icon: <CreditCard size={20} /> },
-        { name: 'Payments', icon: <Wallet size={20} /> },
+        { name: 'vCards', icon: <CreditCard size={20} />, badge: 0 },
+        { name: 'Plan Templates', icon: <Wallet size={20} />, badge: 0 },
       ]
     },
     {
