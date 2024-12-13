@@ -9,10 +9,11 @@ import UserManagement from './components/UserManagement'
 import VCardManagement from './components/VCardManagement'
 import PlanTemplateManagement from './components/PlanTemplateManagement'
 import LoadingSpinner from '../components/LoadingSpinner'
+import NewAdminDashboard from './components/NewAdminDashboard'
 
 export default function AdminDashboard() {
   const [sidebarOpen, setSidebarOpen] = useState(false)
-  const [activeTab, setActiveTab] = useState('Users')
+  const [activeTab, setActiveTab] = useState('Dashboard')
   const [adminData, setAdminData] = useState<any>(null)
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -51,6 +52,7 @@ export default function AdminDashboard() {
         <TopBar toggleSidebar={toggleSidebar} activeTab={activeTab} />
         <main className="flex-1 overflow-x-hidden overflow-y-auto bg-gray-100">
           <div className="container mx-auto px-6 py-8">
+            {activeTab === 'Dashboard' && <NewAdminDashboard />}
             {activeTab === 'Users' && <UserManagement users={adminData.users} loadAdminData={loadAdminData} />}
             {activeTab === 'vCards' && <VCardManagement loadAdminData={loadAdminData} />}
             {activeTab === 'Plan Templates' && <PlanTemplateManagement />}

@@ -66,18 +66,17 @@ export function Footer() {
   ]
 
   return (
-    <footer className="bg-gray-50 py-12 border-t">
-      <div className="container mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-8">
-        {/* Brand Section */}
-        <div className="space-y-4">
-          <div className="flex items-center space-x-2">
+    <footer className="bg-gray-50 py-8 border-t  mx-[5%]">
+  <div className="container  px-4 grid grid-cols-1 md:grid-cols-4 gap-2">
+        <div className="space-y-2 ">
+          <div className="flex items-center space-x-2 ">
             <Mail className="h-8 w-8 text-indigo-600" />
             <span className="text-2xl font-bold text-gray-900">vCard Pro</span>
           </div>
           <p className="text-sm text-gray-600">
             Create professional digital business cards with ease. Connect, share, and grow your network.
           </p>
-          <div className="flex space-x-4">
+          <div className="flex space-x-4 ">
             {socialLinks.map((social) => (
               <Link
                 key={social.label}
@@ -93,9 +92,9 @@ export function Footer() {
         </div>
 
         {/* Quick Links */}
-        <div>
-          <h4 className="font-semibold text-gray-900 mb-4">Quick Links</h4>
-          <nav className="space-y-2">
+        <div >
+          <h4 className="font-semibold text-gray-900 mb-2">Quick Links</h4>
+          <nav className="space-y-1">
             {quickLinks.map((link) => (
               <Link
                 key={link.href}
@@ -110,8 +109,8 @@ export function Footer() {
 
         {/* Legal Links */}
         <div>
-          <h4 className="font-semibold text-gray-900 mb-4">Legal</h4>
-          <nav className="space-y-2">
+          <h4 className="font-semibold text-gray-900 mb-2">Legal</h4>
+          <nav className="space-y-1">
             {legalLinks.map((link) => (
               <Link
                 key={link.href}
@@ -126,7 +125,7 @@ export function Footer() {
 
         {/* Newsletter Signup */}
         <div>
-          <h4 className="font-semibold text-gray-900 mb-4">Stay Updated</h4>
+          <h4 className="font-semibold text-gray-900 mb-2">Stay Updated</h4>
           <form className="space-y-2">
             <input
               type="email"
@@ -144,7 +143,7 @@ export function Footer() {
       </div>
 
       {/* Copyright Section */}
-      <div className="container mx-auto px-4 mt-8 pt-6 border-t text-center">
+      <div className="container mx-auto px-4 mt-6 pt-4 border-t text-center">
         <p className="flex items-center justify-center text-sm text-gray-600">
           <Copyright className="h-4 w-4 mr-2" />
           {currentYear} vCard Pro. All rights reserved.

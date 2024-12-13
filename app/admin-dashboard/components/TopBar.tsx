@@ -97,6 +97,13 @@ export default function TopBar({ toggleSidebar, activeTab }: TopBarProps) {
     ));
   };
 
+  const handleLogout = () => {
+    // Clear user session data (this is just an example, adjust as needed)
+    localStorage.removeItem('userSession'); // or any other session management logic
+    // Redirect to login page or home page
+    window.location.href = '/login'; // Adjust the path as necessary
+  };
+
   return (
     <header className="bg-white border-b border-gray-200 z-50">
       <div className="flex items-center justify-between px-4 py-3">
@@ -227,7 +234,7 @@ export default function TopBar({ toggleSidebar, activeTab }: TopBarProps) {
                   <span>Settings</span>
                 </button>
                 <div className="border-t border-gray-100 my-1"></div>
-                <button className="w-full px-4 py-2 text-sm text-red-600 hover:bg-red-50 flex items-center space-x-2">
+                <button className="w-full px-4 py-2 text-sm text-red-600 hover:bg-red-50 flex items-center space-x-2" onClick={handleLogout}>
                   <LogOut size={16} />
                   <span>Logout</span>
                 </button>

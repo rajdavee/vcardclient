@@ -38,7 +38,10 @@ export default function Sidebar({ sidebarOpen, toggleSidebar, activeTab, setActi
       title: 'Main',
       items: [
         { name: 'Dashboard', icon: <LayoutDashboard size={20} /> },
-        { name: 'Analytics', icon: <BarChart2 size={20} />, badge: 'New' },
+        { name: 'Users', icon: <Users size={20} />, badge: 12 },
+        { name: 'vCards', icon: <CreditCard size={20} /> },
+        { name: 'Plan Templates', icon: <Wallet size={20} /> },
+        { name: 'Admin Dashboard', icon: <BarChart2 size={20} /> },
       ]
     },
     {
@@ -58,6 +61,13 @@ export default function Sidebar({ sidebarOpen, toggleSidebar, activeTab, setActi
       ]
     }
   ]
+
+  const handleLogout = () => {
+    // Clear user session data (this is just an example, adjust as needed)
+    localStorage.removeItem('userSession'); // or any other session management logic
+    // Redirect to login page or home page
+    window.location.href = '/login'; // Adjust the path as necessary
+  };
 
   return (
     <aside 
@@ -137,6 +147,7 @@ export default function Sidebar({ sidebarOpen, toggleSidebar, activeTab, setActi
       <div className="p-4 border-t">
         <button 
           className="w-full flex items-center justify-between px-4 py-2 text-gray-600 hover:text-red-600 rounded-lg hover:bg-red-50 transition-colors"
+          onClick={handleLogout}
         >
           <div className="flex items-center space-x-3">
             <LogOut size={20} />
