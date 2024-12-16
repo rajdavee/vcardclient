@@ -482,12 +482,10 @@ END:VCARD`}
         );
       case 8:
         return (
-          <div className="group w-[400px] h-[250px]" style={{ perspective: '1000px' }}>
+          <div className="group w-[635px] h-[388px]" style={{ perspective: '1000px' }}>
             <div 
               className="relative w-full h-full duration-1000 ease-in-out transition-transform group-hover:[transform:rotateY(180deg)]" 
-              style={{ 
-                transformStyle: 'preserve-3d'
-              }}
+              style={{ transformStyle: 'preserve-3d' }}
             >
               {/* Front of the card (Company Name only) */}
               <div className="absolute w-full h-full bg-[#1E1E1E] rounded-xl p-6"
@@ -499,7 +497,7 @@ END:VCARD`}
                     <div className="w-[40%] h-full bg-red-500"></div>
                   </div>
                   {/* Company name centered between the lines */}
-                  <div className="text-white text-4xl font-bold z-10 px-4 bg-[#1E1E1E]">
+                  <div className="text-white text-6xl font-bold z-10 px-4 bg-[#1E1E1E]">
                     {fields.companyName || 'ZERO DESIGN'}
                   </div>
                 </div>
@@ -512,48 +510,71 @@ END:VCARD`}
                      transform: 'rotateY(180deg)'
                    }}>
                 <div className="relative w-full h-full">
-                  {/* Profile Section */}
-                  <div className="flex items-start gap-3">
-                    <div className="w-10 h-10 bg-red-500 rounded-full flex items-center justify-center flex-shrink-0">
-                      <span className="text-white text-xl lowercase">
-                        {(fields.name && fields.name.length > 0) ? fields.name.charAt(0) : 'r'}
-                      </span>
+                  <div className="w-[calc(100%-160px)] pr-4">
+                    {/* Profile Section with conditional rendering */}
+                    <div className="flex items-start gap-4">
+                      {croppedImage ? (
+                        // Show uploaded profile image if available
+                        <div className="w-16 h-16 rounded-full overflow-hidden flex-shrink-0">
+                          <Image 
+                            src={croppedImage}
+                            alt="Profile"
+                            width={64}
+                            height={64}
+                            className="w-full h-full object-cover"
+                          />
+                        </div>
+                      ) : (
+                        // Show fallback initial circle if no image
+                        <div className="w-16 h-16 bg-red-500 rounded-full flex items-center justify-center flex-shrink-0">
+                          <span className="text-white text-3xl lowercase">
+                            {(fields.name && fields.name.length > 0) ? fields.name.charAt(0) : 'r'}
+                          </span>
+                        </div>
+                      )}
+                      <div>
+                        <h2 className="text-white text-3xl font-medium">{fields.name || 'raj dave'}</h2>
+                        <p className="text-gray-400 text-xl mt-1">{fields.jobTitle || 'developer'}</p>
+                      </div>
                     </div>
-                    <div>
-                      <h2 className="text-white text-xl font-medium">{fields.name || 'raj dave'}</h2>
-                      <p className="text-gray-400 text-sm">{fields.jobTitle || 'developer'}</p>
+
+                    {/* Company Name with Line */}
+                    <div className="mt-12">
+                      <div className="flex items-center gap-4">
+                        <span className="text-4xl text-white">{fields.companyName || 'zero design'}</span>
+                        <div className="h-[2px] flex-grow bg-red-500"></div>
+                      </div>
+                    </div>
+
+                    {/* Contact Details */}
+                    <div className="space-y-6 mt-12">
+                      <div className="flex items-center text-gray-300 text-xl">
+                        <Phone size={24} className="mr-4" />
+                        <span>{fields.phone || '9106532603'}</span>
+                      </div>
+                      <div className="flex items-center text-gray-300 text-xl">
+                        <Globe size={24} className="mr-4" />
+                        <a 
+                          href={fields.website || 'https://portfolio-ten-kappa-86.vercel.app'} 
+                          target="_blank" 
+                          rel="noopener noreferrer" 
+                          className="truncate hover:text-white transition-colors duration-200"
+                        >
+                          {fields.website || 'https://portfolio-ten-kappa-86.vercel.app'}
+                        </a>
+                      </div>
+                      <div className="flex items-center text-gray-300 text-xl">
+                        <MapPin size={24} className="mr-4" />
+                        <span>{fields.address || 'gandhigram-7'}</span>
+                      </div>
                     </div>
                   </div>
 
-                  {/* Company Name with Line */}
-                  <div className="mt-6">
-                    <div className="flex items-center gap-2">
-                      <span className="text-2xl text-white">{fields.companyName || 'zero design'}</span>
-                      <div className="h-[2px] flex-grow bg-red-500"></div>
-                    </div>
-                  </div>
-
-                  {/* Contact Details */}
-                  <div className="space-y-3 mt-6">
-                    <div className="flex items-center text-gray-300">
-                      <Phone size={18} className="mr-3" />
-                      <span>{fields.phone || '9106532603'}</span>
-                    </div>
-                    <div className="flex items-center text-gray-300">
-                      <Globe size={18} className="mr-3" />
-                      <span className="truncate">{fields.website || 'https://portfolio-ten-kappa-86.vercel'}</span>
-                    </div>
-                    <div className="flex items-center text-gray-300">
-                      <MapPin size={18} className="mr-3" />
-                      <span>{fields.address || 'gandhigram-7'}</span>
-                    </div>
-                  </div>
-
-                  {/* QR Code */}
-                  <div className="absolute bottom-6 right-6 w-24 h-24">
+                  {/* QR Code - Fixed position at bottom right */}
+                  <div className="absolute bottom-0 right-0 w-32 h-32">
                     <QRCode 
                       value={`BEGIN:VCARD\nVERSION:3.0\nFN:${fields.name || ''}\nTITLE:${fields.jobTitle || ''}\nTEL:${fields.phone || ''}\nURL:${fields.website || ''}\nADR:${fields.address || ''}\nORG:${fields.companyName || ''}\nEND:VCARD`}
-                      size={96}
+                      size={128}
                       level="L"
                       className="w-full h-full bg-white p-2 rounded-lg"
                     />
