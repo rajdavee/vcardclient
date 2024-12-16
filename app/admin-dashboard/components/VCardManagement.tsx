@@ -170,14 +170,14 @@ export default function VCardManagement({ loadAdminData }: VCardManagementProps)
             <p className="text-sm">Try adjusting your filters</p>
           </div>
         ) : (
-          <div className="flex overflow-x-auto space-x-4">
+          <div className="flex overflow-hidden space-x-4">
             {currentCards.map((vCard) => (
-              <div key={vCard._id} className="bg-gradient-to-r from-blue-400 to-purple-500 rounded-lg shadow-lg p-4 w-64 transition-transform transform hover:scale-105">
-                <h3 className="font-bold text-lg text-white">{vCard.fields.find(field => field.name === 'name')?.value || 'Unnamed vCard'}</h3>
+              <div key={vCard._id} className="bg-gradient-to-r from-gray-100 to-gray-200 rounded-lg shadow-lg p-4 w-1/3 transition-transform transform relative group hover:shadow-xl hover:scale-105 mx-2 border border-gray-300">
+                <h3 className="font-bold text-xl mb-2" style={{ color: ' #DA70D6' }}>{vCard.fields.find(field => field.name === 'name')?.value || 'Unnamed vCard'}</h3>
                 
                 {/* Preview of vCard */}
                 <div className="relative my-2">
-                  <div className="h-16 w-full bg-white rounded-lg overflow-hidden transition-all duration-300 hover:h-48">
+                  <div className="h-32 w-full bg-gray-200 rounded-lg overflow-hidden transition-all duration-300 hover:h-48">
                     <VCardPreview
                       previewData={{
                         templateId: vCard.templateId as TemplateId,
@@ -188,22 +188,44 @@ export default function VCardManagement({ loadAdminData }: VCardManagementProps)
                   </div>
                 </div>
 
-                {/* Additional Information */}
-                <p className="text-white">{getUserEmail(vCard)}</p>
-                <p className="text-white">{formatDate(vCard.lastUpdated)}</p>
-                <p className="text-white">Total Scans: {vCard.scanCount || 0}</p>
+                {/* Information Section with Partitions */}
+                <div className="border-t border-gray-300 pt-2 mt-2">
+                  <p className="text-gray-700">Email: <span className="font-semibold">{getUserEmail(vCard)}</span></p>
+                  <p className="text-gray-700">Last Updated: <span className="font-semibold">{formatDate(vCard.lastUpdated)}</span></p>
+                  <p className="text-gray-700">Total Scans: <span className="font-semibold">{vCard.scanCount || 0}</span></p>
+                </div>
 
                 {/* Action Buttons */}
-                <div className="flex justify-between mt-2">
-                  <button onClick={() => { setSelectedVCard(vCard); setIsPreviewOpen(true); }} className="action-button">
+                <div className="flex justify-between mt-4">
+                  <button 
+                    onClick={(e) => { e.stopPropagation(); setSelectedVCard(vCard); setIsPreviewOpen(true); }} 
+                    className="action-button bg-blue-600 text-white hover:bg-blue-700 transition-colors rounded-full shadow-md px-4 py-2 flex items-center"
+                  >
                     <Eye className="mr-2" /> Preview
                   </button>
-                  <button onClick={() => { setSelectedVCard(vCard); setIsModalOpen(true); }} className="action-button">
+                  <button 
+                    onClick={(e) => { e.stopPropagation(); setSelectedVCard(vCard); setIsModalOpen(true); }} 
+                    className="action-button bg-green-600 text-white hover:bg-green-700 transition-colors rounded-full shadow-md px-4 py-2 flex items-center"
+                  >
                     <Edit3 className="mr-2" /> Edit
                   </button>
-                  <button onClick={() => { handleDeleteVCard(vCard._id); }} className="action-button">
+                  <button 
+                    onClick={(e) => { e.stopPropagation(); handleDeleteVCard(vCard._id); }} 
+                    className="action-button bg-red-600 text-white hover:bg-red-700 transition-colors rounded-full shadow-md px-4 py-2 flex items-center"
+                  >
                     <Trash2 className="mr-2" /> Delete
                   </button>
+                </div>
+
+                {/* Preview on hover */}
+                <div className="absolute left-0 top-full mt-2 w-64 bg-white rounded-lg shadow-lg p-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-20">
+                  <VCardPreview
+                    previewData={{
+                      templateId: vCard.templateId as TemplateId,
+                      fields: vCard.fields,
+                      qrCodeDataUrl: vCard.qrCode
+                    }}
+                  />
                 </div>
               </div>
             ))}
@@ -252,17 +274,16 @@ export default function VCardManagement({ loadAdminData }: VCardManagementProps)
       )}
       {isPreviewOpen && selectedVCard && (
         <div 
-          className="fixed inset-0 bg-black/50 overflow-y-auto h-full w-full flex items-center justify-center z-50"
-          onClick={() => setIsPreviewOpen(false)}
+          className="fixed inset-0 bg-black/50 flex items-center justify-center z-50" 
+          onMouseLeave={() => setSelectedVCard(null)}
         >
           <div 
             className="bg-white p-8 rounded-xl shadow-xl max-w-2xl w-full mx-4"
-            onClick={e => e.stopPropagation()}
           >
             <div className="flex justify-between items-center mb-4">
               <h3 className="text-2xl font-bold">VCard Preview</h3>
               <button
-                onClick={() => setIsPreviewOpen(false)}
+                onClick={() => setSelectedVCard(null)}
                 className="text-gray-500 hover:text-gray-700"
               >
                 ×

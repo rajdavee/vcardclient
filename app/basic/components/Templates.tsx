@@ -3,6 +3,8 @@ import Image from 'next/image';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-hot-toast';
 import { usePathname } from 'next/navigation';
+import QRCode from 'react-qr-code';
+import { Phone, Mail, Globe, MapPin } from 'react-feather';
 
 export type TemplateId = number; // Instead of 1 | 2 | 3 | 4 | 5
 
@@ -19,7 +21,8 @@ export const templateFields: Record<number, string[]> = {
   3: ['name', 'jobTitle', 'phone', 'email', 'website', 'address', 'workHours', 'bio'],
   4: ['firstName', 'lastName', 'jobTitle', 'phone', 'email', 'website', 'address', 'bio'],
   5: ['firstName', 'lastName', 'jobTitle', 'phone', 'alternatePhone', 'email', 'website', 'address', 'bio'],
-  6: ['name', 'jobTitle', 'phone', 'email', 'website', 'address', 'bio']
+  6: ['name', 'jobTitle', 'phone', 'email', 'website', 'address', 'bio'],
+  7: ['name', 'jobTitle', 'phone', 'email', 'website', 'address']
   // Add more templates as needed
 };
 
@@ -422,6 +425,58 @@ const Templates: React.FC<TemplateProps> = ({ selectedTemplate, fields, croppedI
             
             <div className="absolute top-0 right-0 w-32 h-32 bg-purple-200 rounded-full -z-10 transform translate-x-1/2 -translate-y-1/2 opacity-50"></div>
             <div className="absolute bottom-0 left-0 w-24 h-24 bg-indigo-200 rounded-full -z-10 transform -translate-x-1/3 translate-y-1/3 opacity-50"></div>
+          </div>
+        );
+      case 7:
+        return (
+          <div className="bg-[#363636] text-white rounded-xl shadow-lg overflow-hidden w-[635px] h-[388px] p-8 flex relative">
+            {/* QR Code Section */}
+            <div className="flex-shrink-0 flex items-center justify-center mr-6">
+              <QRCode 
+                value={`BEGIN:VCARD
+VERSION:3.0
+FN:${fields.name || 'Your Name'}
+TITLE:${fields.jobTitle || 'Your Job Title'}
+TEL:${fields.phone || 'Your Phone'}
+EMAIL:${fields.email || 'Your Email'}
+URL:${fields.website || 'Your Website'}
+ADR:;;${fields.address || 'Your Address'}
+END:VCARD`}
+                size={180}
+                level="L"
+                className="bg-white p-2"
+              />
+            </div>
+
+            {/* Centered Vertical Line */}
+            <div className="h-[277px] w-[1.5px] bg-gradient-to-b from-[#555555] to-[#D9D9D9]"></div>
+
+            {/* Contact Information */}
+            <div className="flex flex-col justify-center space-y-4 ml-6 pl-6">
+              <div className="space-y-1">
+                <h1 className="text-2xl font-bold tracking-wide">{fields.name || 'Your Name'}</h1>
+                <p className="text-gray-300">{fields.jobTitle || 'Your Job Title'}</p>
+              </div>
+
+              <div className="space-y-3 mt-4">
+                <div className="flex items-center gap-3">
+                  <Phone size={18} className="text-gray-300" />
+                  <span>{fields.phone || 'Your Phone'}</span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <Mail size={18} className="text-gray-300" />
+                  <span>{fields.email || 'Your Email'}</span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <Globe size={18} className="text-gray-300" />
+                  <span>{fields.website || 'Your Website'}</span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <MapPin size={18} className="text-gray-300" />
+                  <span>{fields.address || 'Your Address'}</span>
+                </div>
+              </div>
+            </div>
           </div>
         );
       default:

@@ -133,3 +133,18 @@ p {
 .overflow-hidden {
   overflow: hidden; /* Prevent overflow of the preview */
 }
+
+/* Hide scroll bars */
+.flex.overflow-hidden {
+  overflow-x: auto; /* Allow horizontal scrolling */
+  overflow-y: hidden; /* Hide vertical scrolling */
+}
+
+.flex.overflow-hidden::-webkit-scrollbar {
+  display: none; /* Hide scrollbar for Chrome, Safari, and Opera */
+}
+
+.flex.overflow-hidden {
+  -ms-overflow-style: none; /* Hide scrollbar for Internet Explorer and Edge */
+  scrollbar-width: none; /* Hide scrollbar for Firefox */
+}
