@@ -177,16 +177,55 @@ const BasicVCardPage: React.FC = () => {
   };
 
   const renderFormFields = () => {
-    return templateFields[selectedTemplate].map((field) => (
-      <div key={field}>
-        <label htmlFor={field} className="block mb-1">{field.charAt(0).toUpperCase() + field.slice(1)}</label>
-        <input
-          {...register(field)}
-          className="w-full p-2 border rounded"
-          id={field}
-        />
+    // Get the fields specific to the selected template
+    const fieldsForTemplate = templateFields[selectedTemplate];
+    
+    return (
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {fieldsForTemplate.map((field) => {
+          let placeholder = '';
+          switch (field) {
+            case 'companyName':
+              placeholder = 'Enter company name';
+              break;
+            case 'name':
+              placeholder = 'Enter your full name';
+              break;
+            case 'jobTitle':
+              placeholder = 'Enter your designation';
+              break;
+            case 'phone':
+              placeholder = 'Enter phone number';
+              break;
+            case 'email':
+              placeholder = 'Enter email address';
+              break;
+            case 'website':
+              placeholder = 'Enter website URL';
+              break;
+            case 'address':
+              placeholder = 'Enter your address';
+              break;
+            default:
+              placeholder = `Enter your ${field}`;
+          }
+
+          return (
+            <div key={field} className="space-y-1">
+              <label htmlFor={field} className="block text-sm font-medium text-gray-700">
+                {field.charAt(0).toUpperCase() + field.slice(1).replace(/([A-Z])/g, ' $1')}
+              </label>
+              <input
+                {...register(field)}
+                className="w-full p-2 border rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                id={field}
+                placeholder={placeholder}
+              />
+            </div>
+          );
+        })}
       </div>
-    ));
+    );
   };
 
   const handleImageSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -258,9 +297,7 @@ const BasicVCardPage: React.FC = () => {
           <div className="lg:col-span-2">
             <div className="bg-white rounded-lg shadow-md p-6">
               <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  {renderFormFields()}
-                </div>
+                {renderFormFields()}
 
                 {/* Image Upload Section */}
                 <div className="border-t pt-6">

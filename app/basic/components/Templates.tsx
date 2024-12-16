@@ -15,14 +15,15 @@ interface TemplateProps {
   vCardId?: string;
 }
 
-export const templateFields: Record<number, string[]> = {
-  1: ['name', 'jobTitle', 'phone', 'email', 'website', 'address', 'bio'],
-  2: ['name', 'jobTitle', 'phone', 'email', 'website', 'address', 'city', 'postalCode', 'bio'],
-  3: ['name', 'jobTitle', 'phone', 'email', 'website', 'address', 'workHours', 'bio'],
-  4: ['firstName', 'lastName', 'jobTitle', 'phone', 'email', 'website', 'address', 'bio'],
-  5: ['firstName', 'lastName', 'jobTitle', 'phone', 'alternatePhone', 'email', 'website', 'address', 'bio'],
-  6: ['name', 'jobTitle', 'phone', 'email', 'website', 'address', 'bio'],
-  7: ['name', 'jobTitle', 'phone', 'email', 'website', 'address']
+export const templateFields: Record<TemplateId, string[]> = {
+  1: ['name', 'jobTitle', 'phone', 'email', 'website', 'address'],
+  2: ['name', 'jobTitle', 'phone', 'email', 'website', 'address'],
+  3: ['name', 'jobTitle', 'phone', 'email', 'website', 'address'],
+  4: ['name', 'jobTitle', 'phone', 'email', 'website', 'address'],
+  5: ['name', 'jobTitle', 'phone', 'email', 'website', 'address'],
+  6: ['name', 'jobTitle', 'phone', 'email', 'website', 'address'],
+  7: ['name', 'jobTitle', 'phone', 'email', 'website', 'address'],
+  8: ['companyName', 'name', 'jobTitle', 'phone', 'website', 'address']
   // Add more templates as needed
 };
 
@@ -474,6 +475,89 @@ END:VCARD`}
                 <div className="flex items-center gap-3">
                   <MapPin size={18} className="text-gray-300" />
                   <span>{fields.address || 'Your Address'}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        );
+      case 8:
+        return (
+          <div className="group w-[400px] h-[250px]" style={{ perspective: '1000px' }}>
+            <div 
+              className="relative w-full h-full duration-1000 ease-in-out transition-transform group-hover:[transform:rotateY(180deg)]" 
+              style={{ 
+                transformStyle: 'preserve-3d'
+              }}
+            >
+              {/* Front of the card (Company Name only) */}
+              <div className="absolute w-full h-full bg-[#1E1E1E] rounded-xl p-6"
+                   style={{ backfaceVisibility: 'hidden' }}>
+                <div className="relative w-full h-full flex items-center justify-center">
+                  {/* Red lines on either side of the company name */}
+                  <div className="absolute w-full h-[2px] top-1/2 -translate-y-1/2 flex justify-between items-center">
+                    <div className="w-[40%] h-full bg-red-500"></div>
+                    <div className="w-[40%] h-full bg-red-500"></div>
+                  </div>
+                  {/* Company name centered between the lines */}
+                  <div className="text-white text-4xl font-bold z-10 px-4 bg-[#1E1E1E]">
+                    {fields.companyName || 'ZERO DESIGN'}
+                  </div>
+                </div>
+              </div>
+
+              {/* Back of the card (Contact Information) */}
+              <div className="absolute w-full h-full bg-[#1E1E1E] rounded-xl p-8"
+                   style={{ 
+                     backfaceVisibility: 'hidden',
+                     transform: 'rotateY(180deg)'
+                   }}>
+                <div className="relative w-full h-full">
+                  {/* Profile Section */}
+                  <div className="flex items-start gap-3">
+                    <div className="w-10 h-10 bg-red-500 rounded-full flex items-center justify-center flex-shrink-0">
+                      <span className="text-white text-xl lowercase">
+                        {(fields.name && fields.name.length > 0) ? fields.name.charAt(0) : 'r'}
+                      </span>
+                    </div>
+                    <div>
+                      <h2 className="text-white text-xl font-medium">{fields.name || 'raj dave'}</h2>
+                      <p className="text-gray-400 text-sm">{fields.jobTitle || 'developer'}</p>
+                    </div>
+                  </div>
+
+                  {/* Company Name with Line */}
+                  <div className="mt-6">
+                    <div className="flex items-center gap-2">
+                      <span className="text-2xl text-white">{fields.companyName || 'zero design'}</span>
+                      <div className="h-[2px] flex-grow bg-red-500"></div>
+                    </div>
+                  </div>
+
+                  {/* Contact Details */}
+                  <div className="space-y-3 mt-6">
+                    <div className="flex items-center text-gray-300">
+                      <Phone size={18} className="mr-3" />
+                      <span>{fields.phone || '9106532603'}</span>
+                    </div>
+                    <div className="flex items-center text-gray-300">
+                      <Globe size={18} className="mr-3" />
+                      <span className="truncate">{fields.website || 'https://portfolio-ten-kappa-86.vercel'}</span>
+                    </div>
+                    <div className="flex items-center text-gray-300">
+                      <MapPin size={18} className="mr-3" />
+                      <span>{fields.address || 'gandhigram-7'}</span>
+                    </div>
+                  </div>
+
+                  {/* QR Code */}
+                  <div className="absolute bottom-6 right-6 w-24 h-24">
+                    <QRCode 
+                      value={`BEGIN:VCARD\nVERSION:3.0\nFN:${fields.name || ''}\nTITLE:${fields.jobTitle || ''}\nTEL:${fields.phone || ''}\nURL:${fields.website || ''}\nADR:${fields.address || ''}\nORG:${fields.companyName || ''}\nEND:VCARD`}
+                      size={96}
+                      level="L"
+                      className="w-full h-full bg-white p-2 rounded-lg"
+                    />
+                  </div>
                 </div>
               </div>
             </div>
