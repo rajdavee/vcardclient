@@ -7,12 +7,13 @@ import {
   Maximize, 
   Minimize,
   Settings,
-  User,
+  Shield,
   HelpCircle,
   LogOut,
-  Mail
+  Mail,
+  User,
+  Crown
 } from 'lucide-react';
-import { theme } from '../theme-constants';
 
 interface TopBarProps {
   toggleSidebar: () => void;
@@ -36,27 +37,19 @@ export default function TopBar({ toggleSidebar, activeTab }: TopBarProps) {
   const [notifications, setNotifications] = useState<Notification[]>([
     {
       id: 1,
-      type: 'message',
-      title: 'New Message',
-      description: 'You have a new message from Sarah',
+      type: 'alert',
+      title: 'System Update',
+      description: 'New features have been deployed',
       time: '5m ago',
       read: false
     },
     {
       id: 2,
-      type: 'alert',
-      title: 'System Update',
-      description: 'System maintenance scheduled',
+      type: 'message',
+      title: 'New User Registration',
+      description: 'A new enterprise user has joined',
       time: '1h ago',
       read: false
-    },
-    {
-      id: 3,
-      type: 'update',
-      title: 'Update Available',
-      description: 'New version 2.0.0 is available',
-      time: '2h ago',
-      read: true
     }
   ]);
 
@@ -98,32 +91,30 @@ export default function TopBar({ toggleSidebar, activeTab }: TopBarProps) {
   };
 
   const handleLogout = () => {
-    // Clear user session data (this is just an example, adjust as needed)
-    localStorage.removeItem('userSession'); // or any other session management logic
-    // Redirect to login page or home page
-    window.location.href = '/login'; // Adjust the path as necessary
+    localStorage.removeItem('token');
+    window.location.href = '/login';
   };
 
   return (
-    <header className="bg-white border-b border-gray-200 z-50">
-      <div className="flex items-center justify-between px-4 py-3">
+    <header className="sticky top-0 z-40 bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800">
+      <div className="flex items-center justify-between px-4 h-16">
         {/* Left Section */}
-        <div className="flex items-center space-x-4">
+        <div className="flex items-center gap-4">
           <button 
             onClick={toggleSidebar} 
-            className="text-gray-500 hover:text-primary-main focus:outline-none focus:text-primary-main md:hidden"
+            className="p-2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 md:hidden"
           >
             <Menu size={24} />
           </button>
-          <nav className="hidden md:flex items-center space-x-1">
-            <span className="text-gray-400">/</span>
-            <span className="text-primary-main font-medium">{activeTab}</span>
+          <nav className="hidden md:flex items-center gap-2 text-sm">
+            <span className="text-gray-400 dark:text-gray-500">/</span>
+            <span className="font-medium text-blue-600 dark:text-blue-400">{activeTab}</span>
           </nav>
         </div>
 
         {/* Right Section */}
-        <div className="flex items-center space-x-4">
-          {/* Search Bar */}
+        <div className="flex items-center gap-3">
+          {/* Search */}
           <div className="relative hidden md:block">
             <input
               type="text"
@@ -131,17 +122,18 @@ export default function TopBar({ toggleSidebar, activeTab }: TopBarProps) {
               onFocus={() => setSearchFocused(true)}
               onBlur={() => setSearchFocused(false)}
               className={`
-                w-64 bg-gray-50 text-gray-700 rounded-lg 
-                py-2 px-4 pl-10 transition-all duration-200
+                w-64 bg-gray-50 dark:bg-gray-800 text-gray-700 dark:text-gray-200 
+                rounded-lg py-2 px-4 pl-10 transition-all duration-200
+                border border-transparent
                 ${searchFocused 
-                  ? 'w-80 bg-white ring-2 ring-primary-light' 
-                  : 'hover:bg-gray-100'
+                  ? 'w-80 border-blue-500 ring-2 ring-blue-500/20 bg-white dark:bg-gray-900' 
+                  : 'hover:bg-gray-100 dark:hover:bg-gray-800/80'
                 }
               `}
             />
             <Search 
               className={`absolute left-3 top-2.5 transition-colors duration-200 ${
-                searchFocused ? 'text-primary-main' : 'text-gray-400'
+                searchFocused ? 'text-blue-500' : 'text-gray-400'
               }`} 
               size={18} 
             />
@@ -151,45 +143,52 @@ export default function TopBar({ toggleSidebar, activeTab }: TopBarProps) {
           <div className="relative" ref={notificationRef}>
             <button 
               onClick={() => setShowNotifications(!showNotifications)}
-              className="relative p-2 text-gray-500 hover:bg-primary-light/10 hover:text-primary-main rounded-lg transition-colors"
+              className="relative p-2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 
+                rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
             >
               <Bell size={20} />
               {unreadNotifications > 0 && (
-                <span className="absolute -top-1 -right-1 h-5 w-5 bg-error-main text-white text-xs font-medium rounded-full flex items-center justify-center">
+                <span className="absolute -top-1 -right-1 h-5 w-5 bg-red-500 text-white text-xs 
+                  font-medium rounded-full flex items-center justify-center">
                   {unreadNotifications}
                 </span>
               )}
             </button>
 
-            {/* Notifications Dropdown */}
             {showNotifications && (
-              <div className="absolute right-0 mt-2 w-80 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-50">
-                <div className="px-4 py-2 border-b border-gray-100">
-                  <h3 className="font-semibold text-gray-900">Notifications</h3>
+              <div className="absolute right-0 mt-2 w-80 bg-white dark:bg-gray-900 rounded-lg 
+                shadow-lg border border-gray-200 dark:border-gray-700 py-2">
+                <div className="px-4 py-2 border-b border-gray-200 dark:border-gray-700">
+                  <h3 className="font-semibold text-gray-900 dark:text-gray-100">Notifications</h3>
                 </div>
                 <div className="max-h-96 overflow-y-auto">
                   {notifications.map((notification) => (
                     <div 
                       key={notification.id}
                       onClick={() => markNotificationAsRead(notification.id)}
-                      className={`px-4 py-3 hover:bg-gray-50 cursor-pointer transition-colors ${
-                        !notification.read ? 'bg-blue-50/50' : ''
-                      }`}
+                      className={`px-4 py-3 hover:bg-gray-50 dark:hover:bg-gray-800/50 cursor-pointer 
+                        transition-colors ${!notification.read ? 'bg-blue-50/50 dark:bg-blue-900/20' : ''}`}
                     >
-                      <div className="flex items-start space-x-3">
+                      <div className="flex items-start gap-3">
                         <div className={`p-2 rounded-full ${
-                          notification.type === 'message' ? 'bg-blue-100 text-blue-600' :
-                          notification.type === 'alert' ? 'bg-red-100 text-red-600' :
-                          'bg-green-100 text-green-600'
+                          notification.type === 'message' ? 'bg-blue-100 dark:bg-blue-900/50 text-blue-600 dark:text-blue-400' :
+                          notification.type === 'alert' ? 'bg-red-100 dark:bg-red-900/50 text-red-600 dark:text-red-400' :
+                          'bg-green-100 dark:bg-green-900/50 text-green-600 dark:text-green-400'
                         }`}>
                           {notification.type === 'message' ? <Mail size={16} /> :
                            notification.type === 'alert' ? <Bell size={16} /> :
                            <HelpCircle size={16} />}
                         </div>
                         <div>
-                          <p className="text-sm font-medium text-gray-900">{notification.title}</p>
-                          <p className="text-sm text-gray-500">{notification.description}</p>
-                          <p className="text-xs text-gray-400 mt-1">{notification.time}</p>
+                          <p className="text-sm font-medium text-gray-900 dark:text-gray-100">
+                            {notification.title}
+                          </p>
+                          <p className="text-sm text-gray-500 dark:text-gray-400">
+                            {notification.description}
+                          </p>
+                          <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">
+                            {notification.time}
+                          </p>
                         </div>
                       </div>
                     </div>
@@ -202,7 +201,8 @@ export default function TopBar({ toggleSidebar, activeTab }: TopBarProps) {
           {/* Fullscreen Toggle */}
           <button 
             onClick={toggleFullscreen} 
-            className="p-2 text-gray-500 hover:bg-primary-light/10 hover:text-primary-main rounded-lg transition-colors"
+            className="p-2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 
+              rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
           >
             {isFullscreen ? <Minimize size={20} /> : <Maximize size={20} />}
           </button>
@@ -211,30 +211,50 @@ export default function TopBar({ toggleSidebar, activeTab }: TopBarProps) {
           <div className="relative" ref={userMenuRef}>
             <button 
               onClick={() => setShowUserMenu(!showUserMenu)}
-              className="flex items-center space-x-3 p-2 rounded-lg hover:bg-primary-light/10 transition-colors"
+              className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 
+                transition-colors"
             >
-              <img 
-                className="h-8 w-8 rounded-full ring-2 ring-primary-light object-cover" 
-                src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" 
-                alt="User avatar" 
-              />
-              <span className="hidden md:inline-block font-medium text-gray-700">John Doe</span>
-              <ChevronDown size={16} className="text-gray-500" />
+              <div className="relative h-8 w-8 rounded-full bg-blue-600 flex items-center justify-center">
+                <Crown className="h-4 w-4 text-white" />
+              </div>
+              <div className="hidden md:block text-left">
+                <p className="text-sm font-medium text-gray-700 dark:text-gray-200">
+                  System Admin
+                </p>
+                <p className="text-xs text-gray-500 dark:text-gray-400">
+                  Super Admin
+                </p>
+              </div>
+              <ChevronDown size={16} className="text-gray-500 dark:text-gray-400" />
             </button>
 
-            {/* User Dropdown */}
             {showUserMenu && (
-              <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-1 z-50">
-                <button className="w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 flex items-center space-x-2">
-                  <User size={16} />
-                  <span>Profile</span>
+              <div className="absolute right-0 mt-2 w-56 bg-white dark:bg-gray-900 rounded-lg 
+                shadow-lg border border-gray-200 dark:border-gray-700 py-1">
+                <div className="px-4 py-2 border-b border-gray-200 dark:border-gray-700">
+                  <p className="text-sm font-medium text-gray-900 dark:text-gray-100">
+                    System Administrator
+                  </p>
+                  <p className="text-xs text-gray-500 dark:text-gray-400">
+                    admin@system.com
+                  </p>
+                </div>
+                <button className="w-full px-4 py-2 text-sm text-gray-700 dark:text-gray-200 
+                  hover:bg-gray-50 dark:hover:bg-gray-800 flex items-center gap-2">
+                  <Shield size={16} />
+                  <span>Admin Panel</span>
                 </button>
-                <button className="w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 flex items-center space-x-2">
+                <button className="w-full px-4 py-2 text-sm text-gray-700 dark:text-gray-200 
+                  hover:bg-gray-50 dark:hover:bg-gray-800 flex items-center gap-2">
                   <Settings size={16} />
                   <span>Settings</span>
                 </button>
-                <div className="border-t border-gray-100 my-1"></div>
-                <button className="w-full px-4 py-2 text-sm text-red-600 hover:bg-red-50 flex items-center space-x-2" onClick={handleLogout}>
+                <div className="border-t border-gray-200 dark:border-gray-700 my-1"></div>
+                <button 
+                  onClick={handleLogout}
+                  className="w-full px-4 py-2 text-sm text-red-600 dark:text-red-400 
+                    hover:bg-red-50 dark:hover:bg-red-900/20 flex items-center gap-2"
+                >
                   <LogOut size={16} />
                   <span>Logout</span>
                 </button>

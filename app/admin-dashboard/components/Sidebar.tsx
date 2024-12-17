@@ -2,17 +2,12 @@ import React from 'react'
 import { 
   LayoutDashboard, 
   Users, 
-  BarChart2, 
   CreditCard, 
-  Wallet, 
-  Settings,
-  Bell,
-  HelpCircle,
+  FileStack,
   LogOut,
-  ChevronRight,
+  Menu,
   X 
 } from 'lucide-react'
-import { theme } from '../theme-constants'
 
 interface SidebarProps {
   sidebarOpen: boolean
@@ -22,140 +17,130 @@ interface SidebarProps {
 }
 
 interface NavItem {
+  id: string
   name: string
   icon: React.ReactNode
-  badge?: number | string
-}
-
-interface NavGroup {
-  title: string
-  items: NavItem[]
+  description: string
 }
 
 export default function Sidebar({ sidebarOpen, toggleSidebar, activeTab, setActiveTab }: SidebarProps) {
-  const navigation: NavGroup[] = [
+  const navigation: NavItem[] = [
     {
-      title: 'Main',
-      items: [
-        { name: 'Dashboard', icon: <LayoutDashboard size={20} /> },
-        { name: 'Users', icon: <Users size={20} />, badge: 12 },
-        { name: 'vCards', icon: <CreditCard size={20} /> },
-        { name: 'Plan Templates', icon: <Wallet size={20} /> },
-        { name: 'Admin Dashboard', icon: <BarChart2 size={20} /> },
-      ]
+      id: 'dashboard',
+      name: 'Dashboard',
+      icon: <LayoutDashboard size={20} />,
+      description: 'Overview and analytics'
     },
     {
-      title: 'Management',
-      items: [
-        { name: 'Users', icon: <Users size={20} />, badge: 12 },
-        { name: 'vCards', icon: <CreditCard size={20} />, badge: 0 },
-        { name: 'Plan Templates', icon: <Wallet size={20} />, badge: 0 },
-      ]
+      id: 'users',
+      name: 'Users',
+      icon: <Users size={20} />,
+      description: 'Manage user accounts'
     },
     {
-      title: 'System',
-      items: [
-        { name: 'Settings', icon: <Settings size={20} /> },
-        { name: 'Notifications', icon: <Bell size={20} />, badge: 3 },
-        { name: 'Help', icon: <HelpCircle size={20} /> },
-      ]
+      id: 'vcards',
+      name: 'vCards',
+      icon: <CreditCard size={20} />,
+      description: 'Digital business cards'
+    },
+    {
+      id: 'plantemplates',
+      name: 'Plan Templates',
+      icon: <FileStack size={20} />,
+      description: 'Subscription templates'
     }
   ]
 
   const handleLogout = () => {
-    // Clear user session data (this is just an example, adjust as needed)
-    localStorage.removeItem('userSession'); // or any other session management logic
-    // Redirect to login page or home page
-    window.location.href = '/login'; // Adjust the path as necessary
-  };
+    localStorage.removeItem('token')
+    window.location.href = '/login'
+  }
 
   return (
-    <aside 
-      className={`
-        fixed md:static inset-y-0 left-0 z-20
-        w-64 bg-white border-r border-gray-200
-        transform ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}
-        md:translate-x-0 transition-transform duration-200 ease-in-out
-        flex flex-col h-screen
-      `}
-    >
-      {/* Header */}
-      <div className="flex items-center justify-between p-4 border-b">
-        <div className="flex items-center space-x-2">
-          <div className="w-8 h-8 rounded-lg bg-primary-main flex items-center justify-center">
-            <span className="text-white font-bold text-xl">A</span>
-          </div>
-          <span className="text-xl font-bold text-gray-900">AdminPro</span>
-        </div>
-        <button 
+    <>
+      {/* Mobile Overlay */}
+      {sidebarOpen && (
+        <div 
+          className="fixed inset-0 bg-black/50 z-20 md:hidden"
           onClick={toggleSidebar}
-          className="md:hidden p-2 rounded-lg hover:bg-gray-100 transition-colors"
-        >
-          <X size={20} className="text-gray-500" />
-        </button>
-      </div>
+        />
+      )}
 
-      {/* Navigation */}
-      <nav className="flex-1 overflow-y-auto p-4">
-        <div className="space-y-8">
-          {navigation.map((group, idx) => (
-            <div key={idx}>
-              <h3 className="px-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">
-                {group.title}
-              </h3>
-              <div className="mt-3 space-y-1">
-                {group.items.map((item) => (
-                  <button
-                    key={item.name}
-                    onClick={() => setActiveTab(item.name)}
-                    className={`
-                      group w-full flex items-center justify-between px-4 py-2 rounded-lg
-                      transition-all duration-200 ease-in-out
-                      ${activeTab === item.name 
-                        ? 'bg-primary-light/10 text-primary-main' 
-                        : 'text-gray-600 hover:bg-gray-50 hover:text-primary-main'
-                      }
-                    `}
-                  >
-                    <div className="flex items-center space-x-3">
-                      <span className={activeTab === item.name ? 'text-primary-main' : 'text-gray-400 group-hover:text-primary-main'}>
-                        {item.icon}
-                      </span>
-                      <span className="font-medium">{item.name}</span>
-                    </div>
-                    
-                    {item.badge && (
-                      <span className={`
-                        px-2 py-1 text-xs rounded-full
-                        ${typeof item.badge === 'number'
-                          ? 'bg-primary-light/10 text-primary-main'
-                          : 'bg-green-100 text-green-700'
-                        }
-                      `}>
-                        {item.badge}
-                      </span>
-                    )}
-                  </button>
-                ))}
-              </div>
+      <aside 
+        className={`
+          fixed md:sticky top-0 left-0 z-30
+          h-screen w-72 bg-white dark:bg-gray-900
+          border-r border-gray-200 dark:border-gray-800
+          transform ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}
+          md:translate-x-0 transition-transform duration-200 ease-in-out
+          flex flex-col
+        `}
+      >
+        {/* Header */}
+        <div className="h-16 flex items-center justify-between px-4 border-b border-gray-200 dark:border-gray-800">
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center">
+              <span className="text-white font-bold text-xl">V</span>
             </div>
-          ))}
-        </div>
-      </nav>
-
-      {/* Footer */}
-      <div className="p-4 border-t">
-        <button 
-          className="w-full flex items-center justify-between px-4 py-2 text-gray-600 hover:text-red-600 rounded-lg hover:bg-red-50 transition-colors"
-          onClick={handleLogout}
-        >
-          <div className="flex items-center space-x-3">
-            <LogOut size={20} />
-            <span className="font-medium">Logout</span>
+            <span className="text-lg font-semibold text-gray-900 dark:text-white">vCard Admin</span>
           </div>
-          <ChevronRight size={16} />
-        </button>
-      </div>
-    </aside>
+          <button 
+            onClick={toggleSidebar}
+            className="md:hidden p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+          >
+            {sidebarOpen ? <X size={20} /> : <Menu size={20} />}
+          </button>
+        </div>
+
+        {/* Navigation */}
+        <nav className="flex-1 overflow-y-auto p-4">
+          <div className="space-y-2">
+            {navigation.map((item) => (
+              <button
+                key={item.id}
+                onClick={() => setActiveTab(item.name)}
+                className={`
+                  group w-full flex items-center gap-3 px-3 py-3 rounded-lg
+                  transition-all duration-200 ease-in-out
+                  ${activeTab === item.name 
+                    ? 'bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400' 
+                    : 'text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800/50'
+                  }
+                `}
+              >
+                <span className={`
+                  p-2 rounded-lg transition-colors
+                  ${activeTab === item.name 
+                    ? 'bg-blue-100 dark:bg-blue-900/50 text-blue-600 dark:text-blue-400' 
+                    : 'bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-400'
+                  }
+                `}>
+                  {item.icon}
+                </span>
+                <div className="flex-1 text-left">
+                  <div className="font-medium">{item.name}</div>
+                  <div className="text-xs text-gray-500 dark:text-gray-400">{item.description}</div>
+                </div>
+              </button>
+            ))}
+          </div>
+        </nav>
+
+        {/* Footer with Logout */}
+        <div className="p-4 border-t border-gray-200 dark:border-gray-800">
+          <button 
+            onClick={handleLogout}
+            className="w-full flex items-center gap-3 px-3 py-3 rounded-lg
+              text-gray-700 dark:text-gray-300 hover:bg-red-50 dark:hover:bg-red-900/20 
+              hover:text-red-600 dark:hover:text-red-400 transition-colors"
+          >
+            <span className="p-2 rounded-lg bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400">
+              <LogOut size={20} />
+            </span>
+            <span className="font-medium">Logout</span>
+          </button>
+        </div>
+      </aside>
+    </>
   )
 }
