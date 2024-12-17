@@ -16,15 +16,14 @@ interface TemplateProps {
 }
 
 export const templateFields: Record<TemplateId, string[]> = {
-  1: ['name', 'jobTitle', 'phone', 'email', 'website', 'address'],
-  2: ['name', 'jobTitle', 'phone', 'email', 'website', 'address'],
-  3: ['name', 'jobTitle', 'phone', 'email', 'website', 'address'],
-  4: ['name', 'jobTitle', 'phone', 'email', 'website', 'address'],
-  5: ['name', 'jobTitle', 'phone', 'email', 'website', 'address'],
-  6: ['name', 'jobTitle', 'phone', 'email', 'website', 'address'],
-  7: ['name', 'jobTitle', 'phone', 'email', 'website', 'address'],
-  8: ['companyName', 'name', 'jobTitle', 'phone', 'website', 'address']
-  // Add more templates as needed
+  1: ['name', 'firstName', 'lastName', 'jobTitle', 'companyName', 'phone', 'mobile', 'email', 'website', 'address', 'city', 'state', 'postalCode', 'country', 'linkedin', 'twitter', 'note'],
+  2: ['name', 'firstName', 'lastName', 'jobTitle', 'companyName', 'phone', 'mobile', 'email', 'website', 'address', 'city', 'state', 'postalCode', 'country', 'linkedin', 'twitter', 'note'],
+  3: ['name', 'firstName', 'lastName', 'jobTitle', 'companyName', 'phone', 'mobile', 'email', 'website', 'address', 'city', 'state', 'postalCode', 'country', 'linkedin', 'twitter', 'note'],
+  4: ['name', 'firstName', 'lastName', 'jobTitle', 'companyName', 'phone', 'mobile', 'email', 'website', 'address', 'city', 'state', 'postalCode', 'country', 'linkedin', 'twitter', 'note'],
+  5: ['name', 'firstName', 'lastName', 'jobTitle', 'companyName', 'phone', 'mobile', 'email', 'website', 'address', 'city', 'state', 'postalCode', 'country', 'linkedin', 'twitter', 'note'],
+  6: ['name', 'firstName', 'lastName', 'jobTitle', 'companyName', 'phone', 'mobile', 'email', 'website', 'address', 'city', 'state', 'postalCode', 'country', 'linkedin', 'twitter', 'note'],
+  7: ['name', 'firstName', 'lastName', 'jobTitle', 'companyName', 'phone', 'mobile', 'email', 'website', 'address', 'city', 'state', 'postalCode', 'country', 'linkedin', 'twitter', 'note'],
+  8: ['name', 'firstName', 'lastName', 'jobTitle', 'companyName', 'phone', 'mobile', 'email', 'website', 'address', 'city', 'state', 'postalCode', 'country', 'linkedin', 'twitter', 'note']
 };
 
 interface ContactFormData {
@@ -434,18 +433,10 @@ const Templates: React.FC<TemplateProps> = ({ selectedTemplate, fields, croppedI
             {/* QR Code Section */}
             <div className="flex-shrink-0 flex items-center justify-center mr-6">
               <QRCode 
-                value={`BEGIN:VCARD
-VERSION:3.0
-FN:${fields.name || 'Your Name'}
-TITLE:${fields.jobTitle || 'Your Job Title'}
-TEL:${fields.phone || 'Your Phone'}
-EMAIL:${fields.email || 'Your Email'}
-URL:${fields.website || 'Your Website'}
-ADR:;;${fields.address || 'Your Address'}
-END:VCARD`}
-                size={180}
-                level="L"
-                className="bg-white p-2"
+                value={JSON.stringify(fields)}
+                size={256}
+                level="H"
+                className="bg-white p-2 rounded-lg"
               />
             </div>
 
@@ -580,9 +571,9 @@ END:VCARD`}
                   {/* QR Code - Fixed position at bottom right */}
                   <div className="absolute bottom-0 right-0 w-32 h-32">
                     <QRCode 
-                      value={`BEGIN:VCARD\nVERSION:3.0\nFN:${fields.name || ''}\nTITLE:${fields.jobTitle || ''}\nTEL:${fields.phone || ''}\nURL:${fields.website || ''}\nADR:${fields.address || ''}\nORG:${fields.companyName || ''}\nEND:VCARD`}
+                      value={JSON.stringify(fields)}
                       size={128}
-                      level="L"
+                      level="H"
                       className="w-full h-full bg-white p-2 rounded-lg"
                     />
                   </div>
@@ -594,6 +585,78 @@ END:VCARD`}
       default:
         return null;
     }
+  };
+
+  const generateVCardString = (fields: Record<string, any>) => {
+    // Debug log to check incoming fields
+    console.log('Template fields:', fields);
+
+    const encodeField = (value: string | undefined) => {
+      if (!value) return '';
+      return value
+        .toString()
+        .replace(/\\/g, '\\\\')
+        .replace(/;/g, '\\;')
+        .replace(/,/g, '\\,')
+        .replace(/\n/g, '\\n')
+        .trim();
+    };
+
+    const cleanPhone = (phone: string | undefined) => {
+      if (!phone) return '';
+      return phone.replace(/[^+0-9]/g, '');
+    };
+
+    // Ensure all fields are properly accessed
+    const firstName = fields.firstName || '';
+    const lastName = fields.lastName || '';
+    const fullName = fields.name || `${firstName} ${lastName}`.trim();
+    const company = fields.companyName || fields.company || ''; // Try both field names
+
+    const vCardLines = [
+      'BEGIN:VCARD',
+      'VERSION:3.0',
+      // Name fields with proper encoding
+      `FN:${encodeField(fullName)}`,
+      `N:${encodeField(lastName)};${encodeField(firstName)};;;`,
+      
+      // Organization and title
+      company ? `ORG:${encodeField(company)}` : '',
+      fields.jobTitle ? `TITLE:${encodeField(fields.jobTitle)}` : '',
+      
+      // Phone numbers with proper formatting
+      fields.phone ? `TEL;TYPE=WORK,VOICE:${cleanPhone(fields.phone)}` : '',
+      fields.mobile ? `TEL;TYPE=CELL,VOICE:${cleanPhone(fields.mobile)}` : '',
+      
+      // Email and website - ensure website is included
+      fields.email ? `EMAIL;TYPE=WORK,INTERNET:${encodeField(fields.email)}` : '',
+      fields.website ? `URL:${encodeField(fields.website)}` : '',
+      
+      // Complete address with all components
+      (fields.address || fields.city || fields.state || fields.country) ? 
+        `ADR;TYPE=WORK:;;${[
+          encodeField(fields.address),
+          encodeField(fields.city),
+          encodeField(fields.state),
+          encodeField(fields.postalCode),
+          encodeField(fields.country)
+        ].join(';')}` : '',
+      
+      // Social profiles
+      fields.linkedin ? `X-SOCIALPROFILE;TYPE=linkedin:${encodeField(fields.linkedin)}` : '',
+      fields.twitter ? `X-SOCIALPROFILE;TYPE=twitter:${encodeField(fields.twitter)}` : '',
+      
+      // Notes
+      fields.note ? `NOTE:${encodeField(fields.note)}` : '',
+      'END:VCARD'
+    ].filter(line => line);
+
+    const vCard = vCardLines.join('\r\n');
+    
+    // Debug log to check final vCard string
+    console.log('Generated vCard string:', vCard);
+    
+    return vCard;
   };
 
   return (
