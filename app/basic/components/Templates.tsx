@@ -498,7 +498,7 @@ END:VCARD`}
                   </div>
                   {/* Company name centered between the lines */}
                   <div className="text-white text-6xl font-bold z-10 px-4 bg-[#1E1E1E]">
-                    {fields.companyName || 'ZERO DESIGN'}
+                    {fields.companyName || 'company name'}
                   </div>
                 </div>
               </div>
@@ -533,15 +533,15 @@ END:VCARD`}
                         </div>
                       )}
                       <div>
-                        <h2 className="text-white text-3xl font-medium">{fields.name || 'raj dave'}</h2>
-                        <p className="text-gray-400 text-xl mt-1">{fields.jobTitle || 'developer'}</p>
+                        <h2 className="text-white text-3xl font-medium">{fields.name || 'name'}</h2>
+                        <p className="text-gray-400 text-xl mt-1">{fields.jobTitle || 'job title'}</p>
                       </div>
                     </div>
 
                     {/* Company Name with Line */}
                     <div className="mt-12">
                       <div className="flex items-center gap-4">
-                        <span className="text-4xl text-white">{fields.companyName || 'zero design'}</span>
+                        <span className="text-4xl text-white">{fields.companyName || 'company name'}</span>
                         <div className="h-[2px] flex-grow bg-red-500"></div>
                       </div>
                     </div>
@@ -550,22 +550,29 @@ END:VCARD`}
                     <div className="space-y-6 mt-12">
                       <div className="flex items-center text-gray-300 text-xl">
                         <Phone size={24} className="mr-4" />
-                        <span>{fields.phone || '9106532603'}</span>
+                        <span>{fields.phone || 'phone'}</span>
                       </div>
                       <div className="flex items-center text-gray-300 text-xl">
                         <Globe size={24} className="mr-4" />
                         <a 
-                          href={fields.website || 'https://portfolio-ten-kappa-86.vercel.app'} 
+                          href={fields.website || 'website'} 
                           target="_blank" 
                           rel="noopener noreferrer" 
                           className="truncate hover:text-white transition-colors duration-200"
                         >
-                          {fields.website || 'https://portfolio-ten-kappa-86.vercel.app'}
+                          {fields.website || 'website'}
                         </a>
                       </div>
                       <div className="flex items-center text-gray-300 text-xl">
                         <MapPin size={24} className="mr-4" />
-                        <span>{fields.address || 'gandhigram-7'}</span>
+                        <a 
+                          href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(fields.address || 'address')}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="hover:text-white transition-colors duration-200"
+                        >
+                          {fields.address || 'address'}
+                        </a>
                       </div>
                     </div>
                   </div>
