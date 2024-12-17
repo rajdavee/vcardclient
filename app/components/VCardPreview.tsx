@@ -8,9 +8,10 @@ interface VCardPreviewProps {
     fields: Array<{ name: string; value: string }>;
     qrCodeDataUrl: string;
   };
+  showQRCode?: boolean;
 }
 
-const VCardPreview: React.FC<VCardPreviewProps> = ({ previewData }) => {
+const VCardPreview: React.FC<VCardPreviewProps> = ({ previewData, showQRCode = true }) => {
   const { templateId, fields, qrCodeDataUrl } = previewData;
 
   // Convert fields array to an object
@@ -26,15 +27,15 @@ const VCardPreview: React.FC<VCardPreviewProps> = ({ previewData }) => {
   const profileImageWithTimestamp = profileImage ? `${profileImage}?t=${Date.now()}` : null;
 
   return (
-    <div className="vcard-preview">
+    <div className="vcard-preview p-4 bg-white dark:bg-gray-800 rounded-lg shadow-lg transition-transform transform hover:scale-105 duration-300">
       <Templates
         selectedTemplate={templateId}
         fields={fieldsObject}
         croppedImage={profileImageWithTimestamp}
       />
-      {qrCodeDataUrl && (
+      {showQRCode && qrCodeDataUrl && (
         <div className="mt-4">
-          <h3 className="text-xl font-bold mb-2">QR Code</h3>
+          <h3 className="text-xl font-bold mb-2 text-center text-gray-800 dark:text-white">QR Code</h3>
           <Image 
             src={qrCodeDataUrl} 
             alt="vCard QR Code" 
@@ -45,6 +46,7 @@ const VCardPreview: React.FC<VCardPreviewProps> = ({ previewData }) => {
               console.error('Failed to load QR code image');
               e.currentTarget.style.display = 'none';
             }}
+            className="mx-auto rounded-lg shadow-md transition-transform transform hover:scale-110 duration-300"
           />
         </div>
       )}

@@ -148,13 +148,9 @@ export default function NewAdminDashboard() {
           >
             {/* Welcome Section */}
             <div className="flex justify-between items-center">
-              <div>
-                <h1 className="text-2xl font-bold text-gray-800 dark:text-white">
-                  Welcome back, Admin
-                </h1>
-                <p className="text-gray-500 dark:text-gray-400">
-                  Here's what's happening with your vCards today
-                </p>
+              <div className="text-center max-w-md mx-auto">
+                <h1 className="text-2xl font-bold">Welcome back, Admin</h1>
+                <p className="text-lg text-gray-600">Here's what's happening with your vCards today</p>
               </div>
               <button className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
                 <Download size={18} />
