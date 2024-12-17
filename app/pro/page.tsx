@@ -7,7 +7,7 @@ import axios from 'axios';
 import { withAuth } from '../utils/withAuth';
 import Image from 'next/image';
 import * as QRCode from 'qrcode';
-import LoadingSpinner from '../components/LoadingSpinner';
+import LoadingSpinner from '../components/LoadingSpinner';  
 import ImageCropper from '../basic/components/ImageCropper';
 import { generateBio } from '../utils/geminiClient';
 import api from '../utils/api';
@@ -48,7 +48,7 @@ interface ScanData {
 
 const ProVCardPage: React.FC = () => {
   const { register, handleSubmit, watch, reset } = useForm<FormData>();
-  const [selectedTemplate, setSelectedTemplate] = useState<TemplateId>(1);
+  const [selectedTemplate, setSelectedTemplate] = useState<TemplateId | null>(1);
   const [vCardData, setVCardData] = useState<VCardData | null>(null);
   const [message, setMessage] = useState<string>('');
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -101,6 +101,11 @@ const ProVCardPage: React.FC = () => {
   }, []);
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
+    if (selectedTemplate === null) {
+      setMessage('Please select a template before submitting.');
+      return; // Prevent submission if no template is selected
+    }
+
     setIsSubmitting(true);
     setMessage('');
     try {
@@ -108,7 +113,7 @@ const ProVCardPage: React.FC = () => {
       formData.append('data', JSON.stringify({
         templateId: selectedTemplate,
         fields: Object.entries(data)
-          .filter(([key]) => templateFields[selectedTemplate].includes(key))
+          .filter(([key]) => templateFields[selectedTemplate]?.includes(key))
           .map(([name, value]) => ({ name, value }))
       }));
 
@@ -239,6 +244,10 @@ const ProVCardPage: React.FC = () => {
   };
 
   const renderFormFields = () => {
+    if (selectedTemplate === null) {
+      return null; // or return an empty array if you want to render nothing
+    }
+
     return templateFields[selectedTemplate].map((field) => (
       <div key={field}>
         <label htmlFor={field} className="block mb-1">
@@ -341,31 +350,62 @@ const ProVCardPage: React.FC = () => {
         {/* Template Selection */}
         <div className="bg-white rounded-lg shadow-md p-6 mb-8">
           <h2 className="text-2xl font-semibold text-gray-800 mb-4">Choose Your Template</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {availableTemplates.map((templateId) => (
-              <div
-                key={templateId}
-                onClick={() => setSelectedTemplate(templateId)}
-                className={`
-                  relative rounded-lg overflow-hidden transition-all duration-200 cursor-pointer
-                  ${selectedTemplate === templateId 
-                    ? 'ring-2 ring-blue-500 shadow-lg transform scale-[1.02]' 
-                    : 'hover:shadow-md hover:transform hover:scale-[1.01]'
-                  }
-                `}
-              >
-                <div className="aspect-w-16 aspect-h-9">
-                  <Templates 
-                    selectedTemplate={templateId} 
-                    fields={watchedFields}
-                    croppedImage={croppedImageUrl}
-                  />
-                </div>
-                <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4">
-                  <h3 className="text-white font-medium">Template {templateId}</h3>
+          {selectedTemplate ? (
+            <div className="flex justify-center items-center h-full">
+              <div className="relative w-full max-w-3xl">
+                <div
+                  key={selectedTemplate}
+                  onClick={() => setSelectedTemplate(selectedTemplate)}
+                  className={`
+                    relative rounded-lg overflow-hidden transition-all duration-200 cursor-pointer
+                    ring-2 ring-blue-500 shadow-lg transform scale-[1.02] w-full
+                  `}
+                >
+                  <div className="aspect-w-16 aspect-h-9 w-full h-full">
+                    <Templates 
+                      selectedTemplate={selectedTemplate} 
+                      fields={watchedFields}
+                      croppedImage={croppedImageUrl}
+                    />
+                  </div>
+                  <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4">
+                    <h3 className="text-white font-medium">Template {selectedTemplate}</h3>
+                  </div>
                 </div>
               </div>
-            ))}
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {availableTemplates.map((templateId) => (
+                <div
+                  key={templateId}
+                  onClick={() => setSelectedTemplate(templateId)}
+                  className={`
+                    relative rounded-lg overflow-hidden transition-all duration-200 cursor-pointer
+                    ring-2 ring-blue-500 shadow-lg transform scale-[1.02]
+                  `}
+                >
+                  <div className="aspect-w-16 aspect-h-9">
+                    <Templates 
+                      selectedTemplate={templateId} 
+                      fields={watchedFields}
+                      croppedImage={croppedImageUrl}
+                    />
+                  </div>
+                  <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4">
+                    <h3 className="text-white font-medium">Template {templateId}</h3>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+          <div className="mt-4 flex justify-center">
+            <button 
+              onClick={() => setSelectedTemplate(null)} 
+              className="px-6 py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
+            >
+              Change Template
+            </button>
           </div>
         </div>
 
@@ -373,10 +413,11 @@ const ProVCardPage: React.FC = () => {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2">
             <div className="bg-white rounded-lg shadow-md p-6">
-              <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  {renderFormFields()}
-                </div>
+              {selectedTemplate ? (
+                <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    {renderFormFields()}
+                  </div>
 
                 {/* Image Upload Section */}
                 <div className="border-t pt-6">
@@ -403,58 +444,51 @@ const ProVCardPage: React.FC = () => {
                   </div>
                 </div>
 
-                {/* AI Bio Generation */}
-                <div className="border-t pt-6">
-                  <h3 className="text-lg font-medium text-gray-800 mb-4">AI Bio Generation</h3>
-                  <div className="space-y-4">
+                  {/* AI Bio Generation */}
+                  <div className="border-t pt-6">
+                    <h3 className="text-lg font-medium text-gray-800 mb-4">AI Bio Generation</h3>
+                    <div className="space-y-4">
+                      <button 
+                        type="button" 
+                        onClick={handleGenerateBio}
+                        className={`w-full flex items-center justify-center px-4 py-2 rounded-md text-white ${isGeneratingBio ? 'bg-gray-400 cursor-not-allowed' : 'bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700'}`}
+                        disabled={isGeneratingBio}
+                      >
+                        {isGeneratingBio ? (
+                          <>
+                            <LoadingSpinner />
+                            Generating...
+                          </>
+                        ) : (
+                          'Generate AI Bio'
+                        )}
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Submit Button */}
+                  <div className="border-t pt-6">
                     <button 
-                      type="button" 
-                      onClick={handleGenerateBio}
-                      className={`
-                        w-full flex items-center justify-center px-4 py-2 rounded-md text-white
-                        ${isGeneratingBio 
-                          ? 'bg-gray-400 cursor-not-allowed' 
-                          : 'bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700'
-                        }
-                      `}
-                      disabled={isGeneratingBio}
+                      type="submit" 
+                      className={`w-full flex items-center justify-center px-4 py-3 rounded-md text-white text-lg font-medium ${isSubmitting ? 'bg-gray-400 cursor-not-allowed' : 'bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700'}`}
+                      disabled={isSubmitting}
                     >
-                      {isGeneratingBio ? (
+                      {isSubmitting ? (
                         <>
                           <LoadingSpinner />
-                          Generating...
+                          Creating...
                         </>
                       ) : (
-                        'Generate AI Bio'
+                        'Create vCard'
                       )}
                     </button>
                   </div>
+                </form>
+              ) : (
+                <div className="text-center text-gray-500 py-8">
+                  <p>Please select a template first to view form.</p>
                 </div>
-
-                {/* Submit Button */}
-                <div className="border-t pt-6">
-                  <button 
-                    type="submit" 
-                    className={`
-                      w-full flex items-center justify-center px-4 py-3 rounded-md text-white text-lg font-medium
-                      ${isSubmitting 
-                        ? 'bg-gray-400 cursor-not-allowed' 
-                        : 'bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700'
-                      }
-                    `}
-                    disabled={isSubmitting}
-                  >
-                    {isSubmitting ? (
-                      <>
-                        <LoadingSpinner />
-                        Creating...
-                      </>
-                    ) : (
-                      'Create vCard'
-                    )}
-                  </button>
-                </div>
-              </form>
+              )}
             </div>
           </div>
 
@@ -471,9 +505,24 @@ const ProVCardPage: React.FC = () => {
                       </div>
                     )}
                     <div className="grid grid-cols-1 gap-3">
-                      <button onClick={downloadVCard} className="btn-primary">Download vCard</button>
-                      <button onClick={viewVCardPreview} className="btn-secondary">Preview vCard</button>
-                      <button onClick={copyPreviewLink} className="btn-outline">Copy Share Link</button>
+                      <button 
+                        onClick={downloadVCard} 
+                        className="w-full px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors"
+                      >
+                        Download vCard
+                      </button>
+                      <button 
+                        onClick={viewVCardPreview} 
+                        className="w-full px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
+                      >
+                        Preview vCard
+                      </button>
+                      <button 
+                        onClick={copyPreviewLink} 
+                        className="w-full px-4 py-2 bg-gray-300 text-gray-800 rounded-md hover:bg-gray-400 transition-colors"
+                      >
+                        Copy Share Link
+                      </button>
                     </div>
                   </div>
                 ) : (
@@ -484,39 +533,39 @@ const ProVCardPage: React.FC = () => {
               </div>
             </div>
           </div>
-        </div>
 
-        {/* Analytics Section */}
-        {scanData && (
-          <div className="mt-8 bg-white rounded-lg shadow-md p-6">
-            <h2 className="text-2xl font-semibold text-gray-800 mb-6">Analytics Dashboard</h2>
-            <p>Total Scans: {scanData.totalScans}</p>
-            <h3 className="text-xl font-bold mt-4 mb-2">Recent Scans</h3>
-            <ul>
-              {scanData.recentScans.map((scan, index) => (
-                <li key={index}>
-                  {scan.scanDate} - {scan.location.city}, {scan.location.country}
-                </li>
-              ))}
-            </ul>
-            <h3 className="text-xl font-bold mt-4 mb-2">Location Breakdown</h3>
-            <ul>
-              {Object.entries(scanData.locationBreakdown).map(([location, count]) => (
-                <li key={location}>
-                  {location}: {count}
-                </li>
-              ))}
-            </ul>
-            <h3 className="text-xl font-bold mt-4 mb-2">Device Breakdown</h3>
-            <ul>
-              {Object.entries(scanData.deviceBreakdown).map(([device, count]) => (
-                <li key={device}>
-                  {device}: {count}
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
+          {/* Analytics Section */}
+          {scanData && (
+            <div className="mt-8 bg-white rounded-lg shadow-md p-6">
+              <h2 className="text-2xl font-semibold text-gray-800 mb-6">Analytics Dashboard</h2>
+              <p>Total Scans: {scanData.totalScans}</p>
+              <h3 className="text-xl font-bold mt-4 mb-2">Recent Scans</h3>
+              <ul>
+                {scanData.recentScans.map((scan, index) => (
+                  <li key={index}>
+                    {scan.scanDate} - {scan.location.city}, {scan.location.country}
+                  </li>
+                ))}
+              </ul>
+              <h3 className="text-xl font-bold mt-4 mb-2">Location Breakdown</h3>
+              <ul>
+                {Object.entries(scanData.locationBreakdown).map(([location, count]) => (
+                  <li key={location}>
+                    {location}: {count}
+                  </li>
+                ))}
+              </ul>
+              <h3 className="text-xl font-bold mt-4 mb-2">Device Breakdown</h3>
+              <ul>
+                {Object.entries(scanData.deviceBreakdown).map(([device, count]) => (
+                  <li key={device}>
+                    {device}: {count}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
