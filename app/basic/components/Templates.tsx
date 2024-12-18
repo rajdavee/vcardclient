@@ -582,7 +582,119 @@ const Templates: React.FC<TemplateProps> = ({ selectedTemplate, fields, croppedI
             </div>
           </div>
         );
-      default:
+        case 9:
+          return (
+            <div className="group w-[635px] h-[388px]" style={{ perspective: '1000px' }}>
+              <div 
+                className="relative w-full h-full duration-1000 ease-in-out transition-transform group-hover:[transform:rotateY(180deg)]" 
+                style={{ transformStyle: 'preserve-3d' }}
+              >
+                {/* Front of the card (Logo centered) */}
+                <div className="absolute w-full h-full bg-[#1E1E1E] rounded-xl p-6"
+                     style={{ backfaceVisibility: 'hidden' }}>
+                  <div className="relative w-full h-full flex items-center justify-center">
+                    <div className="text-white text-5xl font-bold">
+                      <Image 
+                        src={fields.logo || '/path/to/default/logo.png'} 
+                        alt="Company Logo" 
+                        width={200} 
+                        height={200} 
+                        className="object-contain"
+                      />
+                    </div>
+                  </div>
+                </div>
+        
+                {/* Back of the card (Contact Information) */}
+                <div className="absolute w-full h-full bg-[#1E1E1E] rounded-xl p-8"
+                     style={{ 
+                       backfaceVisibility: 'hidden',
+                       transform: 'rotateY(180deg)'
+                     }}>
+                  <div className="relative w-full h-full">
+                    <div className="w-[calc(100%-160px)] pr-4">
+                      {/* Profile Section with conditional rendering */}
+                      <div className="flex items-start gap-4">
+                        {croppedImage ? (
+                          // Show uploaded profile image if available
+                          <div className="w-16 h-16 rounded-full overflow-hidden flex-shrink-0">
+                            <Image 
+                              src={croppedImage}
+                              alt="Profile"
+                              width={64}
+                              height={64}
+                              className="w-full h-full object-cover"
+                            />
+                          </div>
+                        ) : (
+                          // Show fallback initial circle if no image
+                          <div className="w-16 h-16 bg-red-500 rounded-full flex items-center justify-center flex-shrink-0">
+                            <span className="text-white text-3xl lowercase">
+                              {(fields.name && fields.name.length > 0) ? fields.name.charAt(0) : 'r'}
+                            </span>
+                          </div>
+                        )}
+                        <div>
+                          <h2 className="text-white text-3xl font-medium">{fields.name || 'name'}</h2>
+                          <p className="text-gray-400 text-xl mt-1">{fields.jobTitle || 'job title'}</p>
+                        </div>
+                      </div>
+        
+                      {/* Contact Details */}
+                      <div className="mt-12">
+                        <div className="space-y-6">
+                          <div className="flex items-center text-gray-300 text-xl">
+                            <Phone size={24} className="mr-4" />
+                            <span>{fields.phone || 'phone'}</span>
+                          </div>
+                          <div className="flex items-center text-gray-300 text-xl">
+                            <Mail size={24} className="mr-4" />
+                            <span>{fields.email || 'email'}</span>
+                          </div>
+                          <div className="flex items-center text-gray-300 text-xl">
+                            <Globe size={24} className="mr-4" />
+                            <a 
+                              href={fields.website || 'website'} 
+                              target="_blank" 
+                              rel="noopener noreferrer" 
+                              className="truncate hover:text-white transition-colors duration-200"
+                            >
+                              {fields.website || 'website'}
+                            </a>
+                          </div>
+                          <div className="flex items-center text-gray-300 text-xl">
+                            <MapPin size={24} className="mr-4" />
+                            <a 
+                              href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(fields.address || 'address')}`}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="hover:text-white transition-colors duration-200"
+                            >
+                              {fields.address || 'address'}
+                            </a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+        
+                    {/* QR Code - Fixed position at bottom right */}
+                    <div className="absolute bottom-0 right-0 w-32 h-32">
+                      <QRCode 
+                        value={JSON.stringify(fields)}
+                        size={128}
+                        level="H"
+                        className="w-full h-full bg-white p-2 rounded-lg"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          );
+        
+      
+      
+        default:
         return null;
     }
   };
