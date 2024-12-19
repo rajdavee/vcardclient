@@ -34,7 +34,9 @@ export const templateFields: Record<TemplateId, string[]> = {
   10: ['name', 'firstName', 'lastName', 'jobTitle', 'companyName', 'phone', 'mobile', 'email', 'website', 'address', 'city', 'state', 'postalCode', 'country', 'linkedin', 'twitter', 'note'],
   11: ['name', 'firstName', 'lastName', 'jobTitle', 'companyName', 'phone', 'mobile', 'email', 'website', 'address', 'city', 'state', 'postalCode', 'country', 'linkedin', 'twitter', 'note'],
   12: ['name', 'firstName', 'lastName', 'jobTitle', 'companyName', 'phone', 'mobile', 'email', 'website', 'address', 'city', 'state', 'postalCode', 'country', 'linkedin', 'twitter', 'note'],
-  
+  13: ['name', 'firstName', 'lastName', 'jobTitle', 'companyName', 'phone', 'mobile', 'email', 'website', 'address', 'city', 'state', 'postalCode', 'country', 'linkedin', 'twitter', 'note'],
+  14: ['name', 'firstName', 'lastName', 'jobTitle', 'companyName', 'phone', 'mobile', 'email', 'website', 'address', 'city', 'state', 'postalCode', 'country', 'linkedin', 'twitter', 'note'],
+  15: ['name', 'firstName', 'lastName', 'jobTitle', 'companyName', 'phone', 'mobile', 'email', 'website', 'address', 'city', 'state', 'postalCode', 'country', 'linkedin', 'twitter', 'note'],
 };
 
 interface ContactFormData {
@@ -970,7 +972,7 @@ case 12:
                   {/* Profile Image or Placeholder */}
                   <div className="w-12 h-12 rounded-full bg-gray-300 flex items-center justify-center">
                     <Image
-                      src="/images/profile.png" // Path relative to the 'public' directory
+                      src="/images/profile2.png" // Path relative to the 'public' directory
                       alt="Profile Image"
                       className="w-full h-full rounded-full object-cover"
                       width={48} // You can adjust the width and height based on your needs
@@ -1038,8 +1040,203 @@ case 12:
           </div>
         </div>
       );
-
-
+case 13:
+        return (
+          <div className={`${montserrat.className} w-[635px] h-[388px] flex items-center justify-center bg-white`}>
+            <div className="relative w-full h-full flex">
+              {/* Left Half - White Background */}
+              <div className="w-1/2 h-full bg-white flex items-center justify-center">
+                {/* Logo */}
+                <div className="text-center">
+                  <img 
+                    src={fields.logo || '/images/logo-placeholder.png'} 
+                    alt="Company Logo" 
+                    className="mx-auto h-16"
+                  />
+                </div>
+              </div>
+      
+              {/* Right Half - Dark Gray Background */}
+              <div className="w-1/2 h-full bg-[#2A2A2A] flex flex-col justify-between p-4">
+                {/* Top Left - Name and Designation */}
+                <div className="text-left text-white mb-4">
+                  <h1 className="text-xl font-bold">
+                    {fields.name || 'Name'}
+                  </h1>
+                  <p className="text-sm">
+                    {fields.jobTitle || 'Job Title'}
+                  </p>
+                </div>
+      
+                {/* Bottom Left - Contact Information with Icons */}
+                <div className="text-left text-white space-y-3">
+                  {/* Phone */}
+                  <div className="flex items-center text-sm">
+                    <img src="/images/phone2.png" alt="Phone Icon" className="mr-2 w-4 h-4" />
+                    <span>{fields.phone || 'Phone Number'}</span>
+                  </div>
+                  {/* Email */}
+                  <div className="flex items-center text-sm">
+                    <img src="/images/email2.png" alt="Email Icon" className="mr-2 w-4 h-4" />
+                    <span>{fields.email || 'Email Address'}</span>
+                  </div>
+                  {/* Website */}
+                  <div className="flex items-center text-sm">
+                    <img src="/images/website3.png" alt="Website Icon" className="mr-2 w-4 h-4" />
+                    <a 
+                      href={fields.website || '#'}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="hover:text-gray-300 transition"
+                    >
+                      {fields.website || 'Website URL'}
+                    </a>
+                  </div>
+                  {/* Location */}
+                  <div className="flex items-center text-sm">
+                    <img src="/images/location2.png" alt="Location Icon" className="mr-2 w-4 h-4" />
+                    <span>{fields.address || 'Address'}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        );
+case 14:
+          return (
+            <div className={`${montserrat.className} w-[635px] h-[388px] flex items-center justify-center bg-white`}>
+              <div className="relative w-full h-full flex">
+                {/* Left Half - Dark Gray Background */}
+                <div className="w-1/2 h-full bg-[#272829] flex items-center justify-center">
+                  {/* Logo */}
+                  <div className="text-center">
+                    <img 
+                      src={fields.logo || '/images/logo-placeholder.png'} 
+                      alt="Company Logo" 
+                      className="mx-auto h-16"
+                    />
+                  </div>
+                </div>
+        
+                {/* Right Half - Golden Yellow Background */}
+                <div className="w-1/2 h-full bg-[#F4CE14] flex flex-col justify-between p-4">
+                  {/* Top Left - Name and Designation */}
+                  <div className="text-left text-[#272829] mb-4">
+                    <h1 className="text-xl font-bold">
+                      {fields.name || 'Name'}
+                    </h1>
+                    <p className="text-sm">
+                      {fields.jobTitle || 'Job Title'}
+                    </p>
+                  </div>
+        
+                  {/* Bottom Left - Contact Information with Icons */}
+                  <div className="text-left text-[#272829] space-y-3">
+                    {/* Phone */}
+                    <div className="flex items-center text-sm">
+                      <img src="/images/phone2.png" alt="Phone Icon" className="mr-2 w-4 h-4" />
+                      <span>{fields.phone || 'Phone Number'}</span>
+                    </div>
+                    {/* Email */}
+                    <div className="flex items-center text-sm">
+                      <img src="/images/email2.png" alt="Email Icon" className="mr-2 w-4 h-4" />
+                      <span>{fields.email || 'Email Address'}</span>
+                    </div>
+                    {/* Website */}
+                    <div className="flex items-center text-sm">
+                      <img src="/images/website3.png" alt="Website Icon" className="mr-2 w-4 h-4" />
+                      <a 
+                        href={fields.website || '#'}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="hover:text-gray-300 transition"
+                      >
+                        {fields.website || 'Website URL'}
+                      </a>
+                    </div>
+                    {/* Location */}
+                    <div className="flex items-center text-sm">
+                      <img src="/images/location2.png" alt="Location Icon" className="mr-2 w-4 h-4" />
+                      <span>{fields.address || 'Address'}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          );    
+case 15:
+            return (
+              <div className={`${montserrat.className} w-[600px] h-[550px] group`} style={{ perspective: '1000px' }}>
+                <div
+                  className="relative w-full h-full duration-1000 ease-in-out transition-transform group-hover:[transform:rotateY(180deg)]"
+                  style={{ transformStyle: 'preserve-3d' }}
+                >
+                  {/* Front of the card - Dark Grayish Green Background */}
+                  <div
+                    className="absolute w-full h-full bg-[#595A5C] rounded-xl flex items-center justify-center"
+                    style={{ backfaceVisibility: 'hidden' }}
+                  >
+                    <div className="text-center">
+                      <img
+                        src={fields.logo || '/images/logo-placeholder.png'}
+                        alt="Company Logo"
+                        className="mx-auto h-16"
+                      />
+                    </div>
+                  </div>
+          
+                  {/* Back of the card - Light Off-White Background */}
+                  <div
+                    className="absolute w-full h-full bg-[#FAFBFD] rounded-xl p-6 flex flex-col justify-end"
+                    style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
+                  >
+                    {/* Centered Content at the Bottom */}
+                    <div className="text-center text-[#1D1D1D] space-y-3">
+                      {/* Name and Designation */}
+                      <div>
+                        <h1 className="text-xl font-bold">{fields.name || 'Name'}</h1>
+                        <p className="text-sm">{fields.jobTitle || 'Job Title'}</p>
+                      </div>
+          
+                      {/* Horizontal Black Line after Name and Designation */}
+                      <div className="w-[20%] h-[2px] bg-black my-4 mx-auto"></div>
+          
+                      {/* Contact Information */}
+                      <div className="space-y-3">
+                        {/* Phone */}
+                        <div className="flex justify-center items-center text-sm">
+                          <img src="/images/phone2.png" alt="Phone Icon" className="mr-2 w-4 h-4" />
+                          <span>{fields.phone || 'Phone Number'}</span>
+                        </div>
+                        {/* Email */}
+                        <div className="flex justify-center items-center text-sm">
+                          <img src="/images/email2.png" alt="Email Icon" className="mr-2 w-4 h-4" />
+                          <span>{fields.email || 'Email Address'}</span>
+                        </div>
+                        {/* Website */}
+                        <div className="flex justify-center items-center text-sm">
+                          <img src="/images/website3.png" alt="Website Icon" className="mr-2 w-4 h-4" />
+                          <a
+                            href={fields.website || '#'}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="hover:text-gray-300 transition"
+                          >
+                            {fields.website || 'Website URL'}
+                          </a>
+                        </div>
+                        {/* Location */}
+                        <div className="flex justify-center items-center text-sm">
+                          <img src="/images/location2.png" alt="Location Icon" className="mr-2 w-4 h-4" />
+                          <span>{fields.address || 'Address'}</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>  
+            );
+       
         default:
         return null;
     }
