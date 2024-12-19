@@ -5,6 +5,12 @@ import { toast } from 'react-hot-toast';
 import { usePathname } from 'next/navigation';
 import QRCode from 'react-qr-code';
 import { Phone, Mail, Globe, MapPin } from 'react-feather';
+import { Montserrat } from 'next/font/google';
+
+const montserrat = Montserrat({
+  subsets: ['latin'],
+  weight: ['400', '500', '700'], // You can specify the weights you want to use
+});
 
 export type TemplateId = number; // Instead of 1 | 2 | 3 | 4 | 5
 
@@ -23,7 +29,12 @@ export const templateFields: Record<TemplateId, string[]> = {
   5: ['name', 'firstName', 'lastName', 'jobTitle', 'companyName', 'phone', 'mobile', 'email', 'website', 'address', 'city', 'state', 'postalCode', 'country', 'linkedin', 'twitter', 'note'],
   6: ['name', 'firstName', 'lastName', 'jobTitle', 'companyName', 'phone', 'mobile', 'email', 'website', 'address', 'city', 'state', 'postalCode', 'country', 'linkedin', 'twitter', 'note'],
   7: ['name', 'firstName', 'lastName', 'jobTitle', 'companyName', 'phone', 'mobile', 'email', 'website', 'address', 'city', 'state', 'postalCode', 'country', 'linkedin', 'twitter', 'note'],
-  8: ['name', 'firstName', 'lastName', 'jobTitle', 'companyName', 'phone', 'mobile', 'email', 'website', 'address', 'city', 'state', 'postalCode', 'country', 'linkedin', 'twitter', 'note']
+  8: ['name', 'firstName', 'lastName', 'jobTitle', 'companyName', 'phone', 'mobile', 'email', 'website', 'address', 'city', 'state', 'postalCode', 'country', 'linkedin', 'twitter', 'note'],
+  9: ['name', 'firstName', 'lastName', 'jobTitle', 'companyName', 'phone', 'mobile', 'email', 'website', 'address', 'city', 'state', 'postalCode', 'country', 'linkedin', 'twitter', 'note'],
+  10: ['name', 'firstName', 'lastName', 'jobTitle', 'companyName', 'phone', 'mobile', 'email', 'website', 'address', 'city', 'state', 'postalCode', 'country', 'linkedin', 'twitter', 'note'],
+  11: ['name', 'firstName', 'lastName', 'jobTitle', 'companyName', 'phone', 'mobile', 'email', 'website', 'address', 'city', 'state', 'postalCode', 'country', 'linkedin', 'twitter', 'note'],
+  12: ['name', 'firstName', 'lastName', 'jobTitle', 'companyName', 'phone', 'mobile', 'email', 'website', 'address', 'city', 'state', 'postalCode', 'country', 'linkedin', 'twitter', 'note'],
+  
 };
 
 interface ContactFormData {
@@ -245,7 +256,7 @@ const Templates: React.FC<TemplateProps> = ({ selectedTemplate, fields, croppedI
   const renderTemplate = (id: TemplateId) => {
     console.log('Rendering template:', id); // Add this log
     switch (id) {
-      case 1:
+ case 1:
         return (
           <div className="bg-white rounded-[2rem] shadow-lg overflow-hidden w-[400px] min-h-[240px] relative p-6">
             <div className="flex justify-between items-start">
@@ -277,7 +288,7 @@ const Templates: React.FC<TemplateProps> = ({ selectedTemplate, fields, croppedI
             <div className="absolute bottom-0 right-0 w-48 h-48 bg-blue-100 rounded-full -z-10 transform translate-x-1/4 translate-y-1/4"></div>
           </div>
         );
-      case 2:
+ case 2:
         return (
           <div className="bg-gradient-to-br from-blue-200 to-purple-200 rounded-2xl shadow-lg overflow-hidden w-[400px] min-h-[240px] p-6">
             <div className="flex items-center mb-4">
@@ -304,7 +315,7 @@ const Templates: React.FC<TemplateProps> = ({ selectedTemplate, fields, croppedI
             </div>
           </div>
         );
-      case 3:
+ case 3:
         return (
           <div className="bg-[#f5e6d3] rounded-3xl shadow-lg overflow-hidden w-[400px] min-h-[240px] relative p-6">
             <h2 className="text-2xl font-bold text-gray-800">{fields.name || "Your Name"}</h2>
@@ -327,7 +338,7 @@ const Templates: React.FC<TemplateProps> = ({ selectedTemplate, fields, croppedI
             <div className="absolute bottom-0 right-0 w-24 h-24 bg-[#e6d7c3] rounded-full transform translate-x-1/3 translate-y-1/3"></div>
           </div>
         );
-      case 4:
+ case 4:
         return (
           <div className="bg-[#e0f2f1] rounded-2xl shadow-lg overflow-hidden w-[400px] min-h-[240px] p-6">
             <h2 className="text-3xl font-bold text-gray-800">MODERN</h2>
@@ -354,7 +365,7 @@ const Templates: React.FC<TemplateProps> = ({ selectedTemplate, fields, croppedI
             </div>
           </div>
         );
-      case 5:
+case 5:
         return (
           <div className="bg-white rounded-2xl shadow-lg overflow-hidden w-[400px] min-h-[240px]">
             <div className="grid grid-cols-2 h-full">
@@ -382,7 +393,7 @@ const Templates: React.FC<TemplateProps> = ({ selectedTemplate, fields, croppedI
             </div>
           </div>
         );
-      case 6:
+case 6:
         return (
           <div className="bg-gradient-to-br from-indigo-100 to-purple-100 rounded-2xl shadow-lg overflow-hidden w-[400px] min-h-[240px] relative p-6">
             <div className="flex justify-between items-start">
@@ -427,7 +438,7 @@ const Templates: React.FC<TemplateProps> = ({ selectedTemplate, fields, croppedI
             <div className="absolute bottom-0 left-0 w-24 h-24 bg-indigo-200 rounded-full -z-10 transform -translate-x-1/3 translate-y-1/3 opacity-50"></div>
           </div>
         );
-      case 7:
+ case 7:
         return (
           <div className="bg-[#363636] text-white rounded-xl shadow-lg overflow-hidden w-[635px] h-[388px] p-8 flex relative">
             {/* QR Code Section */}
@@ -441,7 +452,7 @@ const Templates: React.FC<TemplateProps> = ({ selectedTemplate, fields, croppedI
             </div>
 
             {/* Centered Vertical Line */}
-            <div className="h-[277px] w-[1.5px] bg-gradient-to-b from-[#555555] to-[#D9D9D9]"></div>
+            <div className="h-[277px] w-[1.5px] bg-gradient-to-b from-[#555555] to-[#D9D9D9] "></div>
 
             {/* Contact Information */}
             <div className="flex flex-col justify-center space-y-4 ml-6 pl-6">
@@ -471,7 +482,7 @@ const Templates: React.FC<TemplateProps> = ({ selectedTemplate, fields, croppedI
             </div>
           </div>
         );
-      case 8:
+case 8:
         return (
           <div className="group w-[635px] h-[388px]" style={{ perspective: '1000px' }}>
             <div 
@@ -582,118 +593,453 @@ const Templates: React.FC<TemplateProps> = ({ selectedTemplate, fields, croppedI
             </div>
           </div>
         );
-        case 9:
-          return (
-            <div className="group w-[635px] h-[388px]" style={{ perspective: '1000px' }}>
-              <div 
-                className="relative w-full h-full duration-1000 ease-in-out transition-transform group-hover:[transform:rotateY(180deg)]" 
-                style={{ transformStyle: 'preserve-3d' }}
-              >
-                {/* Front of the card (Logo centered) */}
-                <div className="absolute w-full h-full bg-[#1E1E1E] rounded-xl p-6"
-                     style={{ backfaceVisibility: 'hidden' }}>
-                  <div className="relative w-full h-full flex items-center justify-center">
-                    <div className="text-white text-5xl font-bold">
-                      <Image 
-                        src={fields.logo || '/path/to/default/logo.png'} 
-                        alt="Company Logo" 
-                        width={200} 
-                        height={200} 
-                        className="object-contain"
-                      />
-                    </div>
+case 9:
+
+return (  
+    <div className={`${montserrat.className} group w-[635px] h-[300px]`} style={{ perspective: '1000px' }}>
+      <div 
+        className="relative w-full h-full duration-1000 ease-in-out transition-transform group-hover:[transform:rotateY(180deg)]" 
+        style={{ transformStyle: 'preserve-3d' }}
+      >
+        {/* Front of the card (Logo and Company Name) */}
+        <div className="absolute w-full h-full bg-white rounded-xl flex items-center justify-center" 
+             style={{ backfaceVisibility: 'hidden' }}>
+          <div className="text-center relative w-full h-full">
+            {/* Vertical Line */}
+            <div className="absolute top-0 bottom-0 left-[5%] h-[300px] w-[3px] bg-[#353535]"></div>
+            {/* Logo and Company Name */}
+            <div className="flex flex-col items-center justify-center h-full">
+              {/* Logo */}
+              <div className="mb-4">
+                <img 
+                  src={fields.logo || '/images/logo-placeholder.png'} 
+                  alt="Company Logo" 
+                  className="mx-auto h-16"
+                />
+              </div>
+              {/* Company Name */}
+              <h1 className="text-2xl font-bold" style={{ color: '#313131' }}>
+                {fields.companyName || 'Company Name'}
+              </h1>
+            </div>
+          </div>
+        </div>
+
+        {/* Back of the card (Contact Information) */}
+        <div className="absolute w-full h-full bg-white rounded-xl p-8 flex flex-col justify-between" 
+             style={{ 
+               backfaceVisibility: 'hidden',
+               transform: 'rotateY(180deg)'
+             }}>
+          {/* Name and Title */}
+          <div>
+            <div className="flex items-center gap-4 mb-4">
+              {/* Profile Image or Placeholder */}
+              <div className="w-12 h-12 rounded-full bg-gray-300 flex items-center justify-center">
+                <Image
+                  src="/images/profile.png" // Path relative to the 'public' directory
+                  alt="Profile Image"
+                  className="w-full h-full rounded-full object-cover"
+                  width={48} // You can adjust the width and height based on your needs
+                  height={48}
+                />
+              </div>
+              <div>
+                <h2 className="text-lg font-bold" style={{ color: '#313131' }}>
+                  {fields.name || 'Name'}
+                </h2>
+                <p className="text-sm" style={{ color: '#313131' }}>
+                  {fields.jobTitle || 'Job Title'}
+                </p>
+              </div>
+            </div>
+
+            {/* Horizontal Line */}
+            <div className="w-full h-[2px] bg-[#353535] mb-4"></div>
+
+            {/* Contact Details and QR Code in One Container */}
+            <div className="flex justify-between items-start mt-8">
+              {/* Contact Details */}
+              <div className="space-y-3">
+                {/* Phone */}
+                <div className="flex items-center text-sm" style={{ color: '#313131' }}>
+                  <img src="/images/phone.png" alt="Phone Icon" className="mr-2 w-4 h-4" />
+                  <span>{fields.phone || 'Phone Number'}</span>
+                </div>
+                {/* Email */}
+                <div className="flex items-center text-sm" style={{ color: '#313131' }}>
+                  <img src="/images/email.png" alt="Email Icon" className="mr-2 w-4 h-4" />
+                  <span>{fields.email || 'Email Address'}</span>
+                </div>
+                {/* Website */}
+                <div className="flex items-center text-sm" style={{ color: '#313131' }}>
+                  <img src="/images/website.png" alt="Website Icon" className="mr-2 w-4 h-4" />
+                  <a 
+                    href={fields.website || '#'}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="hover:text-gray-800 transition"
+                  >
+                    {fields.website || 'Website URL'}
+                  </a>
+                </div>
+                {/* Location */}
+                <div className="flex items-center text-sm" style={{ color: '#313131' }}>
+                  <img src="/images/location.png" alt="Location Icon" className="mr-2 w-4 h-4" />
+                  <span>{fields.address || 'Address'}</span>
+                </div>
+              </div>
+
+              {/* QR Code */}
+              <div className="w-20 h-20 mt-[7%]">
+                <QRCode 
+                  value={JSON.stringify(fields)} 
+                  size={80} 
+                  level="H" 
+                  className="w-full h-full bg-white p-1 rounded-md" 
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+case 10:
+  return (
+    <div className={`${montserrat.className} group w-[635px] h-[300px]`} style={{ perspective: '1000px' }}>
+      <div 
+        className="relative w-full h-full duration-1000 ease-in-out transition-transform group-hover:[transform:rotateY(180deg)]" 
+        style={{ transformStyle: 'preserve-3d' }}
+      >
+        {/* Front of the card (Logo and Company Name) */}
+        <div className="absolute w-full h-full bg-black rounded-xl flex items-center justify-center" 
+             style={{ backfaceVisibility: 'hidden' }}>
+          <div className="text-center relative w-full h-full">
+            {/* Vertical Line */}
+            <div className="absolute top-0 bottom-0 left-[5%] h-[300px] w-[3px] bg-red-600"></div>
+            {/* Logo and Company Name */}
+            <div className="flex flex-col items-center justify-center h-full">
+              {/* Logo */}
+              <div className="mb-4">
+                <img 
+                  src={fields.logo || '/images/logo-placeholder.png'} 
+                  alt="Company Logo" 
+                  className="mx-auto h-16"
+                />
+              </div>
+              {/* Company Name */}
+              <h1 className="text-2xl font-bold text-white">
+                {fields.companyName || 'Company Name'}
+              </h1>
+            </div>
+          </div>
+        </div>
+
+        {/* Back of the card (Contact Information) */}
+        <div className="absolute w-full h-full bg-white rounded-xl p-8 flex flex-col justify-between" 
+             style={{ 
+               backfaceVisibility: 'hidden',
+               transform: 'rotateY(180deg)'
+             }}>
+          {/* Name and Title */}
+          <div>
+            <div className="flex items-center gap-4 mb-4">
+              {/* Profile Image or Placeholder */}
+              <div className="w-12 h-12 rounded-full bg-gray-300 flex items-center justify-center">
+                <Image
+                  src="/images/profile.png" // Path relative to the 'public' directory
+                  alt="Profile Image"
+                  className="w-full h-full rounded-full object-cover"
+                  width={48} // You can adjust the width and height based on your needs
+                  height={48}
+                />
+              </div>
+              <div>
+                <h2 className="text-lg font-bold" style={{ color: '#313131' }}>
+                  {fields.name || 'Name'}
+                </h2>
+                <p className="text-sm" style={{ color: '#313131' }}>
+                  {fields.jobTitle || 'Job Title'}
+                </p>
+              </div>
+            </div>
+
+            {/* Horizontal Line - changed color to red */}
+            <div className="w-full h-[2px] bg-red-600 mb-4"></div>
+
+            {/* Contact Details and QR Code in One Container */}
+            <div className="flex justify-between items-start mt-8">
+              {/* Contact Details */}
+              <div className="space-y-3">
+                {/* Phone */}
+                <div className="flex items-center text-sm" style={{ color: '#313131' }}>
+                  <img src="/images/phone.png" alt="Phone Icon" className="mr-2 w-4 h-4" />
+                  <span>{fields.phone || 'Phone Number'}</span>
+                </div>
+                {/* Email */}
+                <div className="flex items-center text-sm" style={{ color: '#313131' }}>
+                  <img src="/images/email.png" alt="Email Icon" className="mr-2 w-4 h-4" />
+                  <span>{fields.email || 'Email Address'}</span>
+                </div>
+                {/* Website */}
+                <div className="flex items-center text-sm" style={{ color: '#313131' }}>
+                  <img src="/images/website.png" alt="Website Icon" className="mr-2 w-4 h-4" />
+                  <a 
+                    href={fields.website || '#'}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="hover:text-gray-800 transition"
+                  >
+                    {fields.website || 'Website URL'}
+                  </a>
+                </div>
+                {/* Location */}
+                <div className="flex items-center text-sm" style={{ color: '#313131' }}>
+                  <img src="/images/location.png" alt="Location Icon" className="mr-2 w-4 h-4" />
+                  <span>{fields.address || 'Address'}</span>
+                </div>
+              </div>
+
+              {/* QR Code */}
+              <div className="w-20 h-20 mt-[7%]">
+                <QRCode 
+                  value={JSON.stringify(fields)} 
+                  size={80} 
+                  level="H" 
+                  className="w-full h-full bg-white p-1 rounded-md" 
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+case 11:
+    return (
+      <div className={`${montserrat.className} group w-[635px] h-[300px]`} style={{ perspective: '1000px' }}>
+        <div 
+          className="relative w-full h-full duration-1000 ease-in-out transition-transform group-hover:[transform:rotateY(180deg)]" 
+          style={{ transformStyle: 'preserve-3d' }}
+        >
+          {/* Front of the card (Logo and Company Name) */}
+          <div className="absolute w-full h-full bg-[#ED9E3E] rounded-xl flex items-center justify-center" 
+               style={{ backfaceVisibility: 'hidden' }}>
+            <div className="text-center relative w-full h-full">
+              {/* Vertical Line */}
+              <div className="absolute top-0 bottom-0 left-[5%] h-[300px] w-[3px] bg-white"></div>
+              {/* Logo and Company Name */}
+              <div className="flex flex-col items-center justify-center h-full">
+                {/* Logo */}
+                <div className="mb-4">
+                  <img 
+                    src={fields.logo || '/images/logo-placeholder.png'} 
+                    alt="Company Logo" 
+                    className="mx-auto h-16"
+                  />
+                </div>
+                {/* Company Name */}
+                <h1 className="text-2xl font-bold text-white">
+                  {fields.companyName || 'Company Name'}
+                </h1>
+              </div>
+            </div>
+          </div>
+  
+          {/* Back of the card (Contact Information) */}
+          <div className="absolute w-full h-full bg-[#EBECE7] rounded-xl p-8 flex flex-col justify-between" 
+               style={{ 
+                 backfaceVisibility: 'hidden',
+                 transform: 'rotateY(180deg)'
+               }}>
+            {/* Name and Title */}
+            <div>
+              <div className="flex items-center gap-4 mb-4">
+                {/* Profile Image or Placeholder */}
+                <div className="w-12 h-12 rounded-full bg-gray-300 flex items-center justify-center">
+                  <Image
+                    src="/images/profile.png" // Path relative to the 'public' directory
+                    alt="Profile Image"
+                    className="w-full h-full rounded-full object-cover"
+                    width={48} // You can adjust the width and height based on your needs
+                    height={48}
+                  />
+                </div>
+                <div>
+                  <h2 className="text-lg font-bold" style={{ color: '#313131' }}>
+                    {fields.name || 'Name'}
+                  </h2>
+                  <p className="text-sm" style={{ color: '#313131' }}>
+                    {fields.jobTitle || 'Job Title'}
+                  </p>
+                </div>
+              </div>
+  
+              {/* Horizontal Line - changed color to #ED9E3E */}
+              <div className="w-full h-[2px] bg-[#ED9E3E] mb-4"></div>
+  
+              {/* Contact Details and QR Code in One Container */}
+              <div className="flex justify-between items-start mt-8">
+                {/* Contact Details */}
+                <div className="space-y-3">
+                  {/* Phone */}
+                  <div className="flex items-center text-sm" style={{ color: '#313131' }}>
+                    <img src="/images/phone.png" alt="Phone Icon" className="mr-2 w-4 h-4" />
+                    <span>{fields.phone || 'Phone Number'}</span>
+                  </div>
+                  {/* Email */}
+                  <div className="flex items-center text-sm" style={{ color: '#313131' }}>
+                    <img src="/images/email.png" alt="Email Icon" className="mr-2 w-4 h-4" />
+                    <span>{fields.email || 'Email Address'}</span>
+                  </div>
+                  {/* Website */}
+                  <div className="flex items-center text-sm" style={{ color: '#313131' }}>
+                    <img src="/images/website2.png" alt="Website Icon" className="mr-2 w-4 h-4" />
+                    <a 
+                      href={fields.website || '#'}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="hover:text-gray-800 transition"
+                    >
+                      {fields.website || 'Website URL'}
+                    </a>
+                  </div>
+                  {/* Location */}
+                  <div className="flex items-center text-sm" style={{ color: '#313131' }}>
+                    <img src="/images/location.png" alt="Location Icon" className="mr-2 w-4 h-4" />
+                    <span>{fields.address || 'Address'}</span>
                   </div>
                 </div>
-        
-                {/* Back of the card (Contact Information) */}
-                <div className="absolute w-full h-full bg-[#1E1E1E] rounded-xl p-8"
-                     style={{ 
-                       backfaceVisibility: 'hidden',
-                       transform: 'rotateY(180deg)'
-                     }}>
-                  <div className="relative w-full h-full">
-                    <div className="w-[calc(100%-160px)] pr-4">
-                      {/* Profile Section with conditional rendering */}
-                      <div className="flex items-start gap-4">
-                        {croppedImage ? (
-                          // Show uploaded profile image if available
-                          <div className="w-16 h-16 rounded-full overflow-hidden flex-shrink-0">
-                            <Image 
-                              src={croppedImage}
-                              alt="Profile"
-                              width={64}
-                              height={64}
-                              className="w-full h-full object-cover"
-                            />
-                          </div>
-                        ) : (
-                          // Show fallback initial circle if no image
-                          <div className="w-16 h-16 bg-red-500 rounded-full flex items-center justify-center flex-shrink-0">
-                            <span className="text-white text-3xl lowercase">
-                              {(fields.name && fields.name.length > 0) ? fields.name.charAt(0) : 'r'}
-                            </span>
-                          </div>
-                        )}
-                        <div>
-                          <h2 className="text-white text-3xl font-medium">{fields.name || 'name'}</h2>
-                          <p className="text-gray-400 text-xl mt-1">{fields.jobTitle || 'job title'}</p>
-                        </div>
-                      </div>
-        
-                      {/* Contact Details */}
-                      <div className="mt-12">
-                        <div className="space-y-6">
-                          <div className="flex items-center text-gray-300 text-xl">
-                            <Phone size={24} className="mr-4" />
-                            <span>{fields.phone || 'phone'}</span>
-                          </div>
-                          <div className="flex items-center text-gray-300 text-xl">
-                            <Mail size={24} className="mr-4" />
-                            <span>{fields.email || 'email'}</span>
-                          </div>
-                          <div className="flex items-center text-gray-300 text-xl">
-                            <Globe size={24} className="mr-4" />
-                            <a 
-                              href={fields.website || 'website'} 
-                              target="_blank" 
-                              rel="noopener noreferrer" 
-                              className="truncate hover:text-white transition-colors duration-200"
-                            >
-                              {fields.website || 'website'}
-                            </a>
-                          </div>
-                          <div className="flex items-center text-gray-300 text-xl">
-                            <MapPin size={24} className="mr-4" />
-                            <a 
-                              href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(fields.address || 'address')}`}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="hover:text-white transition-colors duration-200"
-                            >
-                              {fields.address || 'address'}
-                            </a>
-                          </div>
-                        </div>
-                      </div>
+  
+                {/* QR Code */}
+                <div className="w-20 h-20 mt-[7%]">
+                  <QRCode 
+                    value={JSON.stringify(fields)} 
+                    size={80} 
+                    level="H" 
+                    className="w-full h-full bg-white p-1 rounded-md" 
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );    
+case 12:
+      return (
+        <div className={`${montserrat.className} group w-[635px] h-[300px]`} style={{ perspective: '1000px' }}>
+          <div 
+            className="relative w-full h-full duration-1000 ease-in-out transition-transform group-hover:[transform:rotateY(180deg)]" 
+            style={{ transformStyle: 'preserve-3d' }}
+          >
+            {/* Front of the card (Logo and Company Name) */}
+            <div className="absolute w-full h-full bg-[#A7B5D8] rounded-xl flex items-center justify-center" 
+                 style={{ backfaceVisibility: 'hidden' }}>
+              <div className="text-center relative w-full h-full">
+                {/* Vertical Line */}
+                <div className="absolute top-0 bottom-0 left-[5%] h-[300px] w-[3px] bg-black"></div>
+                {/* Logo and Company Name */}
+                <div className="flex flex-col items-center justify-center h-full">
+                  {/* Logo */}
+                  <div className="mb-4">
+                    <img 
+                      src={fields.logo || '/images/logo-placeholder.png'} 
+                      alt="Company Logo" 
+                      className="mx-auto h-16"
+                    />
+                  </div>
+                  {/* Company Name */}
+                  <h1 className="text-2xl font-bold text-white">
+                    {fields.companyName || 'Company Name'}
+                  </h1>
+                </div>
+              </div>
+            </div>
+    
+            {/* Back of the card (Contact Information) */}
+            <div className="absolute w-full h-full bg-white rounded-xl p-8 flex flex-col justify-between" 
+                 style={{ 
+                   backfaceVisibility: 'hidden',
+                   transform: 'rotateY(180deg)'
+                 }}>
+              {/* Name and Title */}
+              <div>
+                <div className="flex items-center gap-4 mb-4">
+                  {/* Profile Image or Placeholder */}
+                  <div className="w-12 h-12 rounded-full bg-gray-300 flex items-center justify-center">
+                    <Image
+                      src="/images/profile.png" // Path relative to the 'public' directory
+                      alt="Profile Image"
+                      className="w-full h-full rounded-full object-cover"
+                      width={48} // You can adjust the width and height based on your needs
+                      height={48}
+                    />
+                  </div>
+                  <div>
+                    <h2 className="text-lg font-bold" style={{ color: '#313131' }}>
+                      {fields.name || 'Name'}
+                    </h2>
+                    <p className="text-sm" style={{ color: '#313131' }}>
+                      {fields.jobTitle || 'Job Title'}
+                    </p>
+                  </div>
+                </div>
+    
+                {/* Horizontal Line - changed color to black */}
+                <div className="w-full h-[2px] bg-black mb-4"></div>
+    
+                {/* Contact Details and QR Code in One Container */}
+                <div className="flex justify-between items-start mt-8">
+                  {/* Contact Details */}
+                  <div className="space-y-3">
+                    {/* Phone */}
+                    <div className="flex items-center text-sm" style={{ color: '#313131' }}>
+                      <img src="/images/phone.png" alt="Phone Icon" className="mr-2 w-4 h-4" />
+                      <span>{fields.phone || 'Phone Number'}</span>
                     </div>
-        
-                    {/* QR Code - Fixed position at bottom right */}
-                    <div className="absolute bottom-0 right-0 w-32 h-32">
-                      <QRCode 
-                        value={JSON.stringify(fields)}
-                        size={128}
-                        level="H"
-                        className="w-full h-full bg-white p-2 rounded-lg"
-                      />
+                    {/* Email */}
+                    <div className="flex items-center text-sm" style={{ color: '#313131' }}>
+                      <img src="/images/email.png" alt="Email Icon" className="mr-2 w-4 h-4" />
+                      <span>{fields.email || 'Email Address'}</span>
                     </div>
+                    {/* Website */}
+                    <div className="flex items-center text-sm" style={{ color: '#313131' }}>
+                      <img src="/images/website.png" alt="Website Icon" className="mr-2 w-4 h-4" />
+                      <a 
+                        href={fields.website || '#'}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="hover:text-gray-800 transition"
+                      >
+                        {fields.website || 'Website URL'}
+                      </a>
+                    </div>
+                    {/* Location */}
+                    <div className="flex items-center text-sm" style={{ color: '#313131' }}>
+                      <img src="/images/location.png" alt="Location Icon" className="mr-2 w-4 h-4" />
+                      <span>{fields.address || 'Address'}</span>
+                    </div>
+                  </div>
+    
+                  {/* QR Code */}
+                  <div className="w-20 h-20 mt-[7%]">
+                    <QRCode 
+                      value={JSON.stringify(fields)} 
+                      size={80} 
+                      level="H" 
+                      className="w-full h-full bg-white p-1 rounded-md" 
+                    />
                   </div>
                 </div>
               </div>
             </div>
-          );
-        
-      
-      
+          </div>
+        </div>
+      );
+
+
         default:
         return null;
     }
