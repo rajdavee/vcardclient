@@ -22,22 +22,23 @@ interface TemplateProps {
 }
 
 export const templateFields: Record<TemplateId, string[]> = {
-  1: ['name', 'firstName', 'lastName', 'jobTitle', 'companyName', 'phone', 'mobile', 'email', 'website', 'address', 'city', 'state', 'postalCode', 'country', 'linkedin', 'twitter', 'note'],
-  2: ['name', 'firstName', 'lastName', 'jobTitle', 'companyName', 'phone', 'mobile', 'email', 'website', 'address', 'city', 'state', 'postalCode', 'country', 'linkedin', 'twitter', 'note'],
-  3: ['name', 'firstName', 'lastName', 'jobTitle', 'companyName', 'phone', 'mobile', 'email', 'website', 'address', 'city', 'state', 'postalCode', 'country', 'linkedin', 'twitter', 'note'],
-  4: ['name', 'firstName', 'lastName', 'jobTitle', 'companyName', 'phone', 'mobile', 'email', 'website', 'address', 'city', 'state', 'postalCode', 'country', 'linkedin', 'twitter', 'note'],
-  5: ['name', 'firstName', 'lastName', 'jobTitle', 'companyName', 'phone', 'mobile', 'email', 'website', 'address', 'city', 'state', 'postalCode', 'country', 'linkedin', 'twitter', 'note'],
-  6: ['name', 'firstName', 'lastName', 'jobTitle', 'companyName', 'phone', 'mobile', 'email', 'website', 'address', 'city', 'state', 'postalCode', 'country', 'linkedin', 'twitter', 'note'],
-  7: ['name', 'firstName', 'lastName', 'jobTitle', 'companyName', 'phone', 'mobile', 'email', 'website', 'address', 'city', 'state', 'postalCode', 'country', 'linkedin', 'twitter', 'note'],
-  8: ['name', 'firstName', 'lastName', 'jobTitle', 'companyName', 'phone', 'mobile', 'email', 'website', 'address', 'city', 'state', 'postalCode', 'country', 'linkedin', 'twitter', 'note'],
-  9: ['name', 'firstName', 'lastName', 'jobTitle', 'companyName', 'phone', 'mobile', 'email', 'website', 'address', 'city', 'state', 'postalCode', 'country', 'linkedin', 'twitter', 'note'],
-  10: ['name', 'firstName', 'lastName', 'jobTitle', 'companyName', 'phone', 'mobile', 'email', 'website', 'address', 'city', 'state', 'postalCode', 'country', 'linkedin', 'twitter', 'note'],
-  11: ['name', 'firstName', 'lastName', 'jobTitle', 'companyName', 'phone', 'mobile', 'email', 'website', 'address', 'city', 'state', 'postalCode', 'country', 'linkedin', 'twitter', 'note'],
-  12: ['name', 'firstName', 'lastName', 'jobTitle', 'companyName', 'phone', 'mobile', 'email', 'website', 'address', 'city', 'state', 'postalCode', 'country', 'linkedin', 'twitter', 'note'],
-  13: ['name', 'firstName', 'lastName', 'jobTitle', 'companyName', 'phone', 'mobile', 'email', 'website', 'address', 'city', 'state', 'postalCode', 'country', 'linkedin', 'twitter', 'note'],
-  14: ['name', 'firstName', 'lastName', 'jobTitle', 'companyName', 'phone', 'mobile', 'email', 'website', 'address', 'city', 'state', 'postalCode', 'country', 'linkedin', 'twitter', 'note'],
-  15: ['name', 'firstName', 'lastName', 'jobTitle', 'companyName', 'phone', 'mobile', 'email', 'website', 'address', 'city', 'state', 'postalCode', 'country', 'linkedin', 'twitter', 'note'],
+  1: ['name', 'jobTitle', 'companyName', 'phone', 'email', 'website', 'address',  'linkedin', 'twitter'],
+  2: ['name', 'firstName', 'lastName', 'jobTitle', 'companyName', 'phone', 'mobile', 'email', 'website', 'address', 'city', 'state', 'postalCode', 'country', 'linkedin', 'twitter'],
+  3: ['name', 'jobTitle', 'companyName', 'phone', 'email', 'website',  'linkedin'],
+  4: ['name', 'jobTitle', 'companyName', 'phone', 'email', 'website',  'linkedin', 'twitter'],
+  5: ['name', 'jobTitle', 'companyName', 'phone', 'email', 'website', 'address', 'linkedin', 'twitter'],
+  6: ['name', 'jobTitle', 'companyName', 'phone', 'mobile', 'email', 'website', 'address',  'linkedin', 'twitter'],
+  7: ['name', 'jobTitle', 'companyName', 'phone', 'email', 'website', 'linkedin', 'twitter'],
+  8: ['name', 'jobTitle', 'companyName', 'phone', 'mobile', 'email', 'website', 'linkedin', 'twitter'],
+  9: ['name', 'firstName', 'lastName', 'jobTitle', 'companyName', 'phone', 'mobile', 'email', 'website', 'linkedin', 'twitter'],
+  10: ['name', 'firstName', 'lastName', 'jobTitle', 'companyName', 'phone', 'mobile', 'email', 'website', 'address', 'linkedin', 'twitter'],
+  11: ['name', 'jobTitle', 'companyName', 'phone', 'email', 'website', 'address', 'linkedin', 'twitter'], 
+  12: ['name', 'jobTitle', 'companyName', 'phone', 'mobile', 'email', 'website', 'address', 'linkedin', 'twitter'],
+  13: ['name', 'jobTitle', 'companyName', 'phone', 'email', 'website', 'address',  'linkedin', 'twitter'],
+  14: ['name', 'jobTitle', 'companyName', 'phone', 'mobile', 'email', 'website', 'address',  'linkedin', 'twitter'],
+  15: ['name', 'firstName', 'lastName', 'jobTitle', 'companyName', 'phone', 'email', 'website', 'address',  'linkedin', 'twitter'], 
 };
+
 
 interface ContactFormData {
   name: string;
