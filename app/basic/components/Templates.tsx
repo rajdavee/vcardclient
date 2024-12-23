@@ -35,8 +35,8 @@ export const templateFields: Record<TemplateId, string[]> = {
   11: ['name', 'jobTitle', 'companyName', 'phone', 'email', 'website', 'address', 'linkedin', 'twitter'], 
   12: ['name', 'jobTitle', 'companyName', 'phone', 'mobile', 'email', 'website', 'address', 'linkedin', 'twitter'],
   13: ['name', 'jobTitle', 'companyName', 'phone', 'email', 'website', 'address',  'linkedin', 'twitter'],
-  14: ['raj', 'jobTitle', 'companyName', 'phone', 'mobile', 'email', 'website', 'address',  'linkedin', 'twitter'],
-  15: ['raj', 'firstName', 'lastName', 'jobTitle', 'companyName', 'phone', 'email', 'website', 'address',  'linkedin', 'twitter'], 
+  14: ['name', 'jobTitle', 'companyName', 'phone', 'mobile', 'email', 'website', 'address',  'linkedin', 'twitter'],
+  15: ['name', 'firstName', 'lastName', 'jobTitle', 'companyName', 'phone', 'email', 'website', 'address',  'linkedin', 'twitter'], 
 };
 
 
