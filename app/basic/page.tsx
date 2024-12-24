@@ -225,7 +225,7 @@ const BasicVCardPage: React.FC = () => {
       document.body.removeChild(a);
     } else {
       console.error('QR code data is not available');
-      setMessage('Unable to download QR code. Please try again.');
+      setMessage('Unable to download QR code. Please try again....');
     }
   };
 
