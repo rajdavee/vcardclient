@@ -1096,7 +1096,7 @@ case 13:
                   {/* Location */}
                   <div className="flex items-center text-sm">
                     <img src="/images/location2.png" alt="Location Icon" className="mr-2 w-4 h-4" />
-                    <span>{fields.address || 'address'}</span>
+                    <span>{fields.address || 'Address'}</span>
                   </div>
                 </div>
               </div>
