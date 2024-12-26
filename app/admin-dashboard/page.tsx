@@ -54,7 +54,9 @@ export default function AdminDashboard() {
           <div className="container mx-auto px-6 py-8">
             {activeTab === 'Dashboard' && <NewAdminDashboard />}
             {activeTab === 'Users' && <UserManagement users={adminData.users} loadAdminData={loadAdminData} />}
-            {activeTab === 'vCards' && <VCardManagement loadAdminData={loadAdminData} />}
+            <div className={activeTab === 'vCards' ? 'block' : 'hidden'}>
+              <VCardManagement loadAdminData={loadAdminData} />
+            </div>
             {activeTab === 'Plan Templates' && <PlanTemplateManagement />}
           </div>
         </main>

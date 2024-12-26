@@ -40,12 +40,22 @@ export default function VCardManagement({ loadAdminData }: VCardManagementProps)
   const [error, setError] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedTemplate, setSelectedTemplate] = useState<number | 'all'>('all');
+  const [lastFetchTime, setLastFetchTime] = useState<number>(0);
+  const CACHE_DURATION = 60000; // 1 minute cache
   const cardsPerPage = 6;
   const [dropdownOpen, setDropdownOpen] = useState<string | null>(null);
 
   useEffect(() => {
-    fetchVCards();
-  }, []);
+    const now = Date.now();
+    if (now - lastFetchTime > CACHE_DURATION) {
+      fetchVCards();
+      setLastFetchTime(now);
+    }
+  }, [lastFetchTime]);
+
+  const refreshVCards = () => {
+    setLastFetchTime(0); // This will trigger a new fetch in the useEffect
+  };
 
   useEffect(() => {
     filterVCards();
@@ -96,7 +106,7 @@ export default function VCardManagement({ loadAdminData }: VCardManagementProps)
 
     try {
       await deleteVCard(vCardId);
-      await fetchVCards();
+      refreshVCards(); // Refresh after deletion
       loadAdminData();
     } catch (error) {
       console.error('Failed to delete vCard:', error);
