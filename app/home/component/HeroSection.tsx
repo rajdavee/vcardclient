@@ -512,69 +512,69 @@ export function HeroSection() {
   ]
 
   return (
-    <section className="relative w-full min-h-screen flex flex-col md:flex-row items-center justify-center bg-gradient-to-br from-indigo-50 to-white dark:from-gray-900 dark:to-gray-800 overflow-hidden">
-      <div className="container mx-auto px-4 relative z-10">
-        <div className="grid lg:grid-cols-2 gap-12 items-center  mx-[6.7%]">
+    <section className="relative w-full min-h-[calc(100vh-4rem)] py-12 sm:py-16 lg:py-20 flex flex-col items-center justify-center bg-gradient-to-br from-indigo-50 to-white dark:from-gray-900 dark:to-gray-800 overflow-hidden">
+      <div className="container mx-auto px-4 sm:px-6 relative z-10">
+        <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
           {/* Left Content Section */}
           <motion.div 
-            className="space-y-6"
+            className="space-y-4 sm:space-y-6 text-center lg:text-left"
             initial={{ opacity: 0, x: -50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8 }}
           >
             {/* Hero Title */}
-            <div className="space-y-4">
+            <div className="space-y-3 sm:space-y-4">
               <motion.div 
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.2, duration: 0.6 }}
               >
-                <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600 leading-tight">
+                <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600 leading-tight">
                   Transform Your Professional Identity
                 </h1>
               </motion.div>
 
-              <p className="text-lg text-gray-600 dark:text-gray-300 max-w-xl">
+              <p className="text-base sm:text-lg text-gray-600 dark:text-gray-300 max-w-xl mx-auto lg:mx-0">
                 Create stunning digital business cards that make lasting impressions. Connect, share, and grow your professional network effortlessly.
               </p>
             </div>
 
             {/* CTA Buttons */}
-            <div className="flex flex-col sm:flex-row gap-4">
+            <div className="flex flex-col sm:flex-row justify-center lg:justify-start gap-3 sm:gap-4">
               <motion.button 
                 onClick={handleGetStarted}
                 disabled={isLoading}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="flex items-center justify-center px-6 py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors group"
+                className="w-full sm:w-auto flex items-center justify-center px-4 sm:px-6 py-2.5 sm:py-3 bg-indigo-600 text-white text-sm sm:text-base rounded-lg hover:bg-indigo-700 transition-colors group disabled:opacity-70 disabled:cursor-not-allowed"
               >
                 {isLoading ? 'Loading...' : (isAuthenticated ? 'Go to Dashboard' : 'Get Started')}
-                <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                <ArrowRight className="ml-2 h-4 w-4 sm:h-5 sm:w-5 group-hover:translate-x-1 transition-transform" />
               </motion.button>
 
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="flex items-center justify-center px-6 py-3 border border-indigo-600 text-indigo-600 rounded-lg hover:bg-indigo-50 transition-colors group"
+                className="w-full sm:w-auto flex items-center justify-center px-4 sm:px-6 py-2.5 sm:py-3 border border-indigo-600 text-indigo-600 text-sm sm:text-base rounded-lg hover:bg-indigo-50 transition-colors group"
               >
                 Learn More
-                <Sparkles className="ml-2 h-5 w-5 text-indigo-600 group-hover:rotate-45 transition-transform" />
+                <Sparkles className="ml-2 h-4 w-4 sm:h-5 sm:w-5 text-indigo-600 group-hover:rotate-45 transition-transform" />
               </motion.button>
             </div>
 
             {/* Feature Highlights */}
-            <div className="grid grid-cols-3 gap-4 pt-6">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 pt-4 sm:pt-6">
               {featureHighlights.map((feature, index) => (
                 <motion.div
                   key={feature.title}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.4 + index * 0.2, duration: 0.6 }}
-                  className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow"
+                  className="bg-white dark:bg-gray-800 p-3 sm:p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow"
                 >
-                  <feature.icon className="h-8 w-8 text-indigo-600 mb-2" />
-                  <h3 className="font-semibold text-gray-800 dark:text-white">{feature.title}</h3>
-                  <p className="text-xs text-gray-600 dark:text-gray-300">{feature.description}</p>
+                  <feature.icon className="h-6 w-6 sm:h-8 sm:w-8 text-indigo-600 mb-2 mx-auto lg:mx-0" />
+                  <h3 className="font-semibold text-gray-800 dark:text-white text-sm sm:text-base">{feature.title}</h3>
+                  <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-300">{feature.description}</p>
                 </motion.div>
               ))}
             </div>
@@ -582,7 +582,7 @@ export function HeroSection() {
 
           {/* Right Globe Visualization */}
           <motion.div 
-            className="relative w-full h-[500px] rounded-lg overflow-hidden"
+            className="relative w-full h-[300px] sm:h-[400px] lg:h-[500px] mt-8 lg:mt-0 rounded-lg overflow-hidden"
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
@@ -592,16 +592,16 @@ export function HeroSection() {
             
             {/* Global Network Overlay */}
             <motion.div 
-              className="absolute bottom-6 left-6 right-6 bg-white/90 dark:bg-gray-800/90 p-5 rounded-lg shadow-xl"
+              className="absolute bottom-4 sm:bottom-6 left-4 sm:left-6 right-4 sm:right-6 bg-white/90 dark:bg-gray-800/90 p-3 sm:p-5 rounded-lg shadow-xl"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 1 }}
             >
               <div className="flex items-center space-x-3">
-                <IdCard className="h-10 w-10 text-indigo-600" />
+                <IdCard className="h-8 w-8 sm:h-10 sm:w-10 text-indigo-600" />
                 <div>
-                  <h3 className="text-lg font-bold text-gray-800 dark:text-white">Global Professional Network</h3>
-                  <p className="text-sm text-gray-600 dark:text-gray-300">
+                  <h3 className="text-base sm:text-lg font-bold text-gray-800 dark:text-white">Global Professional Network</h3>
+                  <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-300">
                     Connect with professionals across 150+ countries
                   </p>
                 </div>
@@ -616,7 +616,7 @@ export function HeroSection() {
         <motion.div 
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          className="fixed bottom-4 right-4 bg-red-500 text-white px-4 py-2 rounded-lg shadow-lg"
+          className="fixed bottom-4 right-4 bg-red-500 text-white px-4 py-2 rounded-lg shadow-lg text-sm"
         >
           {error}
         </motion.div>

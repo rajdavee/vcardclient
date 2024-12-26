@@ -11,12 +11,14 @@ const LayoutGrid = ({ cards }: { cards: any[] }) => {
   return (
     <div
       ref={containerRef}
-      className="grid grid-cols-1 md:grid-cols-3 gap-4 w-full max-w-6xl mx-auto"
+      className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 w-full max-w-6xl mx-auto px-4 sm:px-6"
     >
       {cards.map((card, idx) => (
         <motion.div
           key={card.id}
-          className={`relative h-[300px] rounded-xl overflow-hidden cursor-pointer ${card.className}`}
+          className={`relative h-[250px] sm:h-[280px] md:h-[300px] rounded-xl overflow-hidden cursor-pointer ${
+            card.className.replace('md:', 'lg:')
+          }`}
           onMouseEnter={() => setHoveredIndex(idx)}
           onMouseLeave={() => setHoveredIndex(null)}
           initial={{ opacity: 0, y: 20 }}
@@ -60,12 +62,12 @@ const LayoutGrid = ({ cards }: { cards: any[] }) => {
 // Main ExamplesSection Component
 export function ExamplesSection() {
   return (
-    <section className="w-full py-12 md:py-20">
-      <div className="container mx-auto px-4 md:px-6 mb-8">
-        <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl text-center mb-4">
+    <section className="w-full py-8 sm:py-12 md:py-16 lg:py-20">
+      <div className="container mx-auto px-4 md:px-6 mb-6 sm:mb-8 lg:mb-12">
+        <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tighter text-center mb-3 sm:mb-4">
           Industry Leaders
         </h2>
-        <p className="text-lg text-gray-600 text-center max-w-2xl mx-auto mb-12">
+        <p className="text-base sm:text-lg text-gray-600 text-center max-w-2xl mx-auto">
           Connect with top professionals who are shaping the future of technology and innovation.
         </p>
       </div>
@@ -139,7 +141,7 @@ const cards = [
   {
     id: 1,
     content: <TechVisionaryCard />,
-    className: "md:col-span-2",
+    className: "col-span-1 lg:col-span-2",
     thumbnail: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=2000&h=600",
   },
   {
@@ -157,7 +159,7 @@ const cards = [
   {
     id: 4,
     content: <CyberSecurityCard />,
-    className: "md:col-span-2",
+    className: "col-span-1 lg:col-span-2",
     thumbnail: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=2000&h=600",
   },
 ];

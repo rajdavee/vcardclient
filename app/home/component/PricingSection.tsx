@@ -158,51 +158,89 @@ export function PricingSection() {
   ];
 
   return (
-    <section id="pricing" className="w-full py-12 md:py-24 lg:py-32 bg-gray-50 flex flex-col md:flex-row">
-      <div className="container px-4 md:px-6  mx-[5%]">
-        <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl text-center mb-12 text-gray-900">
-          Simple, Transparent Pricing
-        </h2>
+    <section id="pricing" className="w-full py-12 sm:py-16 lg:py-24 bg-gray-50">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
+        <div className="text-center space-y-4 mb-8 sm:mb-12">
+          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight text-gray-900">
+            Simple, Transparent Pricing
+          </h2>
+          <p className="text-base sm:text-lg text-gray-600 max-w-2xl mx-auto">
+            Choose the perfect plan for your needs. No hidden fees, no surprises.
+          </p>
+        </div>
+
         {error && (
-          <div className="text-center mb-8">
-            <p className="text-red-500">{error}</p>
+          <div className="text-center mb-6 sm:mb-8">
+            <p className="text-sm sm:text-base text-red-500 bg-red-50 py-2 px-4 rounded-lg inline-block">{error}</p>
           </div>
         )}
-        <div className="grid gap-8 md:grid-cols-3">
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 lg:gap-12 max-w-screen-xl mx-auto">
           {plans.map((plan, index) => (
-            <div key={index} className={`rounded-lg border bg-card text-card-foreground shadow-sm flex flex-col p-6 ${index === 1 ? 'border-indigo-600 border-2' : ''}`}>
+            <div 
+              key={index} 
+              className={`relative rounded-xl border bg-white dark:bg-gray-800 shadow-sm transition-shadow hover:shadow-md flex flex-col p-6 sm:p-8 ${
+                index === 1 ? 'border-indigo-600 border-2 lg:scale-105' : 'border-gray-200'
+              }`}
+            >
               {index === 1 && (
-                <span className="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 w-fit mb-4 bg-indigo-600 text-white hover:bg-indigo-700">
-                  Most Popular
-                </span>
+                <div className="absolute -top-4 left-1/2 -translate-x-1/2">
+                  <span className="inline-flex items-center rounded-full bg-indigo-600 px-3 py-1 text-xs sm:text-sm font-semibold text-white shadow-sm">
+                    Most Popular
+                  </span>
+                </div>
               )}
-              <h3 className="text-2xl font-bold mb-2 text-gray-900">{plan.name}</h3>
-              <p className="text-4xl font-bold mb-6 text-indigo-600">${plan.price}</p>
-              <ul className="mb-6 space-y-2 flex-grow">
+
+              <div className="mb-5">
+                <h3 className="text-xl sm:text-2xl font-bold mb-2 text-gray-900 dark:text-white">{plan.name}</h3>
+                <div className="flex items-baseline text-gray-900 dark:text-white">
+                  <span className="text-3xl sm:text-4xl font-bold tracking-tight text-indigo-600">${plan.price}</span>
+                  {plan.price > 0 && <span className="text-sm text-gray-500 ml-1">/month</span>}
+                </div>
+              </div>
+
+              <ul className="mb-6 space-y-3 flex-grow">
                 {plan.features.map((feature, fIndex) => (
-                  <li key={fIndex} className="flex items-center text-gray-600">
-                    <Star className="w-4 h-4 mr-2 text-indigo-600" />
-                    <span>{feature}</span>
+                  <li key={fIndex} className="flex items-start text-gray-600 dark:text-gray-300">
+                    <Star className="w-4 h-4 mr-2 text-indigo-600 mt-0.5 flex-shrink-0" />
+                    <span className="text-sm sm:text-base">{feature}</span>
                   </li>
                 ))}
               </ul>
+
               <button
                 onClick={() => handleGetStarted(plan.name)}
                 disabled={loading || (userPlan === plan.name)}
-                className={`mt-8 block w-full rounded-md px-3 py-2 text-center text-sm font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 ${
+                className={`mt-4 w-full rounded-lg px-4 py-2.5 sm:py-3 text-sm sm:text-base font-semibold shadow-sm transition-all focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 ${
                   userPlan === plan.name
-                    ? 'bg-green-600 cursor-default'
-                    : 'bg-indigo-600 hover:bg-indigo-500'
-                } disabled:opacity-50`}
+                    ? 'bg-green-600 text-white cursor-default'
+                    : 'bg-indigo-600 text-white hover:bg-indigo-500 active:bg-indigo-700'
+                } disabled:opacity-50 disabled:cursor-not-allowed`}
               >
-                {loading
-                  ? 'Processing...'
-                  : userPlan === plan.name
-                  ? 'Current Plan'
-                  : 'Get Started'}
+                {loading ? (
+                  <span className="flex items-center justify-center">
+                    <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" fill="none" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                    </svg>
+                    Processing...
+                  </span>
+                ) : userPlan === plan.name ? (
+                  'Current Plan'
+                ) : plan.price === 0 ? (
+                  'Contact Sales'
+                ) : (
+                  'Get Started'
+                )}
               </button>
             </div>
           ))}
+        </div>
+
+        <div className="mt-12 sm:mt-16 text-center">
+          <p className="text-sm sm:text-base text-gray-600">
+            All plans include a 14-day free trial. No credit card required.
+          </p>
         </div>
       </div>
     </section>
