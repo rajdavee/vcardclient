@@ -36,7 +36,9 @@ export const templateFields: Record<TemplateId, string[]> = {
   12: ['name', 'jobTitle', 'companyName', 'phone', 'mobile', 'email', 'website', 'address', 'linkedin', 'twitter'],
   13: ['name', 'jobTitle', 'companyName', 'phone', 'email', 'website', 'address',  'linkedin', 'twitter'],
   14: ['name', 'jobTitle', 'companyName', 'phone', 'mobile', 'email', 'website', 'address',  'linkedin', 'twitter'],
-  15: ['name', 'firstName', 'lastName', 'jobTitle', 'companyName', 'phone', 'email', 'website', 'address',  'linkedin', 'twitter'], 
+  15: ['name', 'firstName', 'lastName', 'jobTitle', 'companyName', 'phone', 'email', 'website', 'address',  'linkedin', 'twitter'],
+  16: ['name', 'jobTitle', 'companyName', 'phone', 'mobile', 'email', 'website', 'address',  'linkedin', 'twitter'], 
+  17: ['name', 'jobTitle', 'companyName', 'phone', 'email', 'website', 'address', 'linkedin', 'twitter'],
 };
 
 
@@ -819,6 +821,8 @@ case 10:
       </div>
     </div>
   );
+
+
 case 11:
     return (
       <div className={`${montserrat.className} group w-[635px] h-[300px]`} style={{ perspective: '1000px' }}>
@@ -930,7 +934,10 @@ case 11:
         </div>
       </div>
     );    
-case 12:
+
+
+
+    case 12:
       return (
         <div className={`${montserrat.className} group w-[635px] h-[300px]`} style={{ perspective: '1000px' }}>
           <div 
@@ -1237,7 +1244,249 @@ case 15:
                 </div>
               </div>  
             );
-       
+
+
+
+            case 16:
+              return (
+                <div
+                  className="group w-[300px] h-[525px]"
+                  style={{ perspective: '1000px' }}
+                >
+                  <div
+                    className="relative w-full h-full duration-1000 ease-in-out transition-transform group-hover:[transform:rotateY(180deg)]"
+                    style={{ transformStyle: 'preserve-3d' }}
+                  >
+                    {/* Front of the card */}
+                    <div
+                      className="absolute w-full h-full bg-[#595A5C] rounded-xl flex items-center justify-center"
+                      style={{ backfaceVisibility: 'hidden' }}
+                    >
+                      {/* Logo Container */}
+                      <div className="w-32">
+                        <img
+                          src={fields.logo || '/images/logo-placeholder.png'}
+                          alt="Company Logo"
+                          className="w-full h-auto"
+                        />
+                      </div>
+                    </div>
+            
+                    {/* Back of the card */}
+                    <div
+                      className="absolute w-full h-full bg-white rounded-xl flex flex-col"
+                      style={{
+                        backfaceVisibility: 'hidden',
+                        transform: 'rotateY(180deg)',
+                      }}
+                    >
+                      {/* Logo Background at Top-Left */}
+                      <div
+                        className="absolute top-[0%] left-[60%] w-[125px] h-[125px] bg-[#595A5C] rounded-sm flex items-center justify-center"
+                      >
+                        <img
+                          src={fields.logo || '/images/logo-placeholder.png'}
+                          alt="Company Logo"
+                          className="w-16 h-auto"
+                        />
+                      </div>
+            
+                      {/* Content Container */}
+                      <div className="p-6 mt-auto flex flex-col justify-end flex-1">
+                        {/* Name and Title */}
+                        <div>
+                          <h2 className="text-xl font-bold text-gray-800 mb-1">
+                            {fields.name || 'TERRY VETROVS'}
+                          </h2>
+                          <p className="text-gray-600 text-sm">
+                            {fields.jobTitle || 'Pashupati Enterprises'}
+                          </p>
+            
+                          {/* Divider Line */}
+                          <div className="w-16 h-1 bg-gray-800 my-4 rounded-full"></div>
+            
+                          {/* Contact Information */}
+                          <div className="space-y-3">
+                            {/* Phone */}
+                            <div className="flex items-center text-sm text-gray-700">
+                              <img
+                                src="/images/phone.png"
+                                alt="Phone Icon"
+                                className="mr-2 w-4 h-4"
+                              />
+                              <span>{fields.phone || '+91 98534 23254'}</span>
+                            </div>
+            
+                            {/* Email */}
+                            <div className="flex items-center text-sm text-gray-700">
+                              <img
+                                src="/images/email.png"
+                                alt="Email Icon"
+                                className="mr-2 w-4 h-4"
+                              />
+                              <span>{fields.email || 'jessica.hanson@example.com'}</span>
+                            </div>
+            
+                            {/* Website */}
+                            <div className="flex items-center text-sm text-gray-700">
+                              <img
+                                src="/images/website2.png"
+                                alt="Website Icon"
+                                className="mr-2 w-4 h-4"
+                              />
+                              <a
+                                href={fields.website || '#'}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="hover:text-gray-900 transition"
+                              >
+                                {fields.website || 'www.zephyrsofttechnologies.com'}
+                              </a>
+                            </div>
+            
+                            {/* Address */}
+                            <div className="flex items-start text-sm text-gray-700">
+                              <img
+                                src="/images/location.png"
+                                alt="Location Icon"
+                                className="mr-2 w-4 h-4 mt-1"
+                              />
+                              <span className="flex-1">
+                                {fields.address ||
+                                  'Samarpan Shopping Mall, Sardar Patel Ring Rd, Bopal, Ahmedabad, Gujarat 380058'}
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              );
+            
+
+
+
+
+              case 17:
+  return (
+    <div
+      className="group w-[300px] h-[525px]"
+      style={{ perspective: '1000px' }}
+    >
+      <div
+        className="relative w-full h-full duration-1000 ease-in-out transition-transform group-hover:[transform:rotateY(180deg)]"
+        style={{ transformStyle: 'preserve-3d' }}
+      >
+        {/* Front of the card */}
+        <div
+          className="absolute w-full h-full bg-[#FDDDD2] rounded-xl flex items-center justify-center"
+          style={{ backfaceVisibility: 'hidden' }}
+        >
+          {/* Logo Container */}
+          <div className="w-32">
+            <img
+              src={fields.logo || '/images/logo-placeholder.png'}
+              alt="Company Logo"
+              className="w-full h-auto"
+            />
+          </div>
+        </div>
+
+        {/* Back of the card */}
+        <div
+          className="absolute w-full h-full bg-white rounded-xl flex flex-col"
+          style={{
+            backfaceVisibility: 'hidden',
+            transform: 'rotateY(180deg)',
+          }}
+        >
+          {/* Logo Background at Top-Left */}
+          <div
+            className="absolute top-[0%] left-[60%] w-[125px] h-[125px] bg-[#FDDDD2] rounded-sm flex items-center justify-center"
+          >
+            <img
+              src={fields.logo || '/images/logo-placeholder.png'}
+              alt="Company Logo"
+              className="w-16 h-auto"
+            />
+          </div>
+
+          {/* Content Container */}
+          <div className="p-6 mt-auto flex flex-col justify-end flex-1">
+            {/* Name and Title */}
+            <div>
+              <h2 className="text-xl font-bold text-gray-800 mb-1">
+                {fields.name || 'TERRY VETROVS'}
+              </h2>
+              <p className="text-gray-600 text-sm">
+                {fields.jobTitle || 'Pashupati Enterprises'}
+              </p>
+
+              {/* Divider Line */}
+              <div className="w-16 h-1 bg-gray-800 my-4 rounded-full"></div>
+
+              {/* Contact Information */}
+              <div className="space-y-3">
+                {/* Phone */}
+                <div className="flex items-center text-sm text-gray-700">
+                  <img
+                    src="/images/phone.png"
+                    alt="Phone Icon"
+                    className="mr-2 w-4 h-4"
+                  />
+                  <span>{fields.phone || '+91 98534 23254'}</span>
+                </div>
+
+                {/* Email */}
+                <div className="flex items-center text-sm text-gray-700">
+                  <img
+                    src="/images/email.png"
+                    alt="Email Icon"
+                    className="mr-2 w-4 h-4"
+                  />
+                  <span>{fields.email || 'jessica.hanson@example.com'}</span>
+                </div>
+
+                {/* Website */}
+                <div className="flex items-center text-sm text-gray-700">
+                  <img
+                    src="/images/website2.png"
+                    alt="Website Icon"
+                    className="mr-2 w-4 h-4"
+                  />
+                  <a
+                    href={fields.website || '#'}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="hover:text-gray-900 transition"
+                  >
+                    {fields.website || 'www.zephyrsofttechnologies.com'}
+                  </a>
+                </div>
+
+                {/* Address */}
+                <div className="flex items-start text-sm text-gray-700">
+                  <img
+                    src="/images/location.png"
+                    alt="Location Icon"
+                    className="mr-2 w-4 h-4 mt-1"
+                  />
+                  <span className="flex-1">
+                    {fields.address ||
+                      'Samarpan Shopping Mall, Sardar Patel Ring Rd, Bopal, Ahmedabad, Gujarat 380058'}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+
+
+
         default:
         return null;
     }
