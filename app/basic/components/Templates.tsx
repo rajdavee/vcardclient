@@ -823,7 +823,7 @@ case 10:
   );
 
 
-case 11:
+  case 11:
     return (
       <div className={`${montserrat.className} group w-[635px] h-[300px]`} style={{ perspective: '1000px' }}>
         <div 
@@ -875,10 +875,10 @@ case 11:
                 </div>
                 <div>
                   <h2 className="text-lg font-bold" style={{ color: '#313131' }}>
-                    {fields.name || 'Name'}
+                    <span className="line-clamp-2">{fields.name || 'Name'}</span>
                   </h2>
                   <p className="text-sm" style={{ color: '#313131' }}>
-                    {fields.jobTitle || 'Job Title'}
+                    <span className="line-clamp-2">{fields.jobTitle || 'Job Title'}</span>
                   </p>
                 </div>
               </div>
@@ -889,17 +889,18 @@ case 11:
               {/* Contact Details and QR Code in One Container */}
               <div className="flex justify-between items-start mt-8">
                 {/* Contact Details */}
-                <div className="space-y-3">
-                  {/* Phone */}
+                <div className="space-y-3 w-[400px]"> {/* Adjust this width value */}
+                {/* Phone */}
                   <div className="flex items-center text-sm" style={{ color: '#313131' }}>
                     <img src="/images/phone.png" alt="Phone Icon" className="mr-2 w-4 h-4" />
-                    <span>{fields.phone || 'Phone Number'}</span>
+                    <span className="truncate w-full">{fields.phone || 'Phone Number'}</span>
                   </div>
                   {/* Email */}
-                  <div className="flex items-center text-sm" style={{ color: '#313131' }}>
-                    <img src="/images/email.png" alt="Email Icon" className="mr-2 w-4 h-4" />
-                    <span>{fields.email || 'Email Address'}</span>
-                  </div>
+                  <div className="flex items-center text-sm " style={{ color: '#313131'}}>
+  <img src="/images/email.png" alt="Email Icon" className="mr-2 w-4 h-4" />
+  <span className="line-clamp-3 w-full ">{fields.email || 'Email Address'}</span>
+</div>
+
                   {/* Website */}
                   <div className="flex items-center text-sm" style={{ color: '#313131' }}>
                     <img src="/images/website2.png" alt="Website Icon" className="mr-2 w-4 h-4" />
@@ -909,13 +910,13 @@ case 11:
                       rel="noopener noreferrer"
                       className="hover:text-gray-800 transition"
                     >
-                      {fields.website || 'Website URL'}
+                      <span className="line-clamp-2">{fields.website || 'Website URL'}</span>
                     </a>
                   </div>
                   {/* Location */}
                   <div className="flex items-center text-sm" style={{ color: '#313131' }}>
                     <img src="/images/location.png" alt="Location Icon" className="mr-2 w-4 h-4" />
-                    <span>{fields.address || 'Address'}</span>
+                    <span className="line-clamp-3 w-full">{fields.address || 'Address'}</span>
                   </div>
                 </div>
   
@@ -933,9 +934,8 @@ case 11:
           </div>
         </div>
       </div>
-    );    
-
-
+    );
+  
 
     case 12:
       return (
@@ -1246,7 +1246,6 @@ case 15:
             );
 
 
-
             case 16:
               return (
                 <div
@@ -1363,7 +1362,6 @@ case 15:
                   </div>
                 </div>
               );
-            
 
 
 
