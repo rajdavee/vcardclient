@@ -78,7 +78,7 @@ export const FreeVcardGenerator: React.FC = () => {
 
               {/* Features Grid */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
-                {[
+                {[ 
                   { icon: "⚡️", text: "Instant Creation", desc: "Ready in seconds" },
                   { icon: "💎", text: "Premium Design", desc: "Professional templates" },
                   { icon: "📱", text: "Mobile Ready", desc: "Works everywhere" },
@@ -100,19 +100,8 @@ export const FreeVcardGenerator: React.FC = () => {
             </motion.div>
 
             {/* Right Content - Interactive Card Preview */}
-            <motion.div
-              initial={{ opacity: 0, y: 50 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3 }}
-              className="relative mt-8 lg:mt-0"
-            >
-              <motion.div
-                animate={{ rotate: isHovered ? 0 : 5 }}
-                whileHover={{ scale: 1.05 }}
-                onHoverStart={() => setIsHovered(true)}
-                onHoverEnd={() => setIsHovered(false)}
-                className="relative bg-white p-6 sm:p-8 rounded-2xl shadow-2xl border border-gray-100 max-w-md mx-auto"
-              >
+            <div className="relative mt-8 lg:mt-0">
+              <div className="relative bg-white p-6 sm:p-8 rounded-2xl shadow-2xl border border-gray-100 max-w-md mx-auto">
                 <div className="space-y-6 sm:space-y-8">
                   <div className="relative">
                     <div className="w-24 h-24 sm:w-32 sm:h-32 mx-auto relative">
@@ -130,26 +119,24 @@ export const FreeVcardGenerator: React.FC = () => {
                     
                     <div className="flex justify-center gap-3 sm:gap-4">
                       {[FaLinkedin, FaGithub, FaEnvelope].map((Icon, index) => (
-                        <motion.button
+                        <button
                           key={index}
-                          whileHover={{ scale: 1.2, rotate: 5 }}
                           className="p-1.5 sm:p-2 rounded-full bg-blue-50 text-blue-600 hover:bg-blue-100"
                         >
                           <Icon className="text-lg sm:text-xl" />
-                        </motion.button>
+                        </button>
                       ))}
                     </div>
                   </div>
 
-                  <motion.button
-                    whileHover={{ scale: 1.05 }}
+                  <button
                     className="w-full px-4 sm:px-6 py-2.5 sm:py-3 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-medium shadow-lg text-sm sm:text-base"
                   >
                     Download vCard
-                  </motion.button>
+                  </button>
                 </div>
-              </motion.div>
-            </motion.div>
+              </div>
+            </div>
           </div>
         </motion.div>
 
