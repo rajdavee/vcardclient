@@ -261,29 +261,33 @@ const Templates: React.FC<TemplateProps> = ({ selectedTemplate, fields, croppedI
   const renderTemplate = (id: TemplateId) => {
     console.log('Rendering template:', id); // Add this log
     switch (id) {
- case 1:
+      case 1:
         return (
           <div className="bg-white rounded-[2rem] shadow-lg overflow-hidden w-[400px] min-h-[240px] relative p-6">
             <div className="flex justify-between items-start">
               <div className="flex-grow">
-                <h2 className="text-2xl font-bold text-gray-800">{fields.name || 'Your Name'}</h2>
-                <p className="text-sm text-gray-600 mt-1">{fields.jobTitle || 'Your Job Title'}</p>
+                <h2 className="text-2xl font-bold text-gray-800 line-clamp-1">{fields.name || 'Your Name'}</h2>
+                <p className="text-sm text-gray-600 mt-1 line-clamp-1">{fields.jobTitle || 'Your Job Title'}</p>
                 <p className="text-sm text-gray-600 mt-2 line-clamp-3">{fields.bio || 'Your professional bio'}</p>
                 <div className="mt-4 space-y-1">
                   {fields.phone && (
-                    <p className="text-sm text-gray-600 flex items-center">
-                      <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" /></svg>
+                    <p className="text-sm text-gray-600 flex items-center line-clamp-1">
+                      <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                      </svg>
                       {fields.phone}
                     </p>
                   )}
-                  {fields.website && <p className="text-sm text-gray-600 ml-6">{fields.website}</p>}
+                  {fields.website && <p className="text-sm text-gray-600 ml-6 line-clamp-1">{fields.website}</p>}
                   {fields.email && (
-                    <p className="text-sm text-gray-600 flex items-center">
-                      <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
+                    <p className="text-sm text-gray-600 flex items-center line-clamp-1">
+                      <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                      </svg>
                       {fields.email}
                     </p>
                   )}
-                  {fields.address && <p className="text-sm text-gray-600 ml-6">{fields.address}</p>}
+                  {fields.address && <p className="text-sm text-gray-600 ml-6 line-clamp-1">{fields.address}</p>}
                 </div>
               </div>
               <div className="w-24 h-24 bg-blue-100 rounded-full overflow-hidden flex-shrink-0 ml-4">
@@ -293,433 +297,474 @@ const Templates: React.FC<TemplateProps> = ({ selectedTemplate, fields, croppedI
             <div className="absolute bottom-0 right-0 w-48 h-48 bg-blue-100 rounded-full -z-10 transform translate-x-1/4 translate-y-1/4"></div>
           </div>
         );
+      
+
  case 2:
-        return (
-          <div className="bg-gradient-to-br from-blue-200 to-purple-200 rounded-2xl shadow-lg overflow-hidden w-[400px] min-h-[240px] p-6">
-            <div className="flex items-center mb-4">
-              <div className="w-1 h-1 bg-red-500 rounded-full mr-2"></div>
-              <p className="text-xs text-gray-600 uppercase">ORDIVART</p>
-            </div>
-            <div className="flex justify-between items-start">
-              <div className="flex-grow">
-                <h2 className="text-4xl font-bold text-gray-800">{fields.name || 'Your Name'}</h2>
-                <p className="text-sm text-gray-600 mt-2">{fields.jobTitle || 'Your Job Title'}</p>
-                <p className="text-sm text-gray-600 mt-4 line-clamp-2">{fields.bio || 'Your professional bio'}</p>
-                <div className="mt-4 space-y-1">
-                  {fields.phone && <p className="text-sm text-gray-600">{fields.phone}</p>}
-                  {fields.alternatePhone && <p className="text-sm text-gray-600">{fields.alternatePhone}</p>}
-                  {fields.website && <p className="text-sm text-gray-600">{fields.website}</p>}
-                </div>
-              </div>
-              <div className="text-right">
-                {fields.email && <p className="text-sm text-gray-600">{fields.email}</p>}
-                <div className="w-32 h-32 bg-blue-300 rounded-full overflow-hidden mt-4">
-                  {renderProfileImage(128)}
-                </div>
-              </div>
-            </div>
-          </div>
-        );
- case 3:
-        return (
-          <div className="bg-[#f5e6d3] rounded-3xl shadow-lg overflow-hidden w-[400px] min-h-[240px] relative p-6">
-            <h2 className="text-2xl font-bold text-gray-800">{fields.name || "Your Name"}</h2>
-            <p className="text-sm text-gray-600 mt-1">{fields.jobTitle || 'Your Job Title'}</p>
-            <p className="text-sm text-gray-600 mt-2 line-clamp-2">{fields.bio || 'Your professional bio'}</p>
-            <div className="mt-4 space-y-1">
-              <p className="text-sm text-gray-600 flex items-center">
-                <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" /></svg>
-                Contact Details
-              </p>
-              {fields.email && <p className="text-sm text-gray-600 ml-6">{fields.email}</p>}
-              {fields.phone && <p className="text-sm text-gray-600 ml-6">{fields.phone}</p>}
-            </div>
-            <div className="mt-4 space-y-1">
-              {fields.address && <p className="text-sm text-gray-600">{fields.address}</p>}
-              {fields.city && <p className="text-sm text-gray-600">{fields.city}</p>}
-              {fields.postalCode && <p className="text-sm text-gray-600">{fields.postalCode}</p>}
-            </div>
-            <div className="absolute top-0 right-0 w-16 h-16 bg-[#e6d7c3] rounded-full transform translate-x-1/2 -translate-y-1/2"></div>
-            <div className="absolute bottom-0 right-0 w-24 h-24 bg-[#e6d7c3] rounded-full transform translate-x-1/3 translate-y-1/3"></div>
-          </div>
-        );
- case 4:
-        return (
-          <div className="bg-[#e0f2f1] rounded-2xl shadow-lg overflow-hidden w-[400px] min-h-[240px] p-6">
-            <h2 className="text-3xl font-bold text-gray-800">MODERN</h2>
-            <p className="text-sm text-gray-600 mt-1">Elegant</p>
-            <div className="mt-8">
-              <p className="text-sm font-semibold text-gray-800">{`${fields.firstName || 'First'} ${fields.lastName || 'Last'}`}</p>
-              <div className="flex justify-between mt-1">
-                <div>
-                  <p className="text-xs text-gray-600">Contact information</p>
-                  <p className="text-xs text-gray-600">{fields.jobTitle || 'Your Job Title'}</p>
-                </div>
-                <div className="text-right">
-                  {fields.website && <p className="text-xs text-gray-600">{fields.website}</p>}
-                  {fields.workHours && <p className="text-xs text-gray-600">{fields.workHours}</p>}
-                </div>
-              </div>
-            </div>
-            <p className="text-sm text-gray-600 mt-4 line-clamp-2">{fields.bio || 'Your professional bio'}</p>
-            <div className="mt-8 flex space-x-2">
-              {fields.phone && <div className="w-6 h-6 bg-gray-800 rounded-sm"></div>}
-              {fields.email && <div className="w-6 h-6 bg-gray-800 rounded-sm"></div>}
-              {fields.website && <div className="w-6 h-6 bg-gray-800 rounded-sm"></div>}
-              {fields.address && <div className="w-6 h-6 bg-gray-800 rounded-sm"></div>}
-            </div>
-          </div>
-        );
-case 5:
-        return (
-          <div className="bg-white rounded-2xl shadow-lg overflow-hidden w-[400px] min-h-[240px]">
-            <div className="grid grid-cols-2 h-full">
-              <div className="col-span-2 bg-[#fff9f5] p-4">
-                <h2 className="text-5xl font-bold text-gray-800 leading-none">{fields.firstName || 'FIRST'}</h2>
-                <h2 className="text-5xl font-bold text-gray-800 mt-1">{fields.lastName || 'LAST'}</h2>
-              </div>
-              <div className="p-4 flex flex-col justify-between">
-                <div>
-                  {fields.phone && <p className="text-sm text-gray-600">{fields.phone}</p>}
-                  {fields.jobTitle && <p className="text-sm text-gray-600 mt-2">{fields.jobTitle}</p>}
-                </div>
-                <div>
-                  <p className="text-xs text-gray-500">Contact information</p>
-                  {fields.email && <p className="text-sm text-gray-600 mt-1">{fields.email}</p>}
-                  {fields.website && <p className="text-sm text-gray-600">{fields.website}</p>}
-                </div>
-              </div>
-              <div className="p-4 flex flex-col items-end justify-between">
-                <div className="w-12 h-12 bg-gray-200 rounded-full flex items-center justify-center">
-                  <svg className="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" /></svg>
-                </div>
-                {fields.address && <p className="text-sm text-gray-600 text-right">{fields.address}</p>}
-              </div>
-            </div>
-          </div>
-        );
-case 6:
-        return (
-          <div className="bg-gradient-to-br from-indigo-100 to-purple-100 rounded-2xl shadow-lg overflow-hidden w-[400px] min-h-[240px] relative p-6">
-            <div className="flex justify-between items-start">
-              <div className="flex-grow">
-                <h2 className="text-3xl font-bold text-gray-800">{fields.name || 'Your Name'}</h2>
-                <p className="text-sm text-gray-600 mt-1">{fields.jobTitle || 'Your Job Title'}</p>
-                <p className="text-sm text-gray-600 mt-4 line-clamp-3">{fields.bio || 'Your professional bio'}</p>
-                
-                <div className="mt-4 space-y-2">
-                  {fields.phone && (
-                    <p className="text-sm text-gray-600 flex items-center">
-                      <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-                      </svg>
-                      {fields.phone}
-                    </p>
-                  )}
-                  {fields.email && (
-                    <p className="text-sm text-gray-600 flex items-center">
-                      <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                      </svg>
-                      {fields.email}
-                    </p>
-                  )}
-                </div>
-              </div>
-              
-              <div className="w-28 h-28 bg-white rounded-full overflow-hidden flex-shrink-0 ml-4 shadow-lg">
-                {renderProfileImage(112)}
-              </div>
-            </div>
-            
-            <button
-              onClick={() => setShowContactForm(true)}
-              className="absolute bottom-6 right-6 bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-full shadow-lg transition-colors duration-200"
-            >
-              Contact Me
-            </button>
-            
-            <div className="absolute top-0 right-0 w-32 h-32 bg-purple-200 rounded-full -z-10 transform translate-x-1/2 -translate-y-1/2 opacity-50"></div>
-            <div className="absolute bottom-0 left-0 w-24 h-24 bg-indigo-200 rounded-full -z-10 transform -translate-x-1/3 translate-y-1/3 opacity-50"></div>
-          </div>
-        );
- case 7:
-        return (
-          <div className="bg-[#363636] text-white rounded-xl shadow-lg overflow-hidden w-[635px] h-[388px] p-8 flex relative">
-            {/* QR Code Section */}
-            <div className="flex-shrink-0 flex items-center justify-center mr-6">
-              <QRCode 
-                value={JSON.stringify(fields)}
-                size={256}
-                level="H"
-                className="bg-white p-2 rounded-lg"
-              />
-            </div>
-
-            {/* Centered Vertical Line */}
-            <div className="h-[277px] w-[1.5px] bg-gradient-to-b from-[#555555] to-[#D9D9D9] "></div>
-
-            {/* Contact Information */}
-            <div className="flex flex-col justify-center space-y-4 ml-6 pl-6">
-              <div className="space-y-1">
-                <h1 className="text-2xl font-bold tracking-wide">{fields.name || 'Your Name'}</h1>
-                <p className="text-gray-300">{fields.jobTitle || 'Your Job Title'}</p>
-              </div>
-
-              <div className="space-y-3 mt-4">
-                <div className="flex items-center gap-3">
-                  <Phone size={18} className="text-gray-300" />
-                  <span>{fields.phone || 'Your Phone'}</span>
-                </div>
-                <div className="flex items-center gap-3">
-                  <Mail size={18} className="text-gray-300" />
-                  <span>{fields.email || 'Your Email'}</span>
-                </div>
-                <div className="flex items-center gap-3">
-                  <Globe size={18} className="text-gray-300" />
-                  <span>{fields.website || 'Your Website'}</span>
-                </div>
-                <div className="flex items-center gap-3">
-                  <MapPin size={18} className="text-gray-300" />
-                  <span>{fields.address || 'Your Address'}</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        );
-case 8:
-        return (
-          <div className="group w-[635px] h-[388px]" style={{ perspective: '1000px' }}>
-            <div 
-              className="relative w-full h-full duration-1000 ease-in-out transition-transform group-hover:[transform:rotateY(180deg)]" 
-              style={{ transformStyle: 'preserve-3d' }}
-            >
-              {/* Front of the card (Company Name only) */}
-              <div className="absolute w-full h-full bg-[#1E1E1E] rounded-xl p-6"
-                   style={{ backfaceVisibility: 'hidden' }}>
-                <div className="relative w-full h-full flex items-center justify-center">
-                  {/* Red lines on either side of the company name */}
-                  <div className="absolute w-full h-[2px] top-1/2 -translate-y-1/2 flex justify-between items-center">
-                    <div className="w-[40%] h-full bg-red-500"></div>
-                    <div className="w-[40%] h-full bg-red-500"></div>
-                  </div>
-                  {/* Company name centered between the lines */}
-                  <div className="text-white text-6xl font-bold z-10 px-4 bg-[#1E1E1E]">
-                    {fields.companyName || 'company name'}
-                  </div>
-                </div>
-              </div>
-
-              {/* Back of the card (Contact Information) */}
-              <div className="absolute w-full h-full bg-[#1E1E1E] rounded-xl p-8"
-                   style={{ 
-                     backfaceVisibility: 'hidden',
-                     transform: 'rotateY(180deg)'
-                   }}>
-                <div className="relative w-full h-full">
-                  <div className="w-[calc(100%-160px)] pr-4">
-                    {/* Profile Section with conditional rendering */}
-                    <div className="flex items-start gap-4">
-                      {croppedImage ? (
-                        // Show uploaded profile image if available
-                        <div className="w-16 h-16 rounded-full overflow-hidden flex-shrink-0">
-                          <Image 
-                            src={croppedImage}
-                            alt="Profile"
-                            width={64}
-                            height={64}
-                            className="w-full h-full object-cover"
-                          />
-                        </div>
-                      ) : (
-                        // Show fallback initial circle if no image
-                        <div className="w-16 h-16 bg-red-500 rounded-full flex items-center justify-center flex-shrink-0">
-                          <span className="text-white text-3xl lowercase">
-                            {(fields.name && fields.name.length > 0) ? fields.name.charAt(0) : 'r'}
-                          </span>
-                        </div>
-                      )}
-                      <div>
-                        <h2 className="text-white text-3xl font-medium">{fields.name || 'name'}</h2>
-                        <p className="text-gray-400 text-xl mt-1">{fields.jobTitle || 'job title'}</p>
-                      </div>
-                    </div>
-
-                    {/* Company Name with Line */}
-                    <div className="mt-12">
-                      <div className="flex items-center gap-4">
-                        <span className="text-4xl text-white">{fields.companyName || 'company name'}</span>
-                        <div className="h-[2px] flex-grow bg-red-500"></div>
-                      </div>
-                    </div>
-
-                    {/* Contact Details */}
-                    <div className="space-y-6 mt-12">
-                      <div className="flex items-center text-gray-300 text-xl">
-                        <Phone size={24} className="mr-4" />
-                        <span>{fields.phone || 'phone'}</span>
-                      </div>
-                      <div className="flex items-center text-gray-300 text-xl">
-                        <Globe size={24} className="mr-4" />
-                        <a 
-                          href={fields.website || 'website'} 
-                          target="_blank" 
-                          rel="noopener noreferrer" 
-                          className="truncate hover:text-white transition-colors duration-200"
-                        >
-                          {fields.website || 'website'}
-                        </a>
-                      </div>
-                      <div className="flex items-center text-gray-300 text-xl">
-                        <MapPin size={24} className="mr-4" />
-                        <a 
-                          href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(fields.address || 'address')}`}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="hover:text-white transition-colors duration-200"
-                        >
-                          {fields.address || 'address'}
-                        </a>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* QR Code - Fixed position at bottom right */}
-                  <div className="absolute bottom-0 right-0 w-32 h-32">
-                    <QRCode 
-                      value={JSON.stringify(fields)}
-                      size={128}
-                      level="H"
-                      className="w-full h-full bg-white p-2 rounded-lg"
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        );
-case 9:
-
-return (  
-    <div className={`${montserrat.className} group w-[635px] h-[300px]`} style={{ perspective: '1000px' }}>
-      <div 
-        className="relative w-full h-full duration-1000 ease-in-out transition-transform group-hover:[transform:rotateY(180deg)]" 
-        style={{ transformStyle: 'preserve-3d' }}
-      >
-        {/* Front of the card (Logo and Company Name) */}
-        <div className="absolute w-full h-full bg-white rounded-xl flex items-center justify-center" 
-             style={{ backfaceVisibility: 'hidden' }}>
-          <div className="text-center relative w-full h-full">
-            {/* Vertical Line */}
-            <div className="absolute top-0 bottom-0 left-[5%] h-[300px] w-[3px] bg-[#353535]"></div>
-            {/* Logo and Company Name */}
-            <div className="flex flex-col items-center justify-center h-full">
-              {/* Logo */}
-              <div className="mb-4">
-                <img 
-                  src={fields.logo || '/images/logo-placeholder.png'} 
-                  alt="Company Logo" 
-                  className="mx-auto h-16"
-                />
-              </div>
-              {/* Company Name */}
-              <h1 className="text-2xl font-bold" style={{ color: '#313131' }}>
-                {fields.companyName || 'Company Name'}
-              </h1>
-            </div>
+  return (
+    <div className="bg-gradient-to-br from-blue-200 to-purple-200 rounded-2xl shadow-lg overflow-hidden w-[400px] min-h-[240px] p-6">
+      <div className="flex items-center mb-4">
+        <div className="w-1 h-1 bg-red-500 rounded-full mr-2"></div>
+        <p className="text-xs text-gray-600 uppercase">ORDIVART</p>
+      </div>
+      <div className="flex justify-between items-start">
+        <div className="flex-grow">
+          <h2 className="text-4xl font-bold text-gray-800 line-clamp-1">{fields.name || 'Your Name'}</h2>
+          <p className="text-sm text-gray-600 mt-2 line-clamp-1">{fields.jobTitle || 'Your Job Title'}</p>
+          <p className="text-sm text-gray-600 mt-4 line-clamp-2">{fields.bio || 'Your professional bio'}</p>
+          <div className="mt-4 space-y-1">
+            {fields.phone && <p className="text-sm text-gray-600 line-clamp-1">{fields.phone}</p>}
+            {fields.alternatePhone && <p className="text-sm text-gray-600 line-clamp-1">{fields.alternatePhone}</p>}
+            {fields.website && <p className="text-sm text-gray-600 line-clamp-1">{fields.website}</p>}
           </div>
         </div>
-
-        {/* Back of the card (Contact Information) */}
-        <div className="absolute w-full h-full bg-white rounded-xl p-8 flex flex-col justify-between" 
-             style={{ 
-               backfaceVisibility: 'hidden',
-               transform: 'rotateY(180deg)'
-             }}>
-          {/* Name and Title */}
-          <div>
-            <div className="flex items-center gap-4 mb-4">
-              {/* Profile Image or Placeholder */}
-              <div className="w-12 h-12 rounded-full bg-gray-300 flex items-center justify-center">
-                <Image
-                  src="/images/profile.png" // Path relative to the 'public' directory
-                  alt="Profile Image"
-                  className="w-full h-full rounded-full object-cover"
-                  width={48} // You can adjust the width and height based on your needs
-                  height={48}
-                />
-              </div>
-              <div>
-                <h2 className="text-lg font-bold" style={{ color: '#313131' }}>
-                  {fields.name || 'Name'}
-                </h2>
-                <p className="text-sm" style={{ color: '#313131' }}>
-                  {fields.jobTitle || 'Job Title'}
-                </p>
-              </div>
-            </div>
-
-            {/* Horizontal Line */}
-            <div className="w-full h-[2px] bg-[#353535] mb-4"></div>
-
-            {/* Contact Details and QR Code in One Container */}
-            <div className="flex justify-between items-start mt-8">
-              {/* Contact Details */}
-              <div className="space-y-3">
-                {/* Phone */}
-                <div className="flex items-center text-sm" style={{ color: '#313131' }}>
-                  <img src="/images/phone.png" alt="Phone Icon" className="mr-2 w-4 h-4" />
-                  <span>{fields.phone || 'Phone Number'}</span>
-                </div>
-                {/* Email */}
-                <div className="flex items-center text-sm" style={{ color: '#313131' }}>
-                  <img src="/images/email.png" alt="Email Icon" className="mr-2 w-4 h-4" />
-                  <span>{fields.email || 'Email Address'}</span>
-                </div>
-                {/* Website */}
-                <div className="flex items-center text-sm" style={{ color: '#313131' }}>
-                  <img src="/images/website.png" alt="Website Icon" className="mr-2 w-4 h-4" />
-                  <a 
-                    href={fields.website || '#'}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="hover:text-gray-800 transition"
-                  >
-                    {fields.website || 'Website URL'}
-                  </a>
-                </div>
-                {/* Location */}
-                <div className="flex items-center text-sm" style={{ color: '#313131' }}>
-                  <img src="/images/location.png" alt="Location Icon" className="mr-2 w-4 h-4" />
-                  <span>{fields.address || 'Address'}</span>
-                </div>
-              </div>
-
-              {/* QR Code */}
-              <div className="w-20 h-20 mt-[7%]">
-                <QRCode 
-                  value={JSON.stringify(fields)} 
-                  size={80} 
-                  level="H" 
-                  className="w-full h-full bg-white p-1 rounded-md" 
-                />
-              </div>
-            </div>
+        <div className="text-right">
+          {fields.email && <p className="text-sm text-gray-600 line-clamp-1">{fields.email}</p>}
+          <div className="w-32 h-32 bg-blue-300 rounded-full overflow-hidden mt-4">
+            {renderProfileImage(128)}
           </div>
         </div>
       </div>
     </div>
   );
+
+
+
+
+case 3:
+  return (
+    <div className="bg-[#f5e6d3] rounded-3xl shadow-lg overflow-hidden w-[400px] min-h-[240px] relative p-6">
+      <h2 className="text-2xl font-bold text-gray-800 line-clamp-1">{fields.name || "Your Name"}</h2>
+      <p className="text-sm text-gray-600 mt-1 line-clamp-1">{fields.jobTitle || 'Your Job Title'}</p>
+      <p className="text-sm text-gray-600 mt-2 line-clamp-2">{fields.bio || 'Your professional bio'}</p>
+      <div className="mt-4 space-y-1">
+        <p className="text-sm text-gray-600 flex items-center">
+          <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" /></svg>
+          Contact Details
+        </p>
+        {fields.email && <p className="text-sm text-gray-600 ml-6 line-clamp-1">{fields.email}</p>}
+        {fields.phone && <p className="text-sm text-gray-600 ml-6 line-clamp-1">{fields.phone}</p>}
+      </div>
+      <div className="mt-4 space-y-1">
+        {fields.address && <p className="text-sm text-gray-600 line-clamp-1">{fields.address}</p>}
+        {fields.city && <p className="text-sm text-gray-600 line-clamp-1">{fields.city}</p>}
+        {fields.postalCode && <p className="text-sm text-gray-600 line-clamp-1">{fields.postalCode}</p>}
+      </div>
+      <div className="absolute top-0 right-0 w-16 h-16 bg-[#e6d7c3] rounded-full transform translate-x-1/2 -translate-y-1/2"></div>
+      <div className="absolute bottom-0 right-0 w-24 h-24 bg-[#e6d7c3] rounded-full transform translate-x-1/3 translate-y-1/3"></div>
+    </div>
+  );
+
+
+
+
+ case 4:
+  return (
+    <div className="bg-[#e0f2f1] rounded-2xl shadow-lg overflow-hidden w-[400px] min-h-[240px] p-6">
+      <h2 className="text-3xl font-bold text-gray-800 line-clamp-1">MODERN</h2>
+      <p className="text-sm text-gray-600 mt-1 line-clamp-1">Elegant</p>
+      <div className="mt-8">
+        <p className="text-sm font-semibold text-gray-800 line-clamp-1">{`${fields.firstName || 'First'} ${fields.lastName || 'Last'}`}</p>
+        <div className="flex justify-between mt-1">
+          <div>
+            <p className="text-xs text-gray-600 line-clamp-1">Contact information</p>
+            <p className="text-xs text-gray-600 line-clamp-1">{fields.jobTitle || 'Your Job Title'}</p>
+          </div>
+          <div className="text-right">
+            {fields.website && <p className="text-xs text-gray-600 line-clamp-1">{fields.website}</p>}
+            {fields.workHours && <p className="text-xs text-gray-600 line-clamp-1">{fields.workHours}</p>}
+          </div>
+        </div>
+      </div>
+      <p className="text-sm text-gray-600 mt-4 line-clamp-2">{fields.bio || 'Your professional bio'}</p>
+      <div className="mt-8 flex space-x-2">
+        {fields.phone && <div className="w-6 h-6 bg-gray-800 rounded-sm"></div>}
+        {fields.email && <div className="w-6 h-6 bg-gray-800 rounded-sm"></div>}
+        {fields.website && <div className="w-6 h-6 bg-gray-800 rounded-sm"></div>}
+        {fields.address && <div className="w-6 h-6 bg-gray-800 rounded-sm"></div>}
+      </div>
+    </div>
+  );
+
+
+        
+        case 5:
+          return (
+            <div className="bg-white rounded-2xl shadow-lg overflow-hidden w-[400px] min-h-[240px]">
+              <div className="grid grid-cols-2 h-full">
+                <div className="col-span-2 bg-[#fff9f5] p-4">
+                  <h2 className="text-5xl font-bold text-gray-800 leading-none line-clamp-2">{fields.firstName || 'FIRST'}</h2>
+                  <h2 className="text-5xl font-bold text-gray-800 mt-1 line-clamp-2">{fields.lastName || 'LAST'}</h2>
+                </div>
+                <div className="p-4 flex flex-col justify-between">
+                  <div>
+                    {fields.phone && <p className="text-sm text-gray-600 line-clamp-1">{fields.phone}</p>}
+                    {fields.jobTitle && <p className="text-sm text-gray-600 mt-2 line-clamp-1">{fields.jobTitle}</p>}
+                  </div>
+                  <div>
+                    <p className="text-xs text-gray-500">Contact information</p>
+                    {fields.email && <p className="text-sm text-gray-600 mt-1 line-clamp-1">{fields.email}</p>}
+                    {fields.website && <p className="text-sm text-gray-600 line-clamp-1">{fields.website}</p>}
+                  </div>
+                </div>
+                <div className="p-4 flex flex-col items-end justify-between">
+                  <div className="w-12 h-12 bg-gray-200 rounded-full flex items-center justify-center">
+                    <svg className="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                    </svg>
+                  </div>
+                  {fields.address && <p className="text-sm text-gray-600 text-right line-clamp-1">{fields.address}</p>}
+                </div>
+              </div>
+            </div>
+          );
+        
+
+
+
+
+
+
+
+case 6:
+  return (
+    <div className="bg-gradient-to-br from-indigo-100 to-purple-100 rounded-2xl shadow-lg overflow-hidden w-[400px] min-h-[240px] relative p-6">
+      <div className="flex justify-between items-start">
+        <div className="flex-grow">
+          <h2 className="text-3xl font-bold text-gray-800 line-clamp-2">{fields.name || 'Your Name'}</h2>
+          <p className="text-sm text-gray-600 mt-1 line-clamp-1">{fields.jobTitle || 'Your Job Title'}</p>
+          <p className="text-sm text-gray-600 mt-4 line-clamp-3">{fields.bio || 'Your professional bio'}</p>
+          
+          <div className="mt-4 space-y-2">
+            {fields.phone && (
+              <p className="text-sm text-gray-600 flex items-center line-clamp-1">
+                <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                </svg>
+                {fields.phone}
+              </p>
+            )}
+            {fields.email && (
+              <p className="text-sm text-gray-600 flex items-center line-clamp-1">
+                <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                </svg>
+                {fields.email}
+              </p>
+            )}
+          </div>
+        </div>
+        
+        <div className="w-28 h-28 bg-white rounded-full overflow-hidden flex-shrink-0 ml-4 shadow-lg">
+          {renderProfileImage(112)}
+        </div>
+      </div>
+      
+      <button
+        onClick={() => setShowContactForm(true)}
+        className="absolute bottom-6 right-6 bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-full shadow-lg transition-colors duration-200"
+      >
+        Contact Me
+      </button>
+      
+      <div className="absolute top-0 right-0 w-32 h-32 bg-purple-200 rounded-full -z-10 transform translate-x-1/2 -translate-y-1/2 opacity-50"></div>
+      <div className="absolute bottom-0 left-0 w-24 h-24 bg-indigo-200 rounded-full -z-10 transform -translate-x-1/3 translate-y-1/3 opacity-50"></div>
+    </div>
+  );
+
+
+
+        case 7:
+          return (
+            <div className="bg-[#363636] text-white rounded-xl shadow-lg overflow-hidden w-[635px] h-[388px] p-8 flex relative">
+              {/* QR Code Section */}
+              <div className="flex-shrink-0 flex items-center justify-center mr-6">
+                <QRCode
+                  value={JSON.stringify(fields)}
+                  size={256}
+                  level="H"
+                  className="bg-white p-2 rounded-lg"
+                />
+              </div>
+        
+              {/* Centered Vertical Line */}
+              <div className="h-[277px] w-[1.5px] bg-gradient-to-b from-[#555555] to-[#D9D9D9] "></div>
+        
+              {/* Contact Information */}
+              <div className="flex flex-col justify-center space-y-4 ml-6 pl-6">
+                <div className="space-y-1">
+                  <h1 className="text-2xl font-bold tracking-wide line-clamp-2">{fields.name || 'Your Name'}</h1>
+                  <p className="text-gray-300 line-clamp-1">{fields.jobTitle || 'Your Job Title'}</p>
+                </div>
+        
+                <div className="space-y-3 mt-4">
+                  <div className="flex items-center gap-3 text-sm">
+                    <Phone size={18} className="text-gray-300" />
+                    <span className="line-clamp-1">{fields.phone || 'Your Phone'}</span>
+                  </div>
+                  <div className="flex items-center gap-3 text-sm">
+                    <Mail size={18} className="text-gray-300" />
+                    <span className="line-clamp-1">{fields.email || 'Your Email'}</span>
+                  </div>
+                  <div className="flex items-center gap-3 text-sm">
+                    <Globe size={18} className="text-gray-300" />
+                    <span className="line-clamp-1">{fields.website || 'Your Website'}</span>
+                  </div>
+                  <div className="flex items-center gap-3 text-sm">
+                    <MapPin size={18} className="text-gray-300" />
+                    <span className="line-clamp-1">{fields.address || 'Your Address'}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          );
+      
+
+        case 8:
+          return (
+            <div className="group w-[635px] h-[388px]" style={{ perspective: '1000px' }}>
+              <div
+                className="relative w-full h-full duration-1000 ease-in-out transition-transform group-hover:[transform:rotateY(180deg)]"
+                style={{ transformStyle: 'preserve-3d' }}
+              >
+                {/* Front of the card (Company Name only) */}
+                <div
+                  className="absolute w-full h-full bg-[#1E1E1E] rounded-xl p-6"
+                  style={{ backfaceVisibility: 'hidden' }}
+                >
+                  <div className="relative w-full h-full flex items-center justify-center">
+                    {/* Red lines on either side of the company name */}
+                    <div className="absolute w-full h-[2px] top-1/2 -translate-y-1/2 flex justify-between items-center">
+                      <div className="w-[40%] h-full bg-red-500"></div>
+                      <div className="w-[40%] h-full bg-red-500"></div>
+                    </div>
+                    {/* Company name centered between the lines */}
+                    <div className="text-white text-6xl font-bold z-10 px-4 bg-[#1E1E1E]">
+                      {fields.companyName || 'company name'}
+                    </div>
+                  </div>
+                </div>
+        
+                {/* Back of the card (Contact Information) */}
+                <div
+                  className="absolute w-full h-full bg-[#1E1E1E] rounded-xl p-8"
+                  style={{
+                    backfaceVisibility: 'hidden',
+                    transform: 'rotateY(180deg)',
+                  }}
+                >
+                  <div className="relative w-full h-full">
+                    <div className="w-[calc(100%-160px)] pr-4">
+                      {/* Profile Section with conditional rendering */}
+                      <div className="flex items-start gap-4">
+                        {croppedImage ? (
+                          // Show uploaded profile image if available
+                          <div className="w-16 h-16 rounded-full overflow-hidden flex-shrink-0">
+                            <Image
+                              src={croppedImage}
+                              alt="Profile"
+                              width={64}
+                              height={64}
+                              className="w-full h-full object-cover"
+                            />
+                          </div>
+                        ) : (
+                          // Show fallback initial circle if no image
+                          <div className="w-16 h-16 bg-red-500 rounded-full flex items-center justify-center flex-shrink-0">
+                            <span className="text-white text-3xl lowercase">
+                              {(fields.name && fields.name.length > 0) ? fields.name.charAt(0) : 'r'}
+                            </span>
+                          </div>
+                        )}
+                        <div>
+                          <h2 className="text-white text-3xl font-medium line-clamp-2">{fields.name || 'name'}</h2>
+                          <p className="text-gray-400 text-xl mt-1 line-clamp-2">{fields.jobTitle || 'job title'}</p>
+                        </div>
+                      </div>
+        
+                      {/* Company Name with Line */}
+                      <div className="mt-12">
+                        <div className="flex items-center gap-4">
+                          <span className="text-4xl text-white line-clamp-1">{fields.companyName || 'company name'}</span>
+                          <div className="h-[2px] flex-grow bg-red-500"></div>
+                        </div>
+                      </div>
+        
+                      {/* Contact Details */}
+                      <div className="space-y-6 mt-12">
+                        <div className="flex items-center text-gray-300 text-xl line-clamp-1">
+                          <Phone size={24} className="mr-4" />
+                          <span>{fields.phone || 'phone'}</span>
+                        </div>
+                        <div className="flex items-center text-gray-300 text-xl line-clamp-1">
+                          <Globe size={24} className="mr-4" />
+                          <a
+                            href={fields.website || 'website'}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="truncate hover:text-white transition-colors duration-200"
+                          >
+                            {fields.website || 'website'}
+                          </a>
+                        </div>
+                        <div className="flex items-center text-gray-300 text-xl line-clamp-1">
+                          <MapPin size={24} className="mr-4" />
+                          <a
+                            href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(fields.address || 'address')}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="hover:text-white transition-colors duration-200"
+                          >
+                            {fields.address || 'address'}
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+        
+                    {/* QR Code - Fixed position at bottom right */}
+                    <div className="absolute bottom-0 right-0 w-32 h-32">
+                      <QRCode
+                        value={JSON.stringify(fields)}
+                        size={128}
+                        level="H"
+                        className="w-full h-full bg-white p-2 rounded-lg"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          );
+        
+
+        case 9:
+
+        return (
+          <div className={`${montserrat.className} group w-[635px] h-[300px]`} style={{ perspective: '1000px' }}>
+            <div
+              className="relative w-full h-full duration-1000 ease-in-out transition-transform group-hover:[transform:rotateY(180deg)]"
+              style={{ transformStyle: 'preserve-3d' }}
+            >
+              {/* Front of the card (Logo and Company Name) */}
+              <div
+                className="absolute w-full h-full bg-white rounded-xl flex items-center justify-center"
+                style={{ backfaceVisibility: 'hidden' }}
+              >
+                <div className="text-center relative w-full h-full">
+                  {/* Vertical Line */}
+                  <div className="absolute top-0 bottom-0 left-[5%] h-[300px] w-[3px] bg-[#353535]"></div>
+                  {/* Logo and Company Name */}
+                  <div className="flex flex-col items-center justify-center h-full">
+                    {/* Logo */}
+                    <div className="mb-4">
+                      <img
+                        src={fields.logo || '/images/logo-placeholder.png'}
+                        alt="Company Logo"
+                        className="mx-auto h-16"
+                      />
+                    </div>
+                    {/* Company Name */}
+                    <h1 className="text-2xl font-bold line-clamp-2" style={{ color: '#313131' }}>
+                      {fields.companyName || 'Company Name'}
+                    </h1>
+                  </div>
+                </div>
+              </div>
+        
+              {/* Back of the card (Contact Information) */}
+              <div
+                className="absolute w-full h-full bg-white rounded-xl p-8 flex flex-col justify-between"
+                style={{
+                  backfaceVisibility: 'hidden',
+                  transform: 'rotateY(180deg)',
+                }}
+              >
+                {/* Name and Title */}
+                <div>
+                  <div className="flex items-center gap-4 mb-4">
+                    {/* Profile Image or Placeholder */}
+                    <div className="w-12 h-12 rounded-full bg-gray-300 flex items-center justify-center">
+                      <Image
+                        src="/images/profile.png"
+                        alt="Profile Image"
+                        className="w-full h-full rounded-full object-cover"
+                        width={48}
+                        height={48}
+                      />
+                    </div>
+                    <div>
+                      <h2 className="text-lg font-bold line-clamp-2" style={{ color: '#313131' }}>
+                        {fields.name || 'Name'}
+                      </h2>
+                      <p className="text-sm line-clamp-2" style={{ color: '#313131' }}>
+                        {fields.jobTitle || 'Job Title'}
+                      </p>
+                    </div>
+                  </div>
+        
+                  {/* Horizontal Line */}
+                  <div className="w-full h-[2px] bg-[#353535] mb-4"></div>
+        
+                  {/* Contact Details and QR Code */}
+                  <div className="flex justify-between items-start mt-8">
+                    {/* Contact Details */}
+                    <div className="space-y-3 w-[400px]">
+                      {/* Phone */}
+                      <div className="flex items-center text-sm truncate" style={{ color: '#313131' }}>
+                        <img src="/images/phone.png" alt="Phone Icon" className="mr-2 w-4 h-4" />
+                        <span>{fields.phone || 'Phone Number'}</span>
+                      </div>
+                      {/* Email */}
+                      <div className="flex items-center text-sm line-clamp-3" style={{ color: '#313131' }}>
+                        <img src="/images/email.png" alt="Email Icon" className="mr-2 w-4 h-4" />
+                        <span>{fields.email || 'Email Address'}</span>
+                      </div>
+                      {/* Website */}
+                      <div className="flex items-center text-sm line-clamp-2" style={{ color: '#313131' }}>
+                        <img src="/images/website.png" alt="Website Icon" className="mr-2 w-4 h-4" />
+                        <a
+                          href={fields.website || '#'}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="hover:text-gray-800 transition"
+                        >
+                          {fields.website || 'Website URL'}
+                        </a>
+                      </div>
+                      {/* Location */}
+                      <div className="flex items-center text-sm line-clamp-3" style={{ color: '#313131' }}>
+                        <img src="/images/location.png" alt="Location Icon" className="mr-2 w-4 h-4" />
+                        <span>{fields.address || 'Address'}</span>
+                      </div>
+                    </div>
+        
+                    {/* QR Code */}
+                    <div className="w-20 h-20 mt-[7%]">
+                      <QRCode
+                        value={JSON.stringify(fields)}
+                        size={80}
+                        level="H"
+                        className="w-full h-full bg-white p-1 rounded-md"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        );
+        
 case 10:
   return (
     <div className={`${montserrat.className} group w-[635px] h-[300px]`} style={{ perspective: '1000px' }}>
-      <div 
-        className="relative w-full h-full duration-1000 ease-in-out transition-transform group-hover:[transform:rotateY(180deg)]" 
+      <div
+        className="relative w-full h-full duration-1000 ease-in-out transition-transform group-hover:[transform:rotateY(180deg)]"
         style={{ transformStyle: 'preserve-3d' }}
       >
         {/* Front of the card (Logo and Company Name) */}
-        <div className="absolute w-full h-full bg-black rounded-xl flex items-center justify-center" 
-             style={{ backfaceVisibility: 'hidden' }}>
+        <div
+          className="absolute w-full h-full bg-black rounded-xl flex items-center justify-center"
+          style={{ backfaceVisibility: 'hidden' }}
+        >
           <div className="text-center relative w-full h-full">
             {/* Vertical Line */}
             <div className="absolute top-0 bottom-0 left-[5%] h-[300px] w-[3px] bg-red-600"></div>
@@ -727,14 +772,14 @@ case 10:
             <div className="flex flex-col items-center justify-center h-full">
               {/* Logo */}
               <div className="mb-4">
-                <img 
-                  src={fields.logo || '/images/logo-placeholder.png'} 
-                  alt="Company Logo" 
+                <img
+                  src={fields.logo || '/images/logo-placeholder.png'}
+                  alt="Company Logo"
                   className="mx-auto h-16"
                 />
               </div>
               {/* Company Name */}
-              <h1 className="text-2xl font-bold text-white">
+              <h1 className="text-2xl font-bold text-white line-clamp-2">
                 {fields.companyName || 'Company Name'}
               </h1>
             </div>
@@ -742,59 +787,61 @@ case 10:
         </div>
 
         {/* Back of the card (Contact Information) */}
-        <div className="absolute w-full h-full bg-white rounded-xl p-8 flex flex-col justify-between" 
-             style={{ 
-               backfaceVisibility: 'hidden',
-               transform: 'rotateY(180deg)'
-             }}>
+        <div
+          className="absolute w-full h-full bg-white rounded-xl p-8 flex flex-col justify-between"
+          style={{
+            backfaceVisibility: 'hidden',
+            transform: 'rotateY(180deg)',
+          }}
+        >
           {/* Name and Title */}
           <div>
             <div className="flex items-center gap-4 mb-4">
               {/* Profile Image or Placeholder */}
               <div className="w-12 h-12 rounded-full bg-gray-300 flex items-center justify-center">
                 <Image
-                  src="/images/profile.png" // Path relative to the 'public' directory
+                  src="/images/profile.png"
                   alt="Profile Image"
                   className="w-full h-full rounded-full object-cover"
-                  width={48} // You can adjust the width and height based on your needs
+                  width={48}
                   height={48}
                 />
               </div>
               <div>
-                <h2 className="text-lg font-bold" style={{ color: '#313131' }}>
+                <h2 className="text-lg font-bold line-clamp-2" style={{ color: '#313131' }}>
                   {fields.name || 'Name'}
                 </h2>
-                <p className="text-sm" style={{ color: '#313131' }}>
+                <p className="text-sm line-clamp-2" style={{ color: '#313131' }}>
                   {fields.jobTitle || 'Job Title'}
                 </p>
               </div>
             </div>
 
-            {/* Horizontal Line - changed color to red */}
+            {/* Horizontal Line */}
             <div className="w-full h-[2px] bg-red-600 mb-4"></div>
 
-            {/* Contact Details and QR Code in One Container */}
+            {/* Contact Details and QR Code */}
             <div className="flex justify-between items-start mt-8">
               {/* Contact Details */}
-              <div className="space-y-3">
+              <div className="space-y-3 w-[400px]">
                 {/* Phone */}
                 <div className="flex items-center text-sm" style={{ color: '#313131' }}>
                   <img src="/images/phone.png" alt="Phone Icon" className="mr-2 w-4 h-4" />
-                  <span>{fields.phone || 'Phone Number'}</span>
+                  <span className="truncate">{fields.phone || 'Phone Number'}</span>
                 </div>
                 {/* Email */}
                 <div className="flex items-center text-sm" style={{ color: '#313131' }}>
                   <img src="/images/email.png" alt="Email Icon" className="mr-2 w-4 h-4" />
-                  <span>{fields.email || 'Email Address'}</span>
+                  <span className="line-clamp-3">{fields.email || 'Email Address'}</span>
                 </div>
                 {/* Website */}
                 <div className="flex items-center text-sm" style={{ color: '#313131' }}>
                   <img src="/images/website.png" alt="Website Icon" className="mr-2 w-4 h-4" />
-                  <a 
+                  <a
                     href={fields.website || '#'}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="hover:text-gray-800 transition"
+                    className="hover:text-gray-800 transition line-clamp-2"
                   >
                     {fields.website || 'Website URL'}
                   </a>
@@ -802,17 +849,17 @@ case 10:
                 {/* Location */}
                 <div className="flex items-center text-sm" style={{ color: '#313131' }}>
                   <img src="/images/location.png" alt="Location Icon" className="mr-2 w-4 h-4" />
-                  <span>{fields.address || 'Address'}</span>
+                  <span className="line-clamp-3">{fields.address || 'Address'}</span>
                 </div>
               </div>
 
               {/* QR Code */}
               <div className="w-20 h-20 mt-[7%]">
-                <QRCode 
-                  value={JSON.stringify(fields)} 
-                  size={80} 
-                  level="H" 
-                  className="w-full h-full bg-white p-1 rounded-md" 
+                <QRCode
+                  value={JSON.stringify(fields)}
+                  size={80}
+                  level="H"
+                  className="w-full h-full bg-white p-1 rounded-md"
                 />
               </div>
             </div>
@@ -826,13 +873,15 @@ case 10:
   case 11:
     return (
       <div className={`${montserrat.className} group w-[635px] h-[300px]`} style={{ perspective: '1000px' }}>
-        <div 
-          className="relative w-full h-full duration-1000 ease-in-out transition-transform group-hover:[transform:rotateY(180deg)]" 
+        <div
+          className="relative w-full h-full duration-1000 ease-in-out transition-transform group-hover:[transform:rotateY(180deg)]"
           style={{ transformStyle: 'preserve-3d' }}
         >
           {/* Front of the card (Logo and Company Name) */}
-          <div className="absolute w-full h-full bg-[#ED9E3E] rounded-xl flex items-center justify-center" 
-               style={{ backfaceVisibility: 'hidden' }}>
+          <div
+            className="absolute w-full h-full bg-[#ED9E3E] rounded-xl flex items-center justify-center"
+            style={{ backfaceVisibility: 'hidden' }}
+          >
             <div className="text-center relative w-full h-full">
               {/* Vertical Line */}
               <div className="absolute top-0 bottom-0 left-[5%] h-[300px] w-[3px] bg-white"></div>
@@ -840,14 +889,14 @@ case 10:
               <div className="flex flex-col items-center justify-center h-full">
                 {/* Logo */}
                 <div className="mb-4">
-                  <img 
-                    src={fields.logo || '/images/logo-placeholder.png'} 
-                    alt="Company Logo" 
+                  <img
+                    src={fields.logo || '/images/logo-placeholder.png'}
+                    alt="Company Logo"
                     className="mx-auto h-16"
                   />
                 </div>
                 {/* Company Name */}
-                <h1 className="text-2xl font-bold text-white">
+                <h1 className="text-2xl font-bold text-white line-clamp-2">
                   {fields.companyName || 'Company Name'}
                 </h1>
               </div>
@@ -855,78 +904,79 @@ case 10:
           </div>
   
           {/* Back of the card (Contact Information) */}
-          <div className="absolute w-full h-full bg-[#EBECE7] rounded-xl p-8 flex flex-col justify-between" 
-               style={{ 
-                 backfaceVisibility: 'hidden',
-                 transform: 'rotateY(180deg)'
-               }}>
+          <div
+            className="absolute w-full h-full bg-[#EBECE7] rounded-xl p-8 flex flex-col justify-between"
+            style={{
+              backfaceVisibility: 'hidden',
+              transform: 'rotateY(180deg)',
+            }}
+          >
             {/* Name and Title */}
             <div>
               <div className="flex items-center gap-4 mb-4">
                 {/* Profile Image or Placeholder */}
                 <div className="w-12 h-12 rounded-full bg-gray-300 flex items-center justify-center">
                   <Image
-                    src="/images/profile.png" // Path relative to the 'public' directory
+                    src="/images/profile.png"
                     alt="Profile Image"
                     className="w-full h-full rounded-full object-cover"
-                    width={48} // You can adjust the width and height based on your needs
+                    width={48}
                     height={48}
                   />
                 </div>
                 <div>
-                  <h2 className="text-lg font-bold" style={{ color: '#313131' }}>
-                    <span className="line-clamp-2">{fields.name || 'Name'}</span>
+                  <h2 className="text-lg font-bold line-clamp-2" style={{ color: '#313131' }}>
+                    {fields.name || 'Name'}
                   </h2>
-                  <p className="text-sm" style={{ color: '#313131' }}>
-                    <span className="line-clamp-2">{fields.jobTitle || 'Job Title'}</span>
+                  <p className="text-sm line-clamp-2" style={{ color: '#313131' }}>
+                    {fields.jobTitle || 'Job Title'}
                   </p>
                 </div>
               </div>
   
-              {/* Horizontal Line - changed color to #ED9E3E */}
+              {/* Horizontal Line */}
               <div className="w-full h-[2px] bg-[#ED9E3E] mb-4"></div>
   
-              {/* Contact Details and QR Code in One Container */}
+              {/* Contact Details and QR Code */}
               <div className="flex justify-between items-start mt-8">
                 {/* Contact Details */}
-                <div className="space-y-3 w-[400px]"> {/* Adjust this width value */}
-                {/* Phone */}
+                <div className="space-y-3 w-[400px]">
+                  {/* Phone */}
                   <div className="flex items-center text-sm" style={{ color: '#313131' }}>
                     <img src="/images/phone.png" alt="Phone Icon" className="mr-2 w-4 h-4" />
-                    <span className="truncate w-full">{fields.phone || 'Phone Number'}</span>
+                    <span className="truncate">{fields.phone || 'Phone Number'}</span>
                   </div>
                   {/* Email */}
-                  <div className="flex items-center text-sm " style={{ color: '#313131'}}>
-  <img src="/images/email.png" alt="Email Icon" className="mr-2 w-4 h-4" />
-  <span className="line-clamp-3 w-full ">{fields.email || 'Email Address'}</span>
-</div>
-
+                  <div className="flex items-center text-sm" style={{ color: '#313131' }}>
+                    <img src="/images/email.png" alt="Email Icon" className="mr-2 w-4 h-4" />
+                    <span className="line-clamp-2">{fields.email || 'Email Address'}</span>
+                  </div>
                   {/* Website */}
                   <div className="flex items-center text-sm" style={{ color: '#313131' }}>
                     <img src="/images/website2.png" alt="Website Icon" className="mr-2 w-4 h-4" />
-                    <a 
+                    <a
                       href={fields.website || '#'}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="hover:text-gray-800 transition"
+                      className="hover:text-gray-800 transition line-clamp-2"
                     >
-                      <span className="line-clamp-2">{fields.website || 'Website URL'}</span>
+                      {fields.website || 'Website URL'}
                     </a>
                   </div>
                   {/* Location */}
                   <div className="flex items-center text-sm" style={{ color: '#313131' }}>
                     <img src="/images/location.png" alt="Location Icon" className="mr-2 w-4 h-4" />
-                    <span className="line-clamp-3 w-full">{fields.address || 'Address'}</span>
+                    <span className="line-clamp-3">{fields.address || 'Address'}</span>
                   </div>
                 </div>
   
                 {/* QR Code */}
                 <div className="w-20 h-20 mt-[7%]">
-                  <QRCode 
-                    value={JSON.stringify(fields)} 
-                    size={80} 
-                    level="H" 
-                    className="w-full h-full bg-white p-1 rounded-md" 
+                  <QRCode
+                    value={JSON.stringify(fields)}
+                    size={80}
+                    level="H"
+                    className="w-full h-full bg-white p-1 rounded-md"
                   />
                 </div>
               </div>
@@ -940,13 +990,15 @@ case 10:
     case 12:
       return (
         <div className={`${montserrat.className} group w-[635px] h-[300px]`} style={{ perspective: '1000px' }}>
-          <div 
-            className="relative w-full h-full duration-1000 ease-in-out transition-transform group-hover:[transform:rotateY(180deg)]" 
+          <div
+            className="relative w-full h-full duration-1000 ease-in-out transition-transform group-hover:[transform:rotateY(180deg)]"
             style={{ transformStyle: 'preserve-3d' }}
           >
             {/* Front of the card (Logo and Company Name) */}
-            <div className="absolute w-full h-full bg-[#A7B5D8] rounded-xl flex items-center justify-center" 
-                 style={{ backfaceVisibility: 'hidden' }}>
+            <div
+              className="absolute w-full h-full bg-[#A7B5D8] rounded-xl flex items-center justify-center"
+              style={{ backfaceVisibility: 'hidden' }}
+            >
               <div className="text-center relative w-full h-full">
                 {/* Vertical Line */}
                 <div className="absolute top-0 bottom-0 left-[5%] h-[300px] w-[3px] bg-black"></div>
@@ -954,14 +1006,14 @@ case 10:
                 <div className="flex flex-col items-center justify-center h-full">
                   {/* Logo */}
                   <div className="mb-4">
-                    <img 
-                      src={fields.logo || '/images/logo-placeholder.png'} 
-                      alt="Company Logo" 
+                    <img
+                      src={fields.logo || '/images/logo-placeholder.png'}
+                      alt="Company Logo"
                       className="mx-auto h-16"
                     />
                   </div>
                   {/* Company Name */}
-                  <h1 className="text-2xl font-bold text-white">
+                  <h1 className="text-2xl font-bold text-white line-clamp-2">
                     {fields.companyName || 'Company Name'}
                   </h1>
                 </div>
@@ -969,77 +1021,85 @@ case 10:
             </div>
     
             {/* Back of the card (Contact Information) */}
-            <div className="absolute w-full h-full bg-white rounded-xl p-8 flex flex-col justify-between" 
-                 style={{ 
-                   backfaceVisibility: 'hidden',
-                   transform: 'rotateY(180deg)'
-                 }}>
+            <div
+              className="absolute w-full h-full bg-white rounded-xl p-8 flex flex-col justify-between"
+              style={{
+                backfaceVisibility: 'hidden',
+                transform: 'rotateY(180deg)',
+              }}
+            >
               {/* Name and Title */}
               <div>
                 <div className="flex items-center gap-4 mb-4">
                   {/* Profile Image or Placeholder */}
                   <div className="w-12 h-12 rounded-full bg-gray-300 flex items-center justify-center">
                     <Image
-                      src="/images/profile2.png" // Path relative to the 'public' directory
+                      src="/images/profile2.png"
                       alt="Profile Image"
                       className="w-full h-full rounded-full object-cover"
-                      width={48} // You can adjust the width and height based on your needs
+                      width={48}
                       height={48}
                     />
                   </div>
                   <div>
-                    <h2 className="text-lg font-bold" style={{ color: '#313131' }}>
+                    <h2 className="text-lg font-bold line-clamp-2" style={{ color: '#313131' }}>
                       {fields.name || 'Name'}
                     </h2>
-                    <p className="text-sm" style={{ color: '#313131' }}>
+                    <p className="text-sm line-clamp-2" style={{ color: '#313131' }}>
                       {fields.jobTitle || 'Job Title'}
                     </p>
                   </div>
                 </div>
     
-                {/* Horizontal Line - changed color to black */}
+                {/* Horizontal Line */}
                 <div className="w-full h-[2px] bg-black mb-4"></div>
     
-                {/* Contact Details and QR Code in One Container */}
+                {/* Contact Details and QR Code */}
                 <div className="flex justify-between items-start mt-8">
                   {/* Contact Details */}
                   <div className="space-y-3">
                     {/* Phone */}
                     <div className="flex items-center text-sm" style={{ color: '#313131' }}>
                       <img src="/images/phone.png" alt="Phone Icon" className="mr-2 w-4 h-4" />
-                      <span>{fields.phone || 'Phone Number'}</span>
+                      <span className="truncate w-[200px]">
+                        {fields.phone || 'Phone Number'}
+                      </span>
                     </div>
                     {/* Email */}
                     <div className="flex items-center text-sm" style={{ color: '#313131' }}>
                       <img src="/images/email.png" alt="Email Icon" className="mr-2 w-4 h-4" />
-                      <span>{fields.email || 'Email Address'}</span>
+                      <span className="line-clamp-2 w-[240px]">
+                        {fields.email || 'Email Address'}
+                      </span>
                     </div>
                     {/* Website */}
                     <div className="flex items-center text-sm" style={{ color: '#313131' }}>
                       <img src="/images/website.png" alt="Website Icon" className="mr-2 w-4 h-4" />
-                      <a 
+                      <a
                         href={fields.website || '#'}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="hover:text-gray-800 transition"
+                        className="hover:text-gray-800 transition line-clamp-2 w-[240px]"
                       >
                         {fields.website || 'Website URL'}
                       </a>
                     </div>
-                    {/* Location */}
+                    {/* Address */}
                     <div className="flex items-center text-sm" style={{ color: '#313131' }}>
                       <img src="/images/location.png" alt="Location Icon" className="mr-2 w-4 h-4" />
-                      <span>{fields.address || 'Address'}</span>
+                      <span className="line-clamp-3 w-[240px]">
+                        {fields.address || 'Address'}
+                      </span>
                     </div>
                   </div>
     
                   {/* QR Code */}
                   <div className="w-20 h-20 mt-[7%]">
-                    <QRCode 
-                      value={JSON.stringify(fields)} 
-                      size={80} 
-                      level="H" 
-                      className="w-full h-full bg-white p-1 rounded-md" 
+                    <QRCode
+                      value={JSON.stringify(fields)}
+                      size={80}
+                      level="H"
+                      className="w-full h-full bg-white p-1 rounded-md"
                     />
                   </div>
                 </div>
@@ -1048,7 +1108,9 @@ case 10:
           </div>
         </div>
       );
-case 13:
+    
+
+      case 13:
         return (
           <div className={`${montserrat.className} w-[635px] h-[388px] flex items-center justify-center bg-white`}>
             <div className="relative w-full h-full flex">
@@ -1068,10 +1130,10 @@ case 13:
               <div className="w-1/2 h-full bg-[#2A2A2A] flex flex-col justify-between p-4">
                 {/* Top Left - Name and Designation */}
                 <div className="text-left text-white mb-4">
-                  <h1 className="text-xl font-bold">
+                  <h1 className="text-xl font-bold line-clamp-2">
                     {fields.name || 'Name'}
                   </h1>
-                  <p className="text-sm">
+                  <p className="text-sm line-clamp-2">
                     {fields.jobTitle || 'Job Title'}
                   </p>
                 </div>
@@ -1081,12 +1143,16 @@ case 13:
                   {/* Phone */}
                   <div className="flex items-center text-sm">
                     <img src="/images/phone2.png" alt="Phone Icon" className="mr-2 w-4 h-4" />
-                    <span>{fields.phone || 'Phone Number'}</span>
+                    <span className="truncate w-[200px]">
+                      {fields.phone || 'Phone Number'}
+                    </span>
                   </div>
                   {/* Email */}
                   <div className="flex items-center text-sm">
                     <img src="/images/email2.png" alt="Email Icon" className="mr-2 w-4 h-4" />
-                    <span>{fields.email || 'Email Address'}</span>
+                    <span className="line-clamp-2 w-[240px]">
+                      {fields.email || 'Email Address'}
+                    </span>
                   </div>
                   {/* Website */}
                   <div className="flex items-center text-sm">
@@ -1095,7 +1161,7 @@ case 13:
                       href={fields.website || '#'}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="hover:text-gray-300 transition"
+                      className="hover:text-gray-300 transition line-clamp-2 w-[240px]"
                     >
                       {fields.website || 'Website URL'}
                     </a>
@@ -1103,14 +1169,19 @@ case 13:
                   {/* Location */}
                   <div className="flex items-center text-sm">
                     <img src="/images/location2.png" alt="Location Icon" className="mr-2 w-4 h-4" />
-                    <span>{fields.address || 'Address'}</span>
+                    <span className="line-clamp-3 w-[240px]">
+                      {fields.address || 'Address'}
+                    </span>
                   </div>
                 </div>
               </div>
             </div>
           </div>
         );
-case 14:
+      
+
+
+        case 14:
           return (
             <div className={`${montserrat.className} w-[635px] h-[388px] flex items-center justify-center bg-white`}>
               <div className="relative w-full h-full flex">
@@ -1172,7 +1243,9 @@ case 14:
               </div>
             </div>
           );    
-case 15:
+
+
+          case 15:
             return (
               <div className={`${montserrat.className} w-[600px] h-[550px] group`} style={{ perspective: '1000px' }}>
                 <div
@@ -1202,8 +1275,8 @@ case 15:
                     <div className="text-center text-[#1D1D1D] space-y-3">
                       {/* Name and Designation */}
                       <div>
-                        <h1 className="text-xl font-bold">{fields.name || 'Name'}</h1>
-                        <p className="text-sm">{fields.jobTitle || 'Job Title'}</p>
+                        <h1 className="text-xl font-bold line-clamp-2">{fields.name || 'Name'}</h1>
+                        <p className="text-sm line-clamp-2">{fields.jobTitle || 'Job Title'}</p>
                       </div>
           
                       {/* Horizontal Black Line after Name and Designation */}
@@ -1214,12 +1287,12 @@ case 15:
                         {/* Phone */}
                         <div className="flex justify-center items-center text-sm">
                           <img src="/images/phone2.png" alt="Phone Icon" className="mr-2 w-4 h-4" />
-                          <span>{fields.phone || 'Phone Number'}</span>
+                          <span className="truncate w-[180px]">{fields.phone || 'Phone Number'}</span>
                         </div>
                         {/* Email */}
                         <div className="flex justify-center items-center text-sm">
                           <img src="/images/email2.png" alt="Email Icon" className="mr-2 w-4 h-4" />
-                          <span>{fields.email || 'Email Address'}</span>
+                          <span className="line-clamp-2 w-[250px]">{fields.email || 'Email Address'}</span>
                         </div>
                         {/* Website */}
                         <div className="flex justify-center items-center text-sm">
@@ -1228,7 +1301,7 @@ case 15:
                             href={fields.website || '#'}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="hover:text-gray-300 transition"
+                            className="hover:text-gray-300 transition line-clamp-2 w-[250px]"
                           >
                             {fields.website || 'Website URL'}
                           </a>
@@ -1236,253 +1309,258 @@ case 15:
                         {/* Location */}
                         <div className="flex justify-center items-center text-sm">
                           <img src="/images/location2.png" alt="Location Icon" className="mr-2 w-4 h-4" />
-                          <span>{fields.address || 'Address'}</span>
+                          <span className="line-clamp-3 w-[250px]">{fields.address || 'Address'}</span>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>  
+              </div>
             );
-
+          
 
             case 16:
               return (
                 <div
-                  className="group w-[300px] h-[525px]"
-                  style={{ perspective: '1000px' }}
-                >
+  className="group w-[300px] h-[525px]"
+  style={{ perspective: '1000px' }}
+>
+  <div
+    className="relative w-full h-full duration-1000 ease-in-out transition-transform group-hover:[transform:rotateY(180deg)]"
+    style={{ transformStyle: 'preserve-3d' }}
+  >
+    {/* Front of the card */}
+    <div
+      className="absolute w-full h-full bg-[#595A5C] rounded-xl flex items-center justify-center"
+      style={{ backfaceVisibility: 'hidden' }}
+    >
+      {/* Logo Container */}
+      <div className="w-32">
+        <img
+          src={fields.logo || '/images/logo-placeholder.png'}
+          alt="Company Logo"
+          className="w-full h-auto"
+        />
+      </div>
+    </div>
+
+    {/* Back of the card */}
+    <div
+      className="absolute w-full h-full bg-white rounded-xl flex flex-col"
+      style={{
+        backfaceVisibility: 'hidden',
+        transform: 'rotateY(180deg)',
+      }}
+    >
+      {/* Logo Background at Top-Left */}
+      <div className="absolute top-[0%] left-[60%] w-[125px] h-[125px] bg-[#595A5C] rounded-sm flex items-center justify-center">
+        <img
+          src={fields.logo || '/images/logo-placeholder.png'}
+          alt="Company Logo"
+          className="w-16 h-auto"
+        />
+      </div>
+
+      {/* Content Container */}
+      <div className="p-6 mt-auto flex flex-col justify-end flex-1">
+        {/* Name and Title */}
+        <div>
+          <h2 className="text-xl font-bold text-gray-800 mb-1 truncate">
+            {fields.name || 'TERRY VETROVS'}
+          </h2>
+          <p className="text-gray-600 text-sm truncate">
+            {fields.jobTitle || 'Pashupati Enterprises'}
+          </p>
+
+          {/* Divider Line */}
+          <div className="w-16 h-1 bg-gray-800 my-4 rounded-full"></div>
+
+          {/* Contact Information */}
+          <div className="space-y-3">
+            {/* Phone */}
+            <div className="flex items-center text-sm text-gray-700">
+              <img
+                src="/images/phone.png"
+                alt="Phone Icon"
+                className="mr-2 w-4 h-4"
+              />
+              <span>{fields.phone || '+91 98534 23254'}</span>
+            </div>
+
+            {/* Email */}
+            <div className="flex items-center text-sm text-gray-700 truncate">
+              <img
+                src="/images/email.png"
+                alt="Email Icon"
+                className="mr-2 w-4 h-4"
+              />
+              <span>
+                {fields.email ||
+                  'extremelylongemailaddresswithmultiplecharactersandadditionaldetails@example.com'}
+              </span>
+            </div>
+
+            {/* Website */}
+            <div className="flex items-center text-sm text-gray-700 truncate">
+              <img
+                src="/images/website2.png"
+                alt="Website Icon"
+                className="mr-2 w-4 h-4"
+              />
+              <a
+                href={fields.website || '#'}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-gray-900 transition"
+              >
+                {fields.website || 'www.zephyrsofttechnologies.com'}
+              </a>
+            </div>
+
+            {/* Address */}
+            <div className="flex items-start text-sm text-gray-700 truncate">
+              <img
+                src="/images/location.png"
+                alt="Location Icon"
+                className="mr-2 w-4 h-4 mt-1"
+              />
+              <span className="flex-1">
+                {fields.address ||
+                  'Samarpan Shopping Mall, Sardar Patel Ring Rd, Bopal, Ahmedabad, Gujarat 380058'}
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+              );
+
+
+
+              case 17:
+                return (
                   <div
-                    className="relative w-full h-full duration-1000 ease-in-out transition-transform group-hover:[transform:rotateY(180deg)]"
-                    style={{ transformStyle: 'preserve-3d' }}
+                    className="group w-[300px] h-[525px]"
+                    style={{ perspective: '1000px' }}
                   >
-                    {/* Front of the card */}
                     <div
-                      className="absolute w-full h-full bg-[#595A5C] rounded-xl flex items-center justify-center"
-                      style={{ backfaceVisibility: 'hidden' }}
+                      className="relative w-full h-full duration-1000 ease-in-out transition-transform group-hover:[transform:rotateY(180deg)]"
+                      style={{ transformStyle: 'preserve-3d' }}
                     >
-                      {/* Logo Container */}
-                      <div className="w-32">
-                        <img
-                          src={fields.logo || '/images/logo-placeholder.png'}
-                          alt="Company Logo"
-                          className="w-full h-auto"
-                        />
-                      </div>
-                    </div>
-            
-                    {/* Back of the card */}
-                    <div
-                      className="absolute w-full h-full bg-white rounded-xl flex flex-col"
-                      style={{
-                        backfaceVisibility: 'hidden',
-                        transform: 'rotateY(180deg)',
-                      }}
-                    >
-                      {/* Logo Background at Top-Left */}
+                      {/* Front of the card */}
                       <div
-                        className="absolute top-[0%] left-[60%] w-[125px] h-[125px] bg-[#595A5C] rounded-sm flex items-center justify-center"
+                        className="absolute w-full h-full bg-[#FDDDD2] rounded-xl flex items-center justify-center"
+                        style={{ backfaceVisibility: 'hidden' }}
                       >
-                        <img
-                          src={fields.logo || '/images/logo-placeholder.png'}
-                          alt="Company Logo"
-                          className="w-16 h-auto"
-                        />
+                        {/* Logo Container */}
+                        <div className="w-32">
+                          <img
+                            src={fields.logo || '/images/logo-placeholder.png'}
+                            alt="Company Logo"
+                            className="w-full h-auto"
+                          />
+                        </div>
                       </div>
-            
-                      {/* Content Container */}
-                      <div className="p-6 mt-auto flex flex-col justify-end flex-1">
-                        {/* Name and Title */}
-                        <div>
-                          <h2 className="text-xl font-bold text-gray-800 mb-1">
-                            {fields.name || 'TERRY VETROVS'}
-                          </h2>
-                          <p className="text-gray-600 text-sm">
-                            {fields.jobTitle || 'Pashupati Enterprises'}
-                          </p>
-            
-                          {/* Divider Line */}
-                          <div className="w-16 h-1 bg-gray-800 my-4 rounded-full"></div>
-            
-                          {/* Contact Information */}
-                          <div className="space-y-3">
-                            {/* Phone */}
-                            <div className="flex items-center text-sm text-gray-700">
-                              <img
-                                src="/images/phone.png"
-                                alt="Phone Icon"
-                                className="mr-2 w-4 h-4"
-                              />
-                              <span>{fields.phone || '+91 98534 23254'}</span>
-                            </div>
-            
-                            {/* Email */}
-                            <div className="flex items-center text-sm text-gray-700">
-                              <img
-                                src="/images/email.png"
-                                alt="Email Icon"
-                                className="mr-2 w-4 h-4"
-                              />
-                              <span>{fields.email || 'jessica.hanson@example.com'}</span>
-                            </div>
-            
-                            {/* Website */}
-                            <div className="flex items-center text-sm text-gray-700">
-                              <img
-                                src="/images/website2.png"
-                                alt="Website Icon"
-                                className="mr-2 w-4 h-4"
-                              />
-                              <a
-                                href={fields.website || '#'}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="hover:text-gray-900 transition"
-                              >
-                                {fields.website || 'www.zephyrsofttechnologies.com'}
-                              </a>
-                            </div>
-            
-                            {/* Address */}
-                            <div className="flex items-start text-sm text-gray-700">
-                              <img
-                                src="/images/location.png"
-                                alt="Location Icon"
-                                className="mr-2 w-4 h-4 mt-1"
-                              />
-                              <span className="flex-1">
-                                {fields.address ||
-                                  'Samarpan Shopping Mall, Sardar Patel Ring Rd, Bopal, Ahmedabad, Gujarat 380058'}
-                              </span>
+              
+                      {/* Back of the card */}
+                      <div
+                        className="absolute w-full h-full bg-white rounded-xl flex flex-col"
+                        style={{
+                          backfaceVisibility: 'hidden',
+                          transform: 'rotateY(180deg)',
+                        }}
+                      >
+                        {/* Logo Background at Top-Left */}
+                        <div
+                          className="absolute top-[0%] left-[60%] w-[125px] h-[125px] bg-[#FDDDD2] rounded-sm flex items-center justify-center"
+                        >
+                          <img
+                            src={fields.logo || '/images/logo-placeholder.png'}
+                            alt="Company Logo"
+                            className="w-16 h-auto"
+                          />
+                        </div>
+              
+                        {/* Content Container */}
+                        <div className="p-6 mt-auto flex flex-col justify-end flex-1">
+                          {/* Name and Title */}
+                          <div>
+                            <h2 className="text-xl font-bold text-gray-800 mb-1 line-clamp-2">
+                              {fields.name || 'TERRY VETROVS'}
+                            </h2>
+                            <p className="text-gray-600 text-sm line-clamp-2">
+                              {fields.jobTitle || 'Pashupati Enterprises'}
+                            </p>
+              
+                            {/* Divider Line */}
+                            <div className="w-16 h-1 bg-gray-800 my-4 rounded-full"></div>
+              
+                            {/* Contact Information */}
+                            <div className="space-y-3">
+                              {/* Phone */}
+                              <div className="flex items-center text-sm text-gray-700">
+                                <img
+                                  src="/images/phone.png"
+                                  alt="Phone Icon"
+                                  className="mr-2 w-4 h-4"
+                                />
+                                <span className="truncate w-[200px]">
+                                  {fields.phone || '+91 98534 23254'}
+                                </span>
+                              </div>
+              
+                              {/* Email */}
+                              <div className="flex items-center text-sm text-gray-700">
+                                <img
+                                  src="/images/email.png"
+                                  alt="Email Icon"
+                                  className="mr-2 w-4 h-4"
+                                />
+                                <span className="line-clamp-2 w-[240px]">
+                                  {fields.email || 'jessica.hanson@example.com'}
+                                </span>
+                              </div>
+              
+                              {/* Website */}
+                              <div className="flex items-center text-sm text-gray-700">
+                                <img
+                                  src="/images/website2.png"
+                                  alt="Website Icon"
+                                  className="mr-2 w-4 h-4"
+                                />
+                                <a
+                                  href={fields.website || '#'}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="hover:text-gray-900 transition line-clamp-2 w-[240px]"
+                                >
+                                  {fields.website || 'www.zephyrsofttechnologies.com'}
+                                </a>
+                              </div>
+              
+                              {/* Address */}
+                              <div className="flex items-start text-sm text-gray-700">
+                                <img
+                                  src="/images/location.png"
+                                  alt="Location Icon"
+                                  className="mr-2 w-4 h-4 mt-1"
+                                />
+                                <span className="line-clamp-3 w-[240px]">
+                                  {fields.address ||
+                                    'Samarpan Shopping Mall, Sardar Patel Ring Rd, Bopal, Ahmedabad, Gujarat 380058'}
+                                </span>
+                              </div>
                             </div>
                           </div>
                         </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              );
-
-
-
-
-              case 17:
-  return (
-    <div
-      className="group w-[300px] h-[525px]"
-      style={{ perspective: '1000px' }}
-    >
-      <div
-        className="relative w-full h-full duration-1000 ease-in-out transition-transform group-hover:[transform:rotateY(180deg)]"
-        style={{ transformStyle: 'preserve-3d' }}
-      >
-        {/* Front of the card */}
-        <div
-          className="absolute w-full h-full bg-[#FDDDD2] rounded-xl flex items-center justify-center"
-          style={{ backfaceVisibility: 'hidden' }}
-        >
-          {/* Logo Container */}
-          <div className="w-32">
-            <img
-              src={fields.logo || '/images/logo-placeholder.png'}
-              alt="Company Logo"
-              className="w-full h-auto"
-            />
-          </div>
-        </div>
-
-        {/* Back of the card */}
-        <div
-          className="absolute w-full h-full bg-white rounded-xl flex flex-col"
-          style={{
-            backfaceVisibility: 'hidden',
-            transform: 'rotateY(180deg)',
-          }}
-        >
-          {/* Logo Background at Top-Left */}
-          <div
-            className="absolute top-[0%] left-[60%] w-[125px] h-[125px] bg-[#FDDDD2] rounded-sm flex items-center justify-center"
-          >
-            <img
-              src={fields.logo || '/images/logo-placeholder.png'}
-              alt="Company Logo"
-              className="w-16 h-auto"
-            />
-          </div>
-
-          {/* Content Container */}
-          <div className="p-6 mt-auto flex flex-col justify-end flex-1">
-            {/* Name and Title */}
-            <div>
-              <h2 className="text-xl font-bold text-gray-800 mb-1">
-                {fields.name || 'TERRY VETROVS'}
-              </h2>
-              <p className="text-gray-600 text-sm">
-                {fields.jobTitle || 'Pashupati Enterprises'}
-              </p>
-
-              {/* Divider Line */}
-              <div className="w-16 h-1 bg-gray-800 my-4 rounded-full"></div>
-
-              {/* Contact Information */}
-              <div className="space-y-3">
-                {/* Phone */}
-                <div className="flex items-center text-sm text-gray-700">
-                  <img
-                    src="/images/phone.png"
-                    alt="Phone Icon"
-                    className="mr-2 w-4 h-4"
-                  />
-                  <span>{fields.phone || '+91 98534 23254'}</span>
-                </div>
-
-                {/* Email */}
-                <div className="flex items-center text-sm text-gray-700">
-                  <img
-                    src="/images/email.png"
-                    alt="Email Icon"
-                    className="mr-2 w-4 h-4"
-                  />
-                  <span>{fields.email || 'jessica.hanson@example.com'}</span>
-                </div>
-
-                {/* Website */}
-                <div className="flex items-center text-sm text-gray-700">
-                  <img
-                    src="/images/website2.png"
-                    alt="Website Icon"
-                    className="mr-2 w-4 h-4"
-                  />
-                  <a
-                    href={fields.website || '#'}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="hover:text-gray-900 transition"
-                  >
-                    {fields.website || 'www.zephyrsofttechnologies.com'}
-                  </a>
-                </div>
-
-                {/* Address */}
-                <div className="flex items-start text-sm text-gray-700">
-                  <img
-                    src="/images/location.png"
-                    alt="Location Icon"
-                    className="mr-2 w-4 h-4 mt-1"
-                  />
-                  <span className="flex-1">
-                    {fields.address ||
-                      'Samarpan Shopping Mall, Sardar Patel Ring Rd, Bopal, Ahmedabad, Gujarat 380058'}
-                  </span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-
+                );
+              
 
 
         default:
